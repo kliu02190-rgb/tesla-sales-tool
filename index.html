@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#171717">
+<title>Tesla Sales Manager Tool</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+body{
+  margin:0;
+  background:#f4f4f4;
+  color:#171717;
+  font-family:-apple-system,BlinkMacSystemFont,
+  "PingFang SC","Microsoft YaHei",sans-serif;
+}
+
+.app{
+  max-width:540px;
+  margin:auto;
+  min-height:100vh;
+  padding-bottom:90px;
+}
+
+.header{
+  background:#171717;
+  color:#fff;
+  padding:26px 18px 23px;
+  border-radius:0 0 24px 24px;
+}
+
+.logo{
+  font-size:11px;
+  letter-spacing:3px;
+  color:#999;
+}
+
+.brand{
+  font-size:25px;
+  font-weight:750;
+  margin-top:8px;
+}
+
+.sub{
+  font-size:12px;
+  color:#aaa;
+  margin-top:5px;
+}
+
+.content{
+  padding:15px;
+}
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+.card{
+  background:#fff;
+  border-radius:17px;
+  padding:16px;
+  margin-bottom:12px;
+  box-shadow:0 3px 14px rgba(0,0,0,.05);
+}
+
+h2{
+  font-size:17px;
+  margin:0 0 11px;
+}
+
+h3{
+  font-size:14px;
+  margin:15px 0 7px;
+}
+
+p{
+  font-size:13px;
+  line-height:1.7;
+  color:#666;
+  margin:5px 0;
+}
+
+.menu{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.menu button{
+  border:0;
+  background:#fff;
+  border-radius:16px;
+  padding:18px 13px;
+  text-align:left;
+  box-shadow:0 3px 12px rgba(0,0,0,.05);
+}
+
+.menu b{
+  display:block;
+  font-size:15px;
+  margin-bottom:6px;
+}
+
+.menu span{
+  font-size:11px;
+  color:#999;
+}
+
+.btn{
+  border:0;
+  border-radius:11px;
+  padding:11px 14px;
+  font-weight:650;
+  background:#eee;
+}
+
+.btn.dark{
+  background:#171717;
+  color:#fff;
+}
+
+.btn.red{
+  background:#e82127;
+  color:#fff;
+}
+
+.back{
+  margin-bottom:12px;
+}
+
+.question{
+  background:#fafafa;
+  border-left:3px solid #171717;
+  border-radius:0 10px 10px 0;
+  padding:11px 12px;
+  margin:8px 0;
+  font-size:13px;
+  line-height:1.65;
+}
+
+.red{
+  color:#e82127;
+}
+
+label{
+  display:block;
+  font-size:11px;
+  color:#888;
+  margin:11px 0 5px;
+}
+
+input,
+textarea,
+select{
+  width:100%;
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:11px;
+  font-size:13px;
+  background:#fff;
+  outline:none;
+}
+
+textarea{
+  min-height:75px;
+  resize:vertical;
+}
+
+.summary{
+  background:#171717;
+  color:#fff;
+  border-radius:17px;
+  padding:17px;
+  margin-bottom:12px;
+}
+
+.summary .small{
+  color:#999;
+  font-size:10px;
+  letter-spacing:1px;
+}
+
+.summary p{
+  color:#bbb;
+}
+
+.score{
+  font-size:23px;
+  font-weight:800;
+  margin-top:8px;
+}
+
+.progress{
+  height:7px;
+  background:#eee;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.progress i{
+  display:block;
+  height:100%;
+  background:#171717;
+  width:0;
+  transition:.3s;
+}
+
+.option{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.option button{
+  border:1px solid #ddd;
+  background:#fff;
+  border-radius:20px;
+  padding:8px 11px;
+  font-size:11px;
+}
+
+.option button.active{
+  background:#171717;
+  color:#fff;
+  border-color:#171717;
+}
+
+.action{
+  background:#171717;
+  color:#fff;
+  border-radius:17px;
+  padding:17px;
+}
+
+.action p{
+  color:#ccc;
+}
+
+.bottom{
+  position:fixed;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:100%;
+  max-width:540px;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(15px);
+  border-top:1px solid #ddd;
+  padding:9px 12px;
+  padding-bottom:calc(9px + env(safe-area-inset-bottom));
+  display:flex;
+  gap:7px;
+  z-index:20;
+}
+
+.bottom button{
+  flex:1;
+  border:0;
+  background:#eee;
+  border-radius:11px;
+  padding:11px 3px;
+  font-size:11px;
+  font-weight:650;
+}
+
+.bottom button:last-child{
+  background:#171717;
+  color:#fff;
+}
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:85px;
+  transform:translateX(-50%);
+  background:#171717;
+  color:#fff;
+  padding:10px 15px;
+  border-radius:20px;
+  font-size:12px;
+  display:none;
+  z-index:50;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+  <div class="logo">TESLA SALES MANAGER TOOL</div>
+  <div class="brand">销售主管 · 晨会复盘</div>
+  <div class="sub">
+    CETN｜竞品引导｜主管反问｜成交判断｜跟进话术
+  </div>
+</header>
+
+<div class="content">
+
+<!-- ================= 首页 ================= -->
+
+<section id="home" class="page active">
+
+<div class="card">
+
+<h2>今日客户复盘</h2>
+
+<label>客户姓名</label>
+<input id="customerName" placeholder="例如：王先生">
+
+<label>意向车型</label>
+<input id="customerCar" value="Model Y">
+
+<label>当前客户情况</label>
+<textarea id="customerSituation"
+placeholder="例如：大众10年油车，对比腾势SUV和蔚来ES8，日常家用，目前没有充电桩"></textarea>
+
+<br>
+
+<button
+class="btn dark"
+style="width:100%;margin-top:10px"
+onclick="startReview()">
+开始复盘
+</button>
+
+</div>
+
+
+<div class="menu">
+
+<button onclick="openPage('cetn')">
+<b>① CETN复盘</b>
+<span>为什么买车 / 电车 / Tesla / 现在</span>
+</button>
+
+<button onclick="openPage('competitor')">
+<b>② 竞品引导</b>
+<span>腾势 / 蔚来ES8</span>
+</button>
+
+<button onclick="openPage('coach')">
+<b>③ 主管反问</b>
+<span>销售有没有问到本质</span>
+</button>
+
+<button onclick="openPage('result')">
+<b>④ 成交判断</b>
+<span>自动判断客户状态</span>
+</button>
+
+<button onclick="openPage('follow')">
+<b>⑤ 跟进话术</b>
+<span>生成下一步沟通方向</span>
+</button>
+
+<button onclick="newCustomer()">
+<b>⑥ 新建客户</b>
+<span>清空当前复盘</span>
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h2>主管复盘原则</h2>
+
+<p>
+不是让销售证明竞品不好，而是让客户自己发现：
+<b>竞品的优势是否真的是自己的核心需求。</b>
+</p>
+
+<p>
+完整路径：
+<b>C → E → T → 竞品 → N → 阻力 → Action</b>
+</p>
+
+</div>
+
+</section>
+
+
+<!-- ================= CETN ================= -->
+
+<section id="cetn" class="page">
+
+<button class="btn back" onclick="openPage('home')">
+← 返回首页
+</button>
+
+<div class="card">
+
+<h2>CETN完成度</h2>
+
+<div class="progress">
+<i id="progressBar"></i>
+</div>
+
+<p id="progressText">
+0 / 4 已完成
+</p>
+
+</div>
+
+
+<!-- C -->
+
+<div class="card">
+
+<h2>
+<span class="red">C</span>
+｜为什么买车？
+</h2>
+
+<div class="question">
+如果现在这台车完全没问题，他还会不会换？
+</div>
+
+<div class="question">
+如果还会，真正让他想换车的是什么？
+</div>
+
+<div class="question">
+这是客户说的，还是销售自己的判断？
+</div>
+
+<label>
+客户原话
+</label>
+
+<textarea
+id="C"
+placeholder="一定尽量记录客户原话，不要写销售总结">
+</textarea>
+
+</div>
+
+
+<!-- E -->
+
+<div class="card">
+
+<h2>
+<span class="red">E</span>
+｜为什么买电车？
+</h2>
+
+<div class="question">
+为什么不继续买油车？
+</div>
+
+<div class="question">
+如果油车和电车5年实际成本差不多，他还会买电车吗？
+</div>
+
+<div class="question">
+没有家充，是客户真实阻力，还是销售自己认为的阻力？
+</div>
+
+<div class="question">
+一天大概开多少公里？一周补能几次？
+</div>
+
+<label>
+客户原话
+</label>
+
+<textarea
+id="E"
+placeholder="例如：主要为了城市通勤、安静、省钱、智能化……">
+</textarea>
+
+</div>
+
+
+<!-- T -->
+
+<div class="card">
+
+<h2>
+<span class="red">T</span>
+｜为什么Tesla？
+</h2>
+
+<div class="question">
+如果拿掉Tesla，只剩腾势和ES8，他会选谁？为什么？
+</div>
+
+<div class="question">
+客户愿意为Tesla哪个价值真正付钱？
+</div>
+
+<div class="question">
+客户对Tesla最大的担心是什么？
+</div>
+
+<label>
+客户原话
+</label>
+
+<textarea
+id="T"
+placeholder="例如：品牌、智能化、驾驶体验、补能、保值等">
+</textarea>
+
+</div>
+
+
+<!-- N -->
+
+<div class="card">
+
+<h2>
+<span class="red">N</span>
+｜为什么现在买？
+</h2>
+
+<div class="question">
+10年的大众为什么是现在换，而不是去年换？
+</div>
+
+<div class="question">
+如果今天不买，客户会损失什么？
+</div>
+
+<div class="question">
+有没有明确购车时间节点？
+</div>
+
+<label>
+客户原话
+</label>
+
+<textarea
+id="N"
+placeholder="例如：旧车维修增加、家庭成员变化、政策、年底前购车等">
+</textarea>
+
+</div>
+
+
+<button
+class="btn dark"
+style="width:100%"
+onclick="openPage('result')">
+查看成交判断 →
+</button>
+
+</section>
+
+
+<!-- ================= 竞品 ================= -->
+
+<section id="competitor" class="page">
+
+<button class="btn back" onclick="openPage('home')">
+← 返回首页
+</button>
+
+
+<div class="card">
+
+<h2>
+腾势 SUV
+</h2>
+
+<p>
+核心原则：
+<b>先承认优势，再判断是不是刚需。</b>
+</p>
+
+<div class="question">
+“您看腾势，最吸引您的是什么？”
+</div>
+
+<div class="question">
+“这个优势您日常使用频率高吗？”
+</div>
+
+<div class="question">
+“这是每天都会用到，还是偶尔才用到？”
+</div>
+
+<div class="question">
+“如果一年只有几次用到，它还是刚需吗？”
+</div>
+
+<div class="question">
+“如果Tesla也能满足您80%的需求，剩下20%的差异值多少钱？”
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+蔚来 ES8
+</h2>
+
+<div class="question">
+“您平时几个人用车？”
+</div>
+
+<div class="question">
+“第三排一个月大概使用几次？”
+</div>
+
+<div class="question">
+“主要城市通勤，还是经常全家长途？”
+</div>
+
+<div class="question">
+“如果一年只有几次需要这么大的空间，值得吗？”
+</div>
+
+<div class="question">
+“您真正需要的是大空间，还是偶尔的大空间？”
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+蔚来换电
+</h2>
+
+<div class="question">
+“您看换电主要是因为方便，对吗？”
+</div>
+
+<div class="question">
+“您家附近有换电站吗？公司附近呢？”
+</div>
+
+<div class="question">
+“您一周实际需要补能几次？”
+</div>
+
+<div class="question">
+“如果一周只补能一次，换电对您到底有多大价值？”
+</div>
+
+</div>
+
+
+<div class="action">
+
+<b>竞品引导原则</b>
+
+<p>
+不要说“腾势不好”“蔚来不好”。
+</p>
+
+<p>
+应该问：
+<b>
+“这个优势是不是客户高频刚需？”
+</b>
+</p>
+
+</div>
+
+</section>
+
+
+<!-- ================= 主管反问 ================= -->
+
+<section id="coach" class="page">
+
+<button class="btn back" onclick="openPage('home')">
+← 返回首页
+</button>
+
+<div class="card">
+
+<h2>
+主管犀利反问库
+</h2>
+
+<div class="question">
+① 你说客户想换车，这是客户说的，还是你判断的？
+</div>
+
+<div class="question">
+② 如果旧车完全没问题，他还会买吗？
+</div>
+
+<div class="question">
+③ 为什么一定买电车？
+</div>
+
+<div class="question">
+④ 没有家充到底是不是问题？
+</div>
+
+<div class="question">
+⑤ 客户为什么看腾势？
+</div>
+
+<div class="question">
+⑥ 客户为什么看ES8？
+</div>
+
+<div class="question">
+⑦ 竞品这个优势，客户每天都会用到吗？
+</div>
+
+<div class="question">
+⑧ 如果三台车价格完全一样，他选谁？
+</div>
+
+<div class="question">
+⑨ 如果今天只能留下一个，他最舍不得放弃哪台？
+</div>
+
+<div class="question">
+⑩ 为什么现在买？
+</div>
+
+<div class="question">
+⑪ 如果今天不买，他会损失什么？
+</div>
+
+<div class="question">
+⑫ 下一次跟进，你准备让客户发生什么具体变化？
+</div>
+
+</div>
+
+
+<div class="action">
+
+<b>主管判断标准</b>
+
+<p>
+好的销售不是“讲得多”，而是能说清楚：
+</p>
+
+<p>
+客户为什么买 → 为什么买电 → 为什么Tesla
+→ 为什么现在 → 最大阻力 → 下一步怎么推进。
+</p>
+
+</div>
+
+</section>
+
+
+<!-- ================= 成交判断 ================= -->
+
+<section id="result" class="page">
+
+<button class="btn back" onclick="openPage('home')">
+← 返回首页
+</button>
+
+
+<div class="summary">
+
+<div class="small">
+CUSTOMER REVIEW
+</div>
+
+<h2 id="resultName">
+未填写客户
+</h2>
+
+<p id="resultCETN">
+CETN完整度：0%
+</p>
+
+<div
+class="score"
+id="resultScore">
+先完成CETN复盘
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+主管成交判断
+</h2>
+
+<label>
+最大成交阻力
+</label>
+
+<textarea
+id="obstacle"
+placeholder="价格 / 竞品 / 充电 / 家人意见 / 需求不明确……">
+</textarea>
+
+
+<label>
+最大成交机会
+</label>
+
+<textarea
+id="opportunity"
+placeholder="客户已经明确认可的价值……">
+</textarea>
+
+
+<label>
+客户当前最强购买理由
+</label>
+
+<textarea
+id="mainReason"
+placeholder="如果只能留下一个购买理由，是什么？">
+</textarea>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+客户成交概率
+</h2>
+
+<div class="option">
+
+<button onclick="selectProbability('高',this)">
+高｜70%+
+</button>
+
+<button onclick="selectProbability('中',this)">
+中｜30%-70%
+</button>
+
+<button onclick="selectProbability('低',this)">
+低｜30%以下
+</button>
+
+</div>
+
+</div>
+
+
+<button
+class="btn red"
+style="width:100%"
+onclick="openPage('follow')">
+进入下一步跟进 →
+</button>
+
+</section>
+
+
+<!-- ================= 跟进话术 ================= -->
+
+<section id="follow" class="page">
+
+<button class="btn back" onclick="openPage('home')">
+← 返回首页
+</button>
+
+
+<div class="card">
+
+<h2>
+下一步Action
+</h2>
+
+<p>
+不要写“继续跟进”。
+</p>
+
+<p>
+必须明确：
+<b>
+下一次要让客户发生什么变化？
+</b>
+</p>
+
+
+<label>
+下一步具体动作
+</label>
+
+<textarea
+id="nextAction"
+placeholder="例如：邀请客户带家人再次试驾 / 验证充电场景 / 确认配置 / 解决价格顾虑">
+</textarea>
+
+
+<label>
+跟进时间
+</label>
+
+<input
+id="followTime"
+type="datetime-local">
+
+
+<label>
+跟进方式
+</label>
+
+<select id="followWay">
+
+<option value="微信">
+微信
+</option>
+
+<option value="电话">
+电话
+</option>
+
+<option value="到店">
+到店
+</option>
+
+<option value="试驾">
+试驾
+</option>
+
+</select>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+AI式跟进话术
+</h2>
+
+<textarea
+id="followScript"
+style="min-height:190px"
+placeholder="点击下面按钮生成">
+</textarea>
+
+<button
+class="btn dark"
+style="width:100%;margin-top:10px"
+onclick="generateScript()">
+生成跟进话术
+</button>
+
+<button
+class="btn"
+style="width:100%;margin-top:8px"
+onclick="copyScript()">
+复制话术
+</button>
+
+</div>
+
+
+<div class="action">
+
+<b>最终成交链路</b>
+
+<p>
+C → E → T → 竞品是否刚需
+→ N → 最大阻力 → Action
+</p>
+
+</div>
+
+</section>
+
+</div>
+
+
+<!-- ================= 底部导航 ================= -->
+
+<div class="bottom">
+
+<button onclick="openPage('home')">
+首页
+</button>
+
+<button onclick="openPage('cetn')">
+CETN
+</button>
+
+<button onclick="openPage('competitor')">
+竞品
+</button>
+
+<button onclick="openPage('result')">
+成交
+</button>
+
+<button onclick="openPage('follow')">
+Action
+</button>
+
+</div>
+
+
+<div
+id="toast"
+class="toast">
+已保存
+</div>
+
+
+</div>
+
+
+<script>
+
+/* ================= 基础页面 ================= */
+
+function openPage(id){
+
+  document
+  .querySelectorAll(".page")
+  .forEach(function(page){
+    page.classList.remove("active");
+  });
+
+  document
+  .getElementById(id)
+  .classList.add("active");
+
+  if(id==="result"){
+    updateResult();
+  }
+
+  if(id==="follow"){
+    generateScript();
+  }
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+
+/* ================= 数据 ================= */
+
+function getValue(id){
+
+  const element=document.getElementById(id);
+
+  if(!element){
+    return "";
+  }
+
+  return element.value.trim();
+
+}
+
+
+/* ================= 开始复盘 ================= */
+
+function startReview(){
+
+  saveData();
+
+  openPage("cetn");
+
+}
+
+
+/* ================= 自动保存 ================= */
+
+function saveData(){
+
+  const ids=[
+    "customerName",
+    "customerCar",
+    "customerSituation",
+    "C",
+    "E",
+    "T",
+    "N",
+    "obstacle",
+    "opportunity",
+    "mainReason",
+    "nextAction",
+    "followTime",
+    "followWay",
+    "probability"
+  ];
+
+  const data={};
+
+  ids.forEach(function(id){
+
+    const element=document.getElementById(id);
+
+    if(element){
+      data[id]=element.value;
+    }
+
+  });
+
+  localStorage.setItem(
+    "teslaSalesTool",
+    JSON.stringify(data)
+  );
+
+  updateProgress();
+
+}
+
+
+/* ================= 读取 ================= */
+
+function loadData(){
+
+  const raw=
+    localStorage.getItem("teslaSalesTool");
+
+  if(!raw){
+    return;
+  }
+
+  const data=JSON.parse(raw);
+
+  Object.keys(data).forEach(function(id){
+
+    const element=document.getElementById(id);
+
+    if(element){
+      element.value=data[id];
+    }
+
+  });
+
+  updateProgress();
+
+}
+
+
+/* ================= CETN进度 ================= */
+
+function updateProgress(){
+
+  const fields=[
+    "C",
+    "E",
+    "T",
+    "N"
+  ];
+
+  let completed=0;
+
+  fields.forEach(function(id){
+
+    if(getValue(id)){
+      completed++;
+    }
+
+  });
+
+  const percent=
+    completed / 4 * 100;
+
+  const bar=
+    document.getElementById("progressBar");
+
+  if(bar){
+    bar.style.width=
+      percent+"%";
+  }
+
+  const text=
+    document.getElementById("progressText");
+
+  if(text){
+
+    text.innerText=
+      completed+
+      " / 4 已完成";
+
+  }
+
+}
+
+
+/* ================= 成交判断 ================= */
+
+function updateResult(){
+
+  const name=
+    getValue("customerName");
+
+  document
+    .getElementById("resultName")
+    .innerText=
+      name || "未填写客户";
+
+
+  const fields=[
+    "C",
+    "E",
+    "T",
+    "N"
+  ];
+
+  let completed=0;
+
+  fields.forEach(function(id){
+
+    if(getValue(id)){
+      completed++;
+    }
+
+  });
+
+  const percent=
+    completed / 4 * 100;
+
+  document
+    .getElementById("resultCETN")
+    .innerText=
+      "CETN完整度："+percent+"%";
+
+
+  let result="";
+
+  if(completed===4){
+
+    result=
+      "高潜｜进入成交推进";
+
+  }else if(completed>=2){
+
+    result=
+      "中潜｜继续深挖需求";
+
+  }else{
+
+    result=
+      "低潜｜先补齐CETN";
+
+  }
+
+  document
+    .getElementById("resultScore")
+    .innerText=
+      result;
+
+}
+
+
+/* ================= 成交概率 ================= */
+
+function selectProbability(
+  value,
+  button
+){
+
+  document
+    .querySelectorAll(
+      ".option button"
+    )
+    .forEach(function(btn){
+
+      btn.classList.remove(
+        "active"
+      );
+
+    });
+
+
+  button.classList.add("active");
+
+
+  const hidden=
+    document.getElementById(
+      "probability"
+    );
+
+  if(hidden){
+
+    hidden.value=value;
+
+  }
+
+
+  saveData();
+
+}
+
+
+/* ================= 自动跟进话术 ================= */
+
+function generateScript(){
+
+  const name=
+    getValue("customerName")
+    || "您好";
+
+
+  const teslaReason=
+    getValue("T")
+    || "您比较认可Tesla的地方";
+
+
+  const obstacle=
+    getValue("obstacle")
+    || "您目前比较纠结的地方";
+
+
+  const action=
+    getValue("nextAction")
+    || "我们再把您最在意的几个用车场景确认一下";
+
+
+  const script=
+
+`${name}，我结合咱们之前聊的情况，不想简单让您在几个品牌里面选一个。
+
+我更希望帮您把真正影响您用车的几个点确认清楚。
+
+您之前比较认可的「${teslaReason}」，我们可以结合您实际每天的使用场景再验证一下。
+
+尤其是您提到的「${obstacle}」，这个我不希望您买完以后才发现不合适。
+
+所以我建议下一步我们重点做：
+
+「${action}」
+
+您体验、确认完以后，再根据实际感受决定哪台车更适合您。
+
+这样您买车会更踏实。`;
+
+
+  document
+    .getElementById("followScript")
+    .value=
+      script;
+
+
+  saveData();
+
+}
+
+
+/* ================= 复制话术 ================= */
+
+function copyScript(){
+
+  const text=
+    getValue("followScript");
+
+
+  if(!text){
+
+    generateScript();
+
+  }
+
+
+  navigator
+    .clipboard
+    .writeText(
+      getValue("followScript")
+    )
+    .then(function(){
+
+      showToast(
+        "话术已复制"
+      );
+
+    });
+
+}
+
+
+/* ================= 新建客户 ================= */
+
+function newCustomer(){
+
+  const ok=
+    confirm(
+      "确定新建客户？当前复盘内容将被清空。"
+    );
+
+
+  if(!ok){
+    return;
+  }
+
+
+  localStorage.removeItem(
+    "teslaSalesTool"
+  );
+
+
+  document
+    .querySelectorAll(
+      "input,textarea"
+    )
+    .forEach(function(element){
+
+      element.value="";
+
+    });
+
+
+  document
+    .getElementById(
+      "customerCar"
+    )
+    .value="Model Y";
+
+
+  updateProgress();
+
+  openPage("home");
+
+  showToast(
+    "已新建客户"
+  );
+
+}
+
+
+/* ================= 提示 ================= */
+
+function showToast(text){
+
+  const toast=
+    document.getElementById(
+      "toast"
+    );
+
+  toast.innerText=text;
+
+  toast.style.display=
+    "block";
+
+
+  setTimeout(function(){
+
+    toast.style.display=
+      "none";
+
+  },1500);
+
+}
+
+
+/* ================= 自动保存监听 ================= */
+
+document
+  .querySelectorAll(
+    "input,textarea,select"
+  )
+  .forEach(function(element){
+
+    element.addEventListener(
+      "input",
+      saveData
+    );
+
+    element.addEventListener(
+      "change",
+      saveData
+    );
+
+  });
+
+
+/* ================= 初始化 ================= */
+
+loadData();
+
+updateProgress();
+
+</script>
+
+</body>
+</html>
