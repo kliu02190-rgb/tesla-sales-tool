@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#171717">
+<title>销售主管晨会作战台 V2</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:#f3f3f3;color:#171717;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+button,input,textarea,select{font:inherit}
+.app{max-width:560px;margin:auto;min-height:100vh;padding-bottom:88px}
+.header{background:#171717;color:#fff;padding:25px 18px 22px;border-radius:0 0 25px 25px}
+.logo{font-size:10px;letter-spacing:3px;color:#999}.brand{font-size:24px;font-weight:800;margin-top:7px}.sub{font-size:12px;color:#aaa;margin-top:5px}
+.content{padding:14px}.page{display:none}.page.active{display:block}
+.card{background:#fff;border-radius:17px;padding:16px;margin-bottom:12px;box-shadow:0 3px 14px rgba(0,0,0,.05)}
+h2{font-size:17px;margin:0 0 10px}h3{font-size:14px;margin:16px 0 7px}p{font-size:13px;line-height:1.7;color:#666;margin:5px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#fff;border-radius:15px;padding:14px;box-shadow:0 3px 12px rgba(0,0,0,.04)}.stat b{font-size:25px;display:block}.stat span{font-size:11px;color:#888}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:10px}.menu button{border:0;background:#fff;border-radius:16px;padding:17px 13px;text-align:left;box-shadow:0 3px 12px rgba(0,0,0,.05)}.menu b{display:block;font-size:14px;margin-bottom:5px}.menu span{font-size:11px;color:#999}
+.btn{border:0;border-radius:11px;padding:11px 14px;background:#eee;font-weight:700}.dark{background:#171717;color:#fff}.red{background:#e82127;color:#fff}.full{width:100%}.back{margin-bottom:11px}
+label{display:block;font-size:11px;color:#888;margin:10px 0 5px}input,textarea,select{width:100%;border:1px solid #ddd;border-radius:10px;padding:11px;font-size:13px;background:#fff;outline:none}textarea{min-height:72px;resize:vertical}
+.pill{display:inline-block;padding:5px 9px;border-radius:20px;background:#eee;font-size:10px;margin:3px 3px 0 0}.high{background:#e9f7ee;color:#16723d}.mid{background:#fff5df;color:#8a5b00}.low{background:#fdeaea;color:#b21d1d}
+.customer{background:#fff;border-radius:15px;padding:14px;margin-bottom:9px;box-shadow:0 3px 12px rgba(0,0,0,.04)}.customer .row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.customer h3{margin:0;font-size:15px}.customer small{color:#888;font-size:11px}
+.question{background:#fafafa;border-left:3px solid #171717;border-radius:0 10px 10px 0;padding:11px 12px;margin:8px 0;font-size:13px;line-height:1.6}.qbtn{width:100%;border:0;text-align:left;cursor:pointer}
+.progress{height:7px;background:#eee;border-radius:9px;overflow:hidden}.progress i{display:block;height:100%;width:0;background:#171717;transition:.25s}
+.summary{background:#171717;color:#fff;border-radius:18px;padding:18px;margin-bottom:12px}.summary p{color:#bbb}.score{font-size:24px;font-weight:800}
+.action{background:#171717;color:#fff;border-radius:17px;padding:17px}.action p{color:#ccc}
+.bottom{position:fixed;z-index:30;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:560px;background:rgba(255,255,255,.95);backdrop-filter:blur(15px);border-top:1px solid #ddd;padding:8px 10px calc(8px + env(safe-area-inset-bottom));display:flex;gap:6px}.bottom button{flex:1;border:0;background:#eee;border-radius:11px;padding:10px 3px;font-size:10px;font-weight:700}.bottom button:last-child{background:#171717;color:#fff}
+.toast{position:fixed;z-index:60;left:50%;bottom:90px;transform:translateX(-50%);background:#171717;color:#fff;padding:10px 15px;border-radius:22px;font-size:12px;display:none}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;display:none;align-items:flex-end;justify-content:center}.modal.show{display:flex}.sheet{background:#fff;width:100%;max-width:560px;border-radius:22px 22px 0 0;padding:18px;max-height:90vh;overflow:auto}
+.capture{background:#fff;width:100%;padding:22px;color:#171717}.capture .caphead{border-bottom:2px solid #171717;padding-bottom:13px;margin-bottom:14px}.capture .caplogo{font-size:10px;letter-spacing:3px;color:#777}.capture .capname{font-size:23px;font-weight:800;margin-top:6px}.capgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.capbox{border:1px solid #e5e5e5;border-radius:12px;padding:11px}.capbox b{display:block;font-size:12px;margin-bottom:5px}.capbox span{font-size:11px;color:#666;line-height:1.5}.capfull{border:1px solid #e5e5e5;border-radius:12px;padding:11px;margin-top:9px}.captitle{font-size:11px;color:#777;margin-bottom:5px;letter-spacing:1px}.captext{font-size:12px;line-height:1.6}.capaction{background:#171717;color:#fff;border-radius:12px;padding:13px;margin-top:9px}.capaction .captitle{color:#aaa}.capaction .captext{font-weight:700}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header">
+<div class="logo">SALES MANAGER TOOL V2</div>
+<div class="brand">销售主管 · 晨会作战台</div>
+<div class="sub">通用客户复盘｜CETN｜竞品｜主管反问｜一键总结</div>
+</header>
+
+<div class="content">
+
+<section id="home" class="page active">
+<div class="grid">
+<div class="stat"><b id="countAll">0</b><span>客户总数</span></div>
+<div class="stat"><b id="countHigh">0</b><span>高意向</span></div>
+<div class="stat"><b id="countTodo">0</b><span>今日待跟进</span></div>
+<div class="stat"><b id="countWeak">0</b><span>CETN未完成</span></div>
+</div>
+<div class="card" style="margin-top:12px">
+<button class="btn dark full" onclick="newCustomer()">＋ 新建客户</button>
+</div>
+<div class="card">
+<h2>今日重点客户</h2>
+<div id="homeCustomers"></div>
+</div>
+<div class="menu">
+<button onclick="openPage('customers')"><b>① 客户池</b><span>多客户统一管理</span></button>
+<button onclick="editCurrent()"><b>② CETN复盘</b><span>为什么买、为什么现在</span></button>
+<button onclick="openPage('competitor')"><b>③ 竞品拆解</b><span>不限制品牌和车型</span></button>
+<button onclick="openPage('coach')"><b>④ 主管反问</b><span>晨会直接拿来问销售</span></button>
+<button onclick="openPage('result')"><b>⑤ 成交判断</b><span>阻力、机会、概率</span></button>
+<button onclick="openPage('follow')"><b>⑥ Action</b><span>下一步具体动作</span></button>
+</div>
+<div class="card">
+<h2>晨会核心逻辑</h2>
+<p><b>客户原话 → 销售判断 → 主管反问 → 验证 → Action</b></p>
+<p>不局限品牌、不局限竞品，重点判断客户的真实需求和成交阻力。</p>
+</div>
+</section>
+
+<section id="customers" class="page">
+<button class="btn back" onclick="openPage('home')">← 首页</button>
+<div class="card"><h2>客户池</h2><button class="btn dark full" onclick="newCustomer()">＋ 新建客户</button></div>
+<div id="customerList"></div>
+</section>
+
+<section id="edit" class="page">
+<button class="btn back" onclick="openPage('customers')">← 客户池</button>
+<div class="card">
+<h2 id="editTitle">新建客户</h2>
+<label>客户姓名</label><input id="name" placeholder="例如：王先生">
+<label>意向品牌 / 车型</label><input id="car" placeholder="例如：Model Y / 理想L7 / 宝马X3">
+<label>当前车辆</label><input id="oldCar" placeholder="例如：大众途观，10年车龄">
+<label>竞品车型（用逗号分隔）</label><input id="rivals" placeholder="例如：腾势N7，蔚来ES8，问界M7">
+<label>家庭 / 用车场景</label><textarea id="scene" placeholder="例如：夫妻通勤、孩子接送、偶尔长途"></textarea>
+<label>预算</label><input id="budget" placeholder="例如：30-35万">
+<label>购车时间</label><input id="buyTime" placeholder="例如：1个月内">
+</div>
+
+<div class="card">
+<h2>CETN 完成度 <span id="cetnPct">0%</span></h2>
+<div class="progress"><i id="bar"></i></div>
+</div>
+
+<div class="card">
+<h2><span style="color:#e82127">C</span>｜为什么买车？</h2>
+<div class="question">如果现在的车完全没问题，他还会不会换？</div>
+<div class="question">真正触发换车的事情是什么？</div>
+<div class="question">这是客户原话，还是销售判断？</div>
+<label>客户原话</label><textarea id="C" placeholder="尽量记录客户原话"></textarea>
+</div>
+
+<div class="card">
+<h2><span style="color:#e82127">E</span>｜为什么买电车 / 为什么换能源形式？</h2>
+<div class="question">为什么不继续买现在的能源形式？</div>
+<div class="question">客户最在意的是成本、体验、性能、智能还是其他？</div>
+<div class="question">这个需求出现的频率有多高？</div>
+<label>客户原话</label><textarea id="E"></textarea>
+</div>
+
+<div class="card">
+<h2><span style="color:#e82127">T</span>｜为什么选择这个品牌 / 车型？</h2>
+<div class="question">如果这个品牌不存在，客户会选谁？</div>
+<div class="question">客户愿意为哪个价值真正付钱？</div>
+<div class="question">客户最大的担心是什么？</div>
+<label>客户原话</label><textarea id="T"></textarea>
+</div>
+
+<div class="card">
+<h2><span style="color:#e82127">N</span>｜为什么现在买？</h2>
+<div class="question">为什么是现在，而不是三个月后？</div>
+<div class="question">如果今天不买，客户会损失什么？</div>
+<div class="question">有没有明确的时间节点或事件？</div>
+<label>客户原话</label><textarea id="N"></textarea>
+</div>
+
+<div class="card">
+<h2>客户核心判断</h2>
+<label>最大成交阻力</label><textarea id="obstacle" placeholder="价格 / 竞品 / 补能 / 家庭意见 / 需求不明确……"></textarea>
+<label>最大成交机会</label><textarea id="opportunity" placeholder="客户已经明确认可的价值"></textarea>
+<label>客户最强购买理由</label><textarea id="mainReason"></textarea>
+<label>成交概率</label>
+<select id="probability"><option value="高">高｜70%以上</option><option value="中" selected>中｜30%-70%</option><option value="低">低｜30%以下</option></select>
+</div>
+
+<button class="btn dark full" onclick="saveCurrent();openPage('result')">保存并查看成交判断 →</button>
+</section>
+
+<section id="result" class="page">
+<button class="btn back" onclick="openPage('edit')">← 返回编辑</button>
+<div class="summary">
+<div style="font-size:10px;color:#999;letter-spacing:2px">CUSTOMER REVIEW</div>
+<h2 id="resName">客户</h2>
+<p id="resCar"></p>
+<div class="score" id="resScore">CETN 0%</div>
+<p id="resStatus"></p>
+</div>
+<div class="card"><h2>主管结论</h2><p id="resReason"></p><p id="resBlock"></p><p id="resOpp"></p></div>
+<div class="card">
+<h2>今日Action</h2>
+<label>下一步具体动作</label><textarea id="nextAction" placeholder="例如：邀请客户带家人再次试驾；验证充电场景；确认配置；解决价格顾虑"></textarea>
+<label>跟进时间</label><input id="followTime" type="datetime-local">
+<label>跟进方式</label><select id="followWay"><option>微信</option><option>电话</option><option>到店</option><option>试驾</option></select>
+</div>
+<button class="btn red full" onclick="saveCurrent();openPage('follow')">生成跟进话术 →</button>
+<button class="btn dark full" style="margin-top:8px" onclick="openCapture()">📸 一键生成复盘总结图</button>
+</section>
+
+<section id="competitor" class="page">
+<button class="btn back" onclick="openPage('home')">← 首页</button>
+<div class="card">
+<h2>通用竞品拆解</h2>
+<p>不要急着证明竞品不好。先让销售把“客户为什么喜欢”问透。</p>
+<label>当前竞品</label><input id="compName" placeholder="例如：蔚来ES8">
+<label>客户认为竞品最大的优势</label><textarea id="compAdv" placeholder="空间 / 舒适 / 品牌 / 智能 / 换电 / 价格……"></textarea>
+</div>
+<div class="card">
+<h2>主管连续反问</h2>
+<button class="question qbtn" onclick="appendQ('这个优势具体是什么？')">① 这个优势具体是什么？</button>
+<button class="question qbtn" onclick="appendQ('客户为什么在意这个优势？')">② 客户为什么在意这个优势？</button>
+<button class="question qbtn" onclick="appendQ('客户一个月实际使用几次？')">③ 客户一个月实际使用几次？</button>
+<button class="question qbtn" onclick="appendQ('这是高频刚需，还是偶尔使用？')">④ 这是高频刚需，还是偶尔使用？</button>
+<button class="question qbtn" onclick="appendQ('如果没有这个优势，客户还会选它吗？')">⑤ 如果没有这个优势，客户还会选它吗？</button>
+<button class="question qbtn" onclick="appendQ('客户愿意为这个优势多付多少钱？')">⑥ 客户愿意为这个优势多付多少钱？</button>
+<button class="question qbtn" onclick="appendQ('我们的车型有没有替代方案？')">⑦ 我们的车型有没有替代方案？</button>
+<button class="question qbtn" onclick="appendQ('如果两台车价格一样，客户最终选谁？为什么？')">⑧ 如果价格一样，客户最终选谁？为什么？</button>
+<label>竞品复盘结论</label><textarea id="compConclusion" placeholder="优势是否刚需、我们如何承接、下一步如何验证"></textarea>
+<button class="btn dark full" onclick="saveCompetitor()">保存竞品分析</button>
+</div>
+</section>
+
+<section id="coach" class="page">
+<button class="btn back" onclick="openPage('home')">← 首页</button>
+<div class="card">
+<h2>主管犀利反问库</h2>
+<div class="question">你说客户想换车，这是客户说的，还是你判断的？</div>
+<div class="question">如果旧车完全没问题，他还会买吗？</div>
+<div class="question">客户为什么一定要换能源形式？</div>
+<div class="question">客户为什么看这个竞品？</div>
+<div class="question">竞品优势客户每天都会用到吗？</div>
+<div class="question">这是刚需，还是产品亮点？</div>
+<div class="question">如果这个优势消失，客户还选它吗？</div>
+<div class="question">如果价格完全一样，客户选谁？为什么？</div>
+<div class="question">客户为什么现在买？</div>
+<div class="question">如果今天不买，他会损失什么？</div>
+<div class="question">你现在最大的成交阻力是什么？证据是什么？</div>
+<div class="question">下一次跟进，你准备让客户发生什么具体变化？</div>
+</div>
+<div class="action"><b>主管判断标准</b><p>销售必须讲清：客户为什么买 → 为什么选择这个产品 → 为什么现在 → 竞品为什么吸引他 → 最大阻力 → 下一步验证什么。</p></div>
+</section>
+
+<section id="follow" class="page">
+<button class="btn back" onclick="openPage('result')">← 成交判断</button>
+<div class="card">
+<h2>下一步跟进话术</h2>
+<textarea id="followScript" style="min-height:230px"></textarea>
+<button class="btn dark full" style="margin-top:9px" onclick="generateScript()">重新生成</button>
+<button class="btn full" style="margin-top:8px" onclick="copyScript()">复制话术</button>
+</div>
+<div class="action"><b>Action原则</b><p>不要写“继续跟进”。要写清楚下一次跟进准备让客户发生什么变化。</p></div>
+</section>
+
+</div>
+
+<div class="bottom">
+<button onclick="openPage('home')">首页</button>
+<button onclick="editCurrent()">CETN</button>
+<button onclick="openPage('competitor')">竞品</button>
+<button onclick="openPage('result')">成交</button>
+<button onclick="openPage('follow')">Action</button>
+</div>
+</div>
+
+<div id="modal" class="modal">
+<div class="sheet">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><b>复盘总结图</b><button class="btn" onclick="closeCapture()">关闭</button></div>
+<div id="captureArea" class="capture"></div>
+<div style="display:flex;gap:8px;margin-top:10px">
+<button class="btn dark" style="flex:1" onclick="downloadCapture()">保存图片</button>
+<button class="btn" style="flex:1" onclick="shareCapture()">分享</button>
+</div>
+</div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+let customers=JSON.parse(localStorage.getItem("salesManagerCustomers")||"[]");
+let currentId=localStorage.getItem("salesManagerCurrent")||"";
+let compTemp={};
+
+function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function v(x){let e=document.getElementById(x);return e?e.value.trim():""}
+function setv(x,val){let e=document.getElementById(x);if(e)e.value=val||""}
+function current(){return customers.find(x=>x.id===currentId)}
+function saveAll(){localStorage.setItem("salesManagerCustomers",JSON.stringify(customers));localStorage.setItem("salesManagerCurrent",currentId);renderHome();renderCustomers()}
+function openPage(page){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(page).classList.add("active");if(page==="home")renderHome();if(page==="customers")renderCustomers();if(page==="result")renderResult();if(page==="follow")generateScript();window.scrollTo({top:0,behavior:"smooth"})}
+function newCustomer(){currentId=id();customers.unshift({id:currentId,name:"",car:"",oldCar:"",rivals:"",scene:"",budget:"",buyTime:"",C:"",E:"",T:"",N:"",obstacle:"",opportunity:"",mainReason:"",probability:"中",nextAction:"",followTime:"",followWay:"微信",comp:{}});saveAll();loadEdit();openPage("edit")}
+function editCurrent(){if(!currentId||!current()){newCustomer();return}loadEdit();openPage("edit")}
+function loadEdit(){let c=current();if(!c)return;setv("name",c.name);setv("car",c.car);setv("oldCar",c.oldCar);setv("rivals",c.rivals);setv("scene",c.scene);setv("budget",c.budget);setv("buyTime",c.buyTime);["C","E","T","N","obstacle","opportunity","mainReason","probability","nextAction","followTime","followWay"].forEach(k=>setv(k,c[k]));updateProgress()}
+function collect(){let c=current();if(!c)return;["name","car","oldCar","rivals","scene","budget","buyTime","C","E","T","N","obstacle","opportunity","mainReason","probability","nextAction","followTime","followWay"].forEach(k=>c[k]=v(k));}
+function saveCurrent(){collect();saveAll();toast("已保存")}
+function cetnPercent(c){return Math.round(["C","E","T","N"].filter(k=>(c[k]||"").trim()).length*25)}
+function updateProgress(){let p=["C","E","T","N"].filter(k=>v(k)).length*25;document.getElementById("cetnPct").innerText=p+"%";document.getElementById("bar").style.width=p+"%"}
+document.addEventListener("input",e=>{if(e.target.matches("input,textarea,select")&&document.getElementById("edit").classList.contains("active")){collect();saveAll();updateProgress()}})
+function status(c){let p=cetnPercent(c),prob=c.probability||"中";if(p===100&&prob==="高")return ["高潜客户","high"];if(p>=50&&prob!=="低")return ["中高意向","mid"];return ["待深挖","low"]}
+function renderHome(){let all=customers.length,high=customers.filter(c=>status(c)[0]==="高潜客户").length,todo=customers.filter(c=>c.nextAction).length,weak=customers.filter(c=>cetnPercent(c)<100).length;document.getElementById("countAll").innerText=all;document.getElementById("countHigh").innerText=high;document.getElementById("countTodo").innerText=todo;document.getElementById("countWeak").innerText=weak;let el=document.getElementById("homeCustomers");if(!all){el.innerHTML='<p>还没有客户，点击“＋ 新建客户”开始。</p>';return}el.innerHTML=customers.slice(0,5).map(cardHTML).join("")}
+function cardHTML(c){let s=status(c);return `<div class="customer" onclick="selectCustomer('${c.id}')"><div class="row"><div><h3>${esc(c.name||"未命名客户")}</h3><small>${esc(c.car||"未填写车型")}</small></div><span class="pill ${s[1]}">${s[0]}</span></div><div><span class="pill">CETN ${cetnPercent(c)}%</span>${c.rivals?`<span class="pill">竞品 ${esc(c.rivals)}</span>`:""}</div>${c.nextAction?`<p style="margin-top:7px">Action：${esc(c.nextAction)}</p>`:""}</div>`}
+function renderCustomers(){let el=document.getElementById("customerList");el.innerHTML=customers.length?customers.map(c=>cardHTML(c)+`<button class="btn" style="margin:-2px 0 10px 8px" onclick="event.stopPropagation();deleteCustomer('${c.id}')">删除</button>`).join(""):'<div class="card"><p>暂无客户。</p></div>'}
+function selectCustomer(x){currentId=x;localStorage.setItem("salesManagerCurrent",x);loadEdit();openPage("edit")}
+function deleteCustomer(x){if(confirm("确定删除这个客户？")){customers=customers.filter(c=>c.id!==x);if(currentId===x)currentId=customers[0]?.id||"";saveAll()}}
+function renderResult(){let c=current();if(!c)return;collect();let p=cetnPercent(c),s=status(c);document.getElementById("resName").innerText=c.name||"未命名客户";document.getElementById("resCar").innerText=(c.car||"未填写车型")+"｜竞品："+(c.rivals||"未填写");document.getElementById("resScore").innerText="CETN "+p+"%";document.getElementById("resStatus").innerText=s[0]+"｜成交概率："+(c.probability||"中");document.getElementById("resReason").innerText="最强购买理由："+(c.mainReason||"尚未明确");document.getElementById("resBlock").innerText="最大成交阻力："+(c.obstacle||"尚未明确");document.getElementById("resOpp").innerText="最大成交机会："+(c.opportunity||"尚未明确");saveAll()}
+function appendQ(q){let e=document.getElementById("compConclusion");e.value+=(e.value?"\n":"")+q+"\n";e.focus()}
+function saveCompetitor(){let c=current();if(!c){toast("请先建立客户");return}c.comp={name:v("compName"),adv:v("compAdv"),conclusion:v("compConclusion")};saveAll();toast("竞品分析已保存")}
+function loadCompetitor(){let c=current();let x=c?.comp||{};setv("compName",x.name);setv("compAdv",x.adv);setv("compConclusion",x.conclusion)}
+function generateScript(){let c=current();if(!c){setv("followScript","请先建立客户");return}collect();let name=c.name||"您好",reason=c.mainReason||"您比较认可的核心价值",block=c.obstacle||"目前比较纠结的地方",action=c.nextAction||"我们把您最在意的用车场景再验证一次";setv("followScript",`${name}，我结合咱们之前聊的情况，不想简单让您在几个品牌和车型里选一个。我更希望把真正影响您用车的几个点确认清楚。\n\n您之前比较认可的是「${reason}」，我们可以结合您实际的使用场景再验证一下。尤其是您提到的「${block}」，这个我不希望您买完以后才发现不合适。\n\n所以我建议下一步重点做：${action}。\n\n您体验、确认完以后，再根据实际感受决定哪台车更适合您，这样会更踏实。`)}
+function copyScript(){navigator.clipboard.writeText(v("followScript")).then(()=>toast("话术已复制"))}
+function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function toast(t){let e=document.getElementById("toast");e.innerText=t;e.style.display="block";setTimeout(()=>e.style.display="none",1500)}
+function openCapture(){let c=current();if(!c){toast("请先建立客户");return}collect();saveAll();let s=status(c),p=cetnPercent(c),time=c.followTime?new Date(c.followTime).toLocaleString("zh-CN",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"}):"未安排";document.getElementById("captureArea").innerHTML=`<div class="caphead"><div class="caplogo">SALES MANAGER DAILY REVIEW</div><div class="capname">${esc(c.name||"未命名客户")}｜${esc(c.car||"未填写车型")}</div><div style="font-size:11px;color:#777;margin-top:5px">CETN ${p}%｜${esc(s[0])}｜成交概率 ${esc(c.probability||"中")}</div></div><div class="capgrid"><div class="capbox"><b>C｜为什么买车</b><span>${esc(c.C||"未明确")}</span></div><div class="capbox"><b>E｜为什么换能源</b><span>${esc(c.E||"未明确")}</span></div><div class="capbox"><b>T｜为什么选车型</b><span>${esc(c.T||"未明确")}</span></div><div class="capbox"><b>N｜为什么现在</b><span>${esc(c.N||"未明确")}</span></div></div><div class="capfull"><div class="captitle">COMPETITORS</div><div class="captext">${esc(c.rivals||"未填写")}</div></div><div class="capfull"><div class="captitle">最大成交阻力</div><div class="captext">${esc(c.obstacle||"未明确")}</div></div><div class="capfull"><div class="captitle">最大成交机会</div><div class="captext">${esc(c.opportunity||"未明确")}</div></div><div class="capfull"><div class="captitle">主管判断</div><div class="captext">${esc(c.mainReason||"购买理由尚未明确")}</div></div><div class="capaction"><div class="captitle">NEXT ACTION｜${esc(c.followWay||"微信")}｜${esc(time)}</div><div class="captext">${esc(c.nextAction||"尚未设置下一步Action")}</div></div>`;document.getElementById("modal").classList.add("show")}
+function closeCapture(){document.getElementById("modal").classList.remove("show")}
+async function downloadCapture(){let node=document.getElementById("captureArea");if(window.html2canvas){let canvas=await html2canvas(node,{scale:2,useCORS:true,backgroundColor:"#fff"});let a=document.createElement("a");a.download="客户复盘总结.png";a.href=canvas.toDataURL("image/png");a.click();toast("总结图已生成")}else{toast("正在加载截图组件，请稍后再试")}}
+async function shareCapture(){let node=document.getElementById("captureArea");if(!window.html2canvas){toast("正在加载截图组件，请稍后再试");return}let canvas=await html2canvas(node,{scale:2,useCORS:true,backgroundColor:"#fff"});canvas.toBlob(async blob=>{let file=new File([blob],"客户复盘总结.png",{type:"image/png"});if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({title:"客户复盘总结",files:[file]})}else{downloadCapture()}}, "image/png")}
+loadData();
+function loadData(){renderHome();renderCustomers();if(current()){loadEdit();loadCompetitor()}}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</body>
+</html>
