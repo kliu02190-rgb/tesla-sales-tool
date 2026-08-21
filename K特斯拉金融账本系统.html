@@ -1,0 +1,2937 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#F2F2F7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="特斯拉金融">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" id="appleTouchIcon" href="">
+<title>特斯拉购车金融方案 · 面客版</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+<style>
+:root{
+  /* iOS 分组风格 · 系统灰底 + 白卡片 + 特斯拉深蓝 */
+  --ios-bg:#F2F2F7;
+  --ios-elevated:#FFFFFF;
+  --ios-fill:rgba(120,120,128,.12);
+  --ios-separator:rgba(60,60,67,.12);
+  --navy:#1A3348;
+  --navy-deep:#152A3D;
+  --sand:#8E8E93;
+  --cream:var(--ios-bg);
+  --surface:var(--ios-elevated);
+  --surface-muted:#EFEFF4;
+  --bg:var(--ios-bg);
+  --text:var(--navy);
+  --muted:rgba(60,60,67,.62);
+  --accent:var(--navy);
+  --accent-soft:rgba(26,51,72,.05);
+  --accent-mid:rgba(26,51,72,.10);
+  --green:var(--navy);
+  --green-soft:rgba(120,120,128,.08);
+  --landing-bg:var(--ios-elevated);
+  --landing-border:var(--ios-separator);
+  --deduction-red:#FF3B30;
+  --blue:var(--navy);
+  --blue-soft:rgba(26,51,72,.04);
+  --gold:#9A8060;
+  --border:var(--ios-separator);
+  --border-light:rgba(60,60,67,.08);
+  --radius:16px;
+  --shadow:0 1px 2px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.05);
+  --input-bg:var(--ios-fill);
+  --input-border:transparent;
+  --hero-bg:linear-gradient(145deg,#1A3348 0%,#1E3A52 52%,#254660 100%);
+  --hero-glow:rgba(255,255,255,.1);
+  --warn-bg:#FFF9EB;
+  --warn-border:rgba(255,149,0,.25);
+  --warn-text:#8B6914;
+  --danger-soft:#FFF2F0;
+  --danger-border:rgba(255,59,48,.22);
+  --danger-text:#C9342B;
+  --btn-primary-bg:var(--navy);
+  --btn-primary-fg:#FFFFFF;
+  --btn-primary-hover:var(--navy-deep);
+  --on-hero:#FFFFFF;
+  --on-hero-muted:rgba(235,235,245,.72);
+}
+[data-theme="dark"]{
+  color-scheme:dark;
+  --ios-bg:#000000;
+  --ios-elevated:#1C1C1E;
+  --ios-fill:rgba(120,120,128,.24);
+  --ios-separator:rgba(84,84,88,.65);
+  --cream:var(--ios-bg);
+  --surface:#1C1C1E;
+  --surface-muted:#2C2C2E;
+  --sand:#98989D;
+  --bg:var(--ios-bg);
+  --text:#F2F2F7;
+  --muted:rgba(235,235,245,.55);
+  --navy:#EBEBF5;
+  --navy-deep:#FFFFFF;
+  --accent-soft:rgba(255,255,255,.06);
+  --accent-mid:rgba(255,255,255,.12);
+  --green-soft:rgba(255,255,255,.06);
+  --landing-bg:#1C1C1E;
+  --landing-border:var(--ios-separator);
+  --deduction-red:#FF453A;
+  --blue-soft:rgba(255,255,255,.05);
+  --gold:#C4A882;
+  --border:var(--ios-separator);
+  --border-light:rgba(84,84,88,.35);
+  --shadow:0 2px 8px rgba(0,0,0,.35);
+  --input-bg:var(--ios-fill);
+  --input-border:transparent;
+  --warn-bg:#2C2418;
+  --warn-border:rgba(255,159,10,.35);
+  --warn-text:#FFD080;
+  --danger-soft:#2C1818;
+  --danger-border:rgba(255,69,58,.35);
+  --danger-text:#FF6961;
+  --btn-primary-bg:#0A84FF;
+  --btn-primary-fg:#FFFFFF;
+  --btn-primary-hover:#409CFF;
+}
+[data-theme="dark"] body{
+  background:var(--ios-bg);
+}
+[data-theme="dark"] .topbar{background:rgba(28,28,30,.82)}
+[data-theme="dark"] .client-hero,
+[data-theme="dark"] .shot-head{background:linear-gradient(145deg,#0D1520 0%,#152030 52%,#1A2840 100%);color:var(--on-hero)}
+[data-theme="dark"] .scheme-card.recommended::before{background:var(--btn-primary-bg);color:var(--btn-primary-fg)}
+[data-theme="dark"] .landing-total.first-pay-negative-box{background:rgba(30,60,45,.55)}
+[data-theme="dark"] .landing-total.first-pay-zero-box{background:rgba(30,50,70,.55)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{width:100%;height:100%;font-size:clamp(16px,15px + 0.35vw,18px);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro SC","SF Pro Text","PingFang SC","Helvetica Neue",sans-serif;
+  background:var(--ios-bg);
+  color:var(--text);
+  line-height:1.55;min-height:100%;min-height:100dvh;width:100%;
+  display:flex;flex-direction:column;overflow-x:hidden;
+  padding-bottom:env(safe-area-inset-bottom,0);
+  -webkit-font-smoothing:antialiased;
+}
+button,.action-btn,.model-chip,.scheme-card,.config-opt,.purchase-btn,.landing-toggle,.landing-reset,.down-reset,.benefit-detail-toggle{
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+}
+
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(242,242,247,.78);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:.5px solid var(--ios-separator);
+  padding:10px clamp(12px,2vw,32px);padding-top:max(10px,env(safe-area-inset-top,0));
+  display:flex;flex-direction:column;align-items:stretch;gap:8px;flex-shrink:0;width:100%;
+}
+.topbar-row{display:flex;align-items:center;gap:10px;width:100%}
+.topbar-row-main{justify-content:space-between;gap:12px;min-width:0}
+.topbar-actions{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;width:100%;
+}
+@media(min-width:900px){
+  .topbar{flex-direction:row;flex-wrap:nowrap;align-items:center;gap:12px}
+  .topbar-row-main{flex:1 1 auto;width:auto;min-width:0}
+  .topbar-actions{flex:0 1 auto;width:auto;flex-wrap:nowrap;justify-content:flex-end;margin-left:auto}
+  .customer-note-input{width:min(140px,16vw);flex:0 0 auto}
+}
+.topbar .brand{font-size:17px;font-weight:800;white-space:nowrap;color:var(--navy)}
+.topbar .brand span{color:var(--navy)}
+.topbar-spacer{flex:1}
+.action-btn{padding:9px 16px;border-radius:999px;border:none;background:var(--ios-fill);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;color:var(--navy);box-shadow:none}
+.action-btn:hover{background:var(--accent-mid)}
+.action-btn.primary{background:var(--btn-primary-bg);color:var(--btn-primary-fg)}
+.action-btn.primary:hover{background:var(--btn-primary-hover);color:var(--btn-primary-fg)}
+.topbar-compact{display:none;align-items:center;gap:8px;width:100%}
+.topbar-desktop{display:flex;align-items:center;gap:8px;flex-wrap:wrap;width:100%}
+.topbar-more{position:relative;flex:1;min-width:0}
+.topbar-more-btn{width:100%}
+.topbar-more-menu{
+  position:absolute;top:calc(100% + 6px);right:0;min-width:min(220px,88vw);
+  display:flex;flex-direction:column;gap:6px;padding:8px;
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  box-shadow:var(--shadow);z-index:200;
+}
+.topbar-more-menu[hidden]{display:none!important}
+.topbar-more-menu .action-btn{width:100%;justify-content:flex-start;text-align:left;padding:10px 14px;font-size:14px;min-height:42px;border-radius:10px}
+.action-btn.warn{border-color:var(--warn-border);color:var(--warn-text);background:var(--warn-bg)}
+.customer-note-input{
+  width:min(140px,22vw);padding:8px 12px;border-radius:10px;border:none;
+  background:var(--ios-fill);font-size:13px;font-weight:600;color:var(--navy);outline:none;
+}
+.customer-note-input:focus{background:var(--surface);box-shadow:0 0 0 2px var(--accent-mid)}
+.customer-note-input::placeholder{color:var(--muted);font-weight:500}
+
+.promo-banner{
+  display:none;background:var(--warn-bg);border:none;color:var(--warn-text);
+  padding:11px 16px;border-radius:12px;font-size:14px;font-weight:600;
+  margin-bottom:12px;text-align:center;line-height:1.45;box-shadow:var(--shadow);
+}
+.promo-banner.show{display:block}
+.promo-banner.active{background:linear-gradient(135deg,#FFF9EB 0%,#FFF3D6 100%);color:#8B6914}
+.promo-banner.active.urgent{background:linear-gradient(135deg,#FFF0EB 0%,#FFE4DC 100%);color:var(--danger-text)}
+.promo-banner.expired{background:var(--danger-soft);color:var(--danger-text)}
+.promo-banner b{font-weight:800}
+
+.install-hint{
+  display:none;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  background:var(--surface);border:none;border-radius:12px;padding:12px 14px;
+  margin-bottom:12px;box-shadow:var(--shadow);font-size:13px;color:var(--text);line-height:1.45;
+}
+.install-hint.show{display:flex}
+.install-hint span{flex:1;min-width:0}
+.install-hint-btn{
+  flex-shrink:0;padding:7px 14px;border:none;border-radius:999px;
+  background:var(--ios-fill);font-size:13px;font-weight:600;color:var(--navy);cursor:pointer;
+}
+.install-hint-btn:hover{background:var(--accent-mid)}
+
+.shell{
+  flex:1;width:100%;max-width:none;margin:0;
+  padding:clamp(12px,2vw,28px) clamp(16px,3vw,48px) clamp(24px,3vw,48px);
+  display:flex;flex-direction:column;
+}
+
+/* ===== 全屏 / 大屏展示 ===== */
+@media(min-width:1024px){
+  .model-strip-inner{grid-template-columns:repeat(4,1fr)}
+  .model-chip{min-width:0}
+  .client-hero{padding:clamp(24px,3vw,40px) clamp(24px,4vw,56px)}
+  .client-hero h1{font-size:clamp(28px,2.8vw,42px)}
+  .monthly-mega .num{font-size:clamp(60px,8vw,108px)}
+  .monthly-mega .unit{font-size:clamp(18px,1.8vw,26px)}
+  .hero-mini .item .v{font-size:clamp(22px,2vw,32px)}
+  .scheme-card .monthly{font-size:clamp(32px,2.8vw,46px)}
+  .landing-total .val{font-size:clamp(38px,3.5vw,56px)}
+  .flow-step .amt{font-size:clamp(24px,2.2vw,32px)}
+  .timeline,.landing-card,.benefits{padding:clamp(20px,2.5vw,28px)}
+}
+
+@media(min-width:1400px){
+  .present-row{
+    display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,24px);align-items:stretch;
+  }
+  .present-row .timeline,.present-row .landing-stack{margin-bottom:0;height:100%}
+}
+@media(max-width:719px){
+  .shell{padding:10px 12px 20px}
+  .topbar{padding:8px 12px;padding-top:max(8px,env(safe-area-inset-top,0));gap:8px}
+  .topbar .brand{font-size:15px;flex:1;min-width:0}
+  .customer-note-input{width:100%;max-width:none;flex:1 1 100%;font-size:14px}
+  .topbar-compact{display:flex}
+  .topbar-desktop{display:none}
+  .topbar-compact .action-btn.primary{flex:1.4;min-width:0;padding:10px 12px;font-size:13px;min-height:42px}
+  .flow-guide{
+    font-size:11px;padding:8px 10px;border-radius:12px;line-height:1.5;
+    overflow-x:auto;flex-wrap:nowrap;white-space:nowrap;-webkit-overflow-scrolling:touch;
+  }
+  .flow-guide .arr{margin:0 1px}
+  .model-picker{padding:14px}
+  .model-strip-inner{grid-template-columns:repeat(2,1fr);gap:8px}
+  .model-chip{padding:11px 12px}
+  .chip-trim{font-size:13px}
+  .chip-price{font-size:14px}
+  .config-panel{padding:14px}
+  .config-panel-hd h3{font-size:17px}
+  .config-options--paint{grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px}
+  .config-visual-stage{aspect-ratio:4/3}
+  .client-hero{padding:18px 16px 16px}
+  .monthly-mega{padding:18px 12px}
+  .monthly-mega .num{font-size:clamp(40px,14vw,52px)}
+  .hero-mini{grid-template-columns:1fr;gap:8px}
+  .hero-mini .item{display:flex;align-items:center;justify-content:space-between;text-align:left;padding:12px 14px}
+  .hero-mini .item .v{font-size:20px}
+  .hero-mini .item .l{margin-top:0;font-size:12px}
+  .section-hd{flex-direction:column;align-items:flex-start;gap:4px;font-size:17px;margin-bottom:10px}
+  .section-hd span{margin-left:0;font-size:12px}
+  .scheme-card{padding:16px 14px}
+  .scheme-card .monthly{font-size:28px}
+  .down-edit-bar,.purchase-bar{align-items:stretch;flex-direction:column;gap:10px;padding:12px 14px}
+  .down-edit-bar input,.purchase-toggle{width:100%}
+  .purchase-toggle{display:grid;grid-template-columns:1fr 1fr}
+  .purchase-btn{padding:11px 10px;font-size:13px}
+  .down-hint{min-width:0;font-size:11px}
+  .landing-edit-hd{padding:12px 14px;align-items:flex-start}
+  .landing-edit-body{padding:0 14px 14px}
+  .landing-grid{grid-template-columns:1fr}
+  .landing-field input{font-size:16px}
+  .flow{flex-direction:column;align-items:stretch;gap:6px}
+  .flow-arrow{align-self:center;transform:rotate(90deg);padding:2px 0;font-size:18px}
+  .flow-step{min-width:0;padding:14px 12px}
+  .flow-step .amt{font-size:22px}
+  .timeline,.landing-card,.benefits,.delivery-panel{padding:16px 14px}
+  .landing-row{font-size:15px}
+  .landing-total .val{font-size:32px}
+  .benefit-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .benefits-sidebar .benefit-grid{grid-template-columns:1fr}
+  .sidebar-stack{position:static;top:auto}
+}
+@media(max-width:380px){
+  .benefit-grid{grid-template-columns:1fr}
+}
+
+@media(min-width:768px) and (max-width:1399px){
+  .present-row{
+    display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch;
+  }
+  .present-row .timeline,.present-row .landing-stack{margin-bottom:0}
+}
+.present-row{display:flex;flex-direction:column;gap:16px;margin-bottom:16px;width:100%}
+
+body.is-fullscreen{background:var(--ios-bg)}
+body.is-fullscreen .shell{
+  padding:clamp(16px,2vh,32px) clamp(20px,4vw,64px) clamp(20px,2vh,32px);
+}
+body.is-fullscreen .purchase-bar,
+body.is-fullscreen .flow-guide,
+body.is-fullscreen .landing-edit,
+body.is-fullscreen .footer,
+body.is-fullscreen .disclaimer{display:none}
+body.is-fullscreen .monthly-mega .num{font-size:clamp(72px,11vw,132px)}
+body.is-fullscreen .client-hero{min-height:0}
+body.is-fullscreen .topbar{padding:8px clamp(12px,2vw,32px)}
+
+.flow-guide{
+  display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:14px;
+  padding:10px 14px;background:var(--surface);border:none;border-radius:14px;
+  font-size:13px;color:var(--muted);box-shadow:var(--shadow);
+}
+.flow-step-tag{width:26px;height:26px;font-size:12px}
+.section-hd{font-size:19px;font-weight:800;margin:8px 0 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.section-hd span{font-size:14px;font-weight:500;color:var(--muted);margin-left:auto}
+.section-hd .step-title{display:flex;align-items:center}
+.flow-guide b{color:var(--text);font-weight:700}
+.flow-guide .arr{color:var(--sand);margin:0 2px}
+.flow-step-tag{
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:50%;background:var(--navy);color:var(--cream);
+  font-weight:800;margin-right:8px;flex-shrink:0;
+}
+
+.model-picker{
+  background:var(--surface);border:none;border-radius:var(--radius);
+  padding:clamp(14px,2vw,18px);margin-bottom:16px;box-shadow:var(--shadow);
+}
+.model-picker-hd{
+  display:flex;align-items:center;gap:8px;margin-bottom:14px;
+}
+.model-picker-hd h2{font-size:19px;font-weight:800;margin:0;color:var(--navy)}
+.model-groups{display:flex;flex-direction:column;gap:14px}
+.model-group{}
+.model-group-label{
+  font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px;padding-left:2px;
+  letter-spacing:.04em;text-transform:uppercase;
+}
+.model-strip-inner{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+}
+@media(min-width:720px){
+  .model-strip-inner{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+.model-chip{
+  display:flex;flex-direction:column;align-items:flex-start;gap:0;
+  padding:12px 14px;border:none;border-radius:12px;background:var(--ios-fill);
+  cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s;
+  min-width:0;width:100%;text-align:left;color:var(--navy);
+  -webkit-tap-highlight-color:transparent;
+}
+.model-chip:active{transform:scale(.98)}
+.model-chip .chip-badge{
+  font-size:10px;font-weight:800;letter-spacing:.06em;
+  padding:2px 6px;border-radius:5px;margin-bottom:6px;
+  background:rgba(26,51,72,.08);color:var(--navy);
+}
+.model-chip .chip-trim{
+  font-size:14px;font-weight:700;line-height:1.3;color:var(--navy);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.model-chip .chip-price{
+  font-size:15px;font-weight:800;color:var(--navy);margin-top:8px;letter-spacing:-.02em;
+}
+.model-chip .chip-note{
+  font-size:10px;font-weight:600;color:var(--muted);margin-top:3px;
+}
+.model-chip:hover{background:var(--accent-mid)}
+.model-chip.active{
+  background:var(--navy);color:#fff;
+  box-shadow:0 6px 20px rgba(26,51,72,.28);
+}
+.model-chip.active .chip-badge{background:rgba(255,255,255,.18);color:#fff}
+.model-chip.active .chip-trim,.model-chip.active .chip-price{color:#fff}
+.model-chip.active .chip-note{color:rgba(255,255,255,.72)}
+[data-theme="dark"] .model-chip.active{box-shadow:0 6px 20px rgba(0,0,0,.45)}
+
+/* ===== 车辆配置明细 ===== */
+.config-panel{
+  background:var(--surface);border:none;border-radius:var(--radius);
+  padding:clamp(16px,2vw,22px);margin-bottom:16px;box-shadow:var(--shadow);
+}
+.config-panel-hd{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px;
+}
+.config-panel-hd h3{font-size:19px;font-weight:800;display:flex;align-items:center;gap:8px}
+.config-panel-hd .promo-deadline{font-size:13px;color:var(--muted);font-weight:500}
+.config-groups{display:flex;flex-direction:column;gap:14px}
+.config-group{}
+.config-label{
+  font-size:13px;font-weight:700;color:var(--muted);margin-bottom:8px;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.config-label .promo-tag{
+  font-size:11px;background:var(--warn-bg);color:var(--navy);padding:2px 8px;border-radius:999px;font-weight:600;
+}
+.config-options{display:flex;flex-direction:column;gap:6px}
+.config-opt{
+  padding:10px 12px;border:none;border-radius:12px;background:var(--ios-fill);
+  cursor:pointer;font-size:13px;font-weight:600;transition:.15s;text-align:left;width:100%;color:var(--navy);
+}
+.config-opt:hover{background:var(--accent-mid)}
+.config-opt.active{background:var(--surface);color:var(--navy);box-shadow:0 0 0 2px var(--navy)}
+.config-opt .opt-name{display:block;line-height:1.3}
+.config-opt .opt-price{font-size:11px;color:var(--muted);font-weight:500;margin-top:3px}
+.config-opt.active .opt-price{color:var(--navy)}
+.config-opt .opt-price .strike{text-decoration:line-through;margin-right:4px;opacity:.7}
+.config-opt .opt-price .promo{color:var(--navy);font-weight:700}
+.config-summary{
+  margin-top:16px;padding:14px 16px;background:var(--ios-fill);border:none;border-radius:12px;
+}
+.config-summary-title{font-size:14px;font-weight:700;margin-bottom:10px;color:var(--text)}
+.config-summary-rows{display:flex;flex-direction:column;gap:6px;font-size:14px}
+.config-summary-row{display:flex;justify-content:space-between;gap:12px;line-height:1.4}
+.config-summary-row .lbl{color:var(--muted)}
+.config-summary-row.discount .lbl,.config-summary-row.discount strong{color:var(--accent)}
+.config-summary-total{
+  display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;padding-top:10px;
+  border-top:2px dashed var(--border);font-weight:800;font-size:16px;
+}
+.config-summary-total .val{color:var(--navy);font-size:clamp(20px,2.5vw,26px)}
+.config-layout{
+  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(16px,2vw,24px);align-items:start;
+}
+@media(max-width:960px){.config-layout{grid-template-columns:1fr}}
+.config-visual{
+  background:var(--ios-fill);border:none;
+  border-radius:14px;padding:14px;position:sticky;top:72px;
+}
+@media(max-width:960px){.config-visual{position:relative;top:0}}
+.config-visual-stage{
+  aspect-ratio:16/10;background:var(--surface);border-radius:12px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;border:1px solid var(--border);
+}
+.config-hero-img{width:100%;height:100%;object-fit:contain;display:block;transition:opacity .25s}
+.config-hero-img.loading{opacity:.35}
+.config-visual-tags{
+  display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;font-size:12px;color:var(--muted);
+}
+.config-tag{
+  padding:4px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--border);
+  font-weight:600;color:var(--navy);
+}
+.config-main{display:flex;flex-direction:column;gap:0}
+.config-options--paint{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:8px}
+.config-options--pick{display:flex;flex-direction:column;gap:8px}
+.config-opt.has-thumb{
+  display:flex;align-items:center;gap:10px;padding:8px 10px;
+}
+.config-opt.has-thumb .opt-thumb-wrap{
+  width:52px;height:52px;border-radius:10px;overflow:hidden;flex-shrink:0;
+  background:var(--cream);border:1px solid var(--border);position:relative;
+}
+.config-opt.has-thumb .opt-thumb{width:100%;height:100%;object-fit:cover;display:block}
+.config-opt.has-thumb .opt-text{flex:1;min-width:0}
+.config-opt.has-thumb .opt-name{font-size:12px}
+.config-opt.has-thumb .opt-price{font-size:10px}
+.config-opt.paint-chip{flex-direction:column;align-items:stretch;padding:8px;text-align:center}
+.config-opt.paint-chip .opt-thumb-wrap{width:100%;height:44px;border-radius:8px}
+.config-opt.paint-chip .opt-text{margin-top:6px}
+.config-opt.paint-chip .opt-name{font-size:11px;line-height:1.25}
+.config-opt.paint-chip .opt-price{font-size:10px;margin-top:2px}
+.config-opt.has-thumb.wheel-opt .opt-thumb-wrap{background:var(--cream)}
+.config-opt.has-thumb.wheel-opt .opt-thumb{object-fit:contain;padding:4px}
+
+/* 截图 · 配置头图 */
+.shot-config-hero{
+  position:relative;background:var(--cream);border-bottom:1px solid var(--border);
+}
+.shot-config-strip{
+  padding:12px 20px 11px;background:var(--navy);color:var(--cream);
+  border-bottom:1px solid rgba(216,208,193,.22);
+}
+.shot-config-strip .strip-badge{
+  font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--sand);margin-bottom:8px;
+}
+.shot-config-strip .strip-labels{display:flex;flex-wrap:wrap;gap:8px 10px}
+.shot-config-strip .strip-item{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:13px;font-weight:700;line-height:1.35;
+  padding:5px 10px;border-radius:999px;background:rgba(248,246,242,.12);border:1px solid rgba(216,208,193,.28);
+}
+.shot-config-strip .strip-item em{
+  font-style:normal;font-size:11px;font-weight:600;color:var(--sand);opacity:.95;
+}
+.shot-config-img-wrap{
+  aspect-ratio:16/10;
+  background:linear-gradient(180deg,#FAF8F5 0%,#EDE8E0 100%);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.shot-config-img{width:100%;height:100%;object-fit:contain;display:block}
+.shot-config-meta{padding:16px 20px 18px;background:linear-gradient(180deg,var(--surface),var(--cream))}
+.shot-config-meta h3{font-size:20px;font-weight:800;margin-bottom:8px;line-height:1.3;color:var(--navy)}
+.shot-config-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.shot-config-pill{
+  font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px;
+  background:var(--surface);border:1px solid var(--border);color:var(--navy);
+}
+.shot-config-rows{font-size:13px;line-height:1.55}
+.shot-config-rows .shot-row{padding:5px 0}
+.shot-config-total{
+  margin-top:10px;padding-top:10px;border-top:2px dashed var(--border);
+  display:flex;justify-content:space-between;align-items:baseline;font-weight:800;font-size:16px;color:var(--navy);
+}
+.shot-config-total .val{color:var(--navy);font-size:24px}
+
+/* ===== 落地费用调整（主界面） ===== */
+.landing-edit{
+  background:var(--surface);border:none;border-radius:var(--radius);
+  padding:0;margin-bottom:16px;box-shadow:var(--shadow);overflow:hidden;
+}
+.landing-edit-hd{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:14px 18px;cursor:pointer;user-select:none;
+}
+.landing-edit-hd h3{font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px;flex:1}
+.landing-toggle{
+  padding:6px 14px;border-radius:999px;border:1px solid var(--border);background:#fff;
+  font-size:12px;font-weight:600;cursor:pointer;color:var(--muted);flex-shrink:0;
+}
+.landing-toggle:hover{border-color:var(--navy);color:var(--navy)}
+.landing-edit-body{padding:0 18px 16px}
+.landing-edit.collapsed .landing-edit-body{display:none}
+.landing-edit-summary{
+  display:none;padding:0 18px 14px;font-size:14px;color:var(--muted);line-height:1.5;
+}
+.landing-edit.collapsed .landing-edit-summary{display:block}
+.landing-edit .sub{font-size:13px;color:var(--muted);margin-bottom:12px}
+.landing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.landing-field-wide{grid-column:1/-1}
+.landing-field label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px;font-weight:600}
+.landing-field input{
+  width:100%;padding:11px 12px;border:none;border-radius:10px;
+  font-size:17px;font-weight:700;background:var(--ios-fill);color:var(--text);
+}
+.landing-field input:focus{outline:none;background:var(--surface);box-shadow:0 0 0 2px var(--accent-mid)}
+.landing-field input.customized{box-shadow:0 0 0 2px var(--gold)}
+.landing-field input[readonly]{background:var(--ios-fill);color:var(--text);cursor:default;opacity:.85}
+.landing-field .hint{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.35}
+.subsidy-risk{
+  margin-top:6px;padding:8px 10px;background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:8px;
+  font-size:11px;color:var(--warn-text);line-height:1.45;font-weight:500;
+}
+.subsidy-risk-note{
+  margin-top:10px;padding:10px 12px;background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:8px;
+  font-size:13px;color:var(--warn-text);line-height:1.5;
+}
+.landing-warn{
+  display:none;margin-bottom:12px;padding:10px 12px;background:var(--danger-soft);border:1px solid var(--danger-border);
+  border-radius:8px;font-size:13px;color:var(--danger-text);line-height:1.45;
+}
+.landing-warn.show{display:block}
+.landing-edit-actions{margin-top:12px;display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.landing-reset{
+  padding:6px 14px;border-radius:999px;border:1px solid var(--border);background:#fff;
+  font-size:12px;font-weight:600;cursor:pointer;color:var(--muted);
+}
+.landing-reset:hover{border-color:var(--navy);color:var(--navy)}
+
+.purchase-bar{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;
+  padding:12px 16px;background:var(--surface);border:none;
+  border-radius:var(--radius);box-shadow:var(--shadow);
+}
+.purchase-label{font-size:14px;font-weight:700;color:var(--text)}
+.purchase-toggle{display:flex;border:none;border-radius:10px;overflow:hidden;background:var(--ios-fill);padding:3px}
+.purchase-btn{padding:8px 18px;border:none;background:transparent;font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);white-space:nowrap;border-radius:8px}
+.purchase-btn.active{background:var(--surface);color:var(--navy);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.down-edit-bar{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;
+  padding:12px 16px;background:var(--surface);border:none;
+  border-radius:var(--radius);box-shadow:var(--shadow);
+}
+.down-label{font-size:14px;font-weight:700;color:var(--text);white-space:nowrap}
+.down-edit-bar input{
+  width:140px;padding:10px 12px;border:2px solid var(--input-border);border-radius:10px;
+  font-size:17px;font-weight:700;background:var(--input-bg);color:var(--text);
+}
+.down-edit-bar input:focus{outline:none;border-color:var(--navy);background:var(--surface)}
+.down-edit-bar input.customized{border-color:var(--gold)}
+.down-reset{
+  padding:6px 14px;border-radius:999px;border:1px solid var(--border);background:var(--surface);
+  font-size:12px;font-weight:600;cursor:pointer;color:var(--muted);white-space:nowrap;
+}
+.down-reset:hover{border-color:var(--navy);color:var(--navy)}
+.down-hint{font-size:12px;color:var(--muted);line-height:1.4;flex:1;min-width:180px}
+.landing-stack{display:flex;flex-direction:column;gap:16px;min-width:0}
+.company-tax-card{
+  background:var(--blue-soft);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px;box-shadow:var(--shadow);display:none;
+}
+.company-tax-card.show{display:block}
+.company-tax-card h2{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.company-tax-card .landing-row{border-bottom-color:var(--border)}
+.company-tax-total{margin-top:12px;padding:16px;background:var(--surface);border-radius:10px;text-align:center;border:2px solid var(--navy)}
+.company-tax-total .lbl{font-size:14px;color:var(--muted)}
+.company-tax-total .val{font-size:34px;font-weight:900;color:var(--navy);line-height:1.2;margin-top:4px}
+.company-tax-total .sub{font-size:13px;color:var(--muted);margin-top:4px}
+.company-tax-note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.55}
+.landing-field.subsidy-disabled{opacity:.65}
+.landing-field.subsidy-disabled input:disabled{background:var(--green-soft);border-color:var(--border);color:var(--muted);cursor:not-allowed}
+.subsidy-company-note{
+  margin-top:6px;padding:8px 10px;background:var(--blue-soft);border:1px solid var(--border);border-radius:8px;
+  font-size:11px;color:var(--navy);line-height:1.45;font-weight:500;
+}
+
+.client-hero{
+  background:var(--hero-bg);
+  color:var(--on-hero);border-radius:var(--radius);padding:24px 24px 20px;margin-bottom:16px;
+  box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.client-hero::after{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;background:radial-gradient(circle,var(--hero-glow),transparent 70%);pointer-events:none}
+.client-hero .eyebrow{font-size:14px;color:var(--on-hero-muted);font-weight:600;margin-bottom:6px}
+.client-hero h1{font-size:clamp(24px,4.5vw,34px);font-weight:800;line-height:1.25;margin-bottom:4px}
+.client-hero .msrp{font-size:16px;opacity:.85;margin-bottom:18px}
+.monthly-mega{text-align:center;padding:24px 18px;background:rgba(248,246,242,.08);border-radius:12px;border:1px solid rgba(216,208,193,.25);margin-bottom:16px}
+.monthly-mega .label{font-size:15px;opacity:.85;margin-bottom:4px}
+.monthly-mega .num{font-size:clamp(48px,11vw,64px);font-weight:900;color:var(--on-hero);line-height:1;letter-spacing:-1px}
+.monthly-mega .unit{font-size:18px;font-weight:600;opacity:.9;margin-top:4px}
+.monthly-mega .sub{font-size:14px;opacity:.75;margin-top:8px;color:var(--on-hero-muted)}
+.hero-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.hero-mini .item{text-align:center;padding:14px 10px;background:rgba(255,255,255,.08);border-radius:10px;border:1px solid rgba(255,255,255,.14)}
+.hero-mini .item .v{font-size:22px;font-weight:800}
+.hero-mini .item .l{font-size:13px;opacity:.75;margin-top:3px;color:var(--on-hero-muted)}
+
+.timeline{background:var(--surface);border:none;border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.timeline h2{font-size:18px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
+.flow-step{flex:1;min-width:100px;text-align:center;padding:16px 12px;border-radius:12px;background:var(--ios-fill);border:none}
+.flow-step.highlight{background:var(--accent-soft)}
+.flow-step .icon{font-size:26px;margin-bottom:6px}
+.flow-step .amt{font-size:24px;font-weight:800;color:var(--navy)}
+.flow-step .amt.green{color:var(--navy)}
+.flow-step .amt.gold{color:var(--gold)}
+.flow-step .cap{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.4}
+.flow-arrow{align-self:center;padding:0 8px;color:var(--sand);font-size:20px;flex:0 0 auto}
+.flow-note{margin-top:12px;font-size:14px;color:var(--muted);padding:12px 14px;background:var(--green-soft);border-radius:8px;line-height:1.5;border:1px solid var(--border-light,rgba(216,208,193,.55))}
+.flow-supplement{
+  margin-top:12px;padding:12px 14px;background:var(--blue-soft);border:1px dashed var(--border);border-radius:10px;
+  display:grid;gap:8px;
+}
+.flow-supplement-item{display:flex;align-items:flex-start;gap:10px;font-size:14px;line-height:1.45}
+.flow-supplement-item .ico{font-size:20px;flex-shrink:0;line-height:1.2}
+.flow-supplement-item b{color:var(--text)}
+.flow-supplement-item b.deduction-amt{color:var(--deduction-red)}
+.flow-supplement-item span{color:var(--muted)}
+
+.section-schemes{margin-bottom:4px}
+.scheme-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:16px}
+@media(min-width:720px){.scheme-grid{grid-template-columns:repeat(3,1fr)}}
+.scheme-grid.single{max-width:420px}
+@media(min-width:720px){.scheme-grid.single{grid-template-columns:1fr;max-width:420px}}
+.scheme-card{background:var(--surface);border:none;border-radius:var(--radius);padding:20px 18px;cursor:pointer;transition:.15s;position:relative;box-shadow:var(--shadow)}
+.scheme-card:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.scheme-card.selected{box-shadow:0 0 0 2px var(--navy)}
+.scheme-card.recommended::before{content:'推荐';position:absolute;top:-10px;right:12px;background:var(--navy);color:var(--cream);font-size:11px;font-weight:700;padding:4px 11px;border-radius:999px}
+.scheme-card .name{font-size:17px;font-weight:800;margin-bottom:4px;color:var(--navy)}
+.scheme-card .desc{font-size:13px;color:var(--muted);margin-bottom:14px;min-height:32px;line-height:1.45}
+.scheme-card .monthly{font-size:32px;font-weight:900;color:var(--navy);line-height:1}
+.scheme-card .monthly small{font-size:15px;font-weight:600;color:var(--muted)}
+.scheme-card .meta{margin-top:12px;font-size:14px;display:flex;flex-direction:column;gap:6px}
+.scheme-card .meta div{display:flex;justify-content:space-between;gap:8px}
+.scheme-card .meta b{font-weight:700}
+
+.landing-card{background:var(--surface);border:none;border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.landing-card h2{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.landing-rows{display:grid;gap:8px}
+.landing-row{display:flex;justify-content:space-between;font-size:16px;padding:8px 0;border-bottom:1px dashed var(--landing-border)}
+.landing-row.deduction strong{color:var(--deduction-red);font-weight:800}
+.landing-total{margin-top:12px;padding:16px;background:var(--surface);border-radius:10px;text-align:center;border:2px solid var(--landing-border);box-shadow:0 2px 12px rgba(26,51,72,.04)}
+.landing-total .lbl{font-size:14px;color:var(--muted)}
+.landing-total .val{font-size:38px;font-weight:900;color:var(--navy);line-height:1.2;margin-top:4px}
+.landing-total .hint{font-size:13px;color:var(--muted);margin-top:4px}
+.landing-total .hint.warn{color:var(--danger-text);font-weight:600}
+.landing-total.first-pay-negative-box,.shot-total.first-pay-negative-box{border-color:#9ccc9c;background:rgba(232,245,233,.88)}
+.landing-total.first-pay-zero-box,.shot-total.first-pay-zero-box{border-color:#8ecae6;background:rgba(232,244,252,.88)}
+.landing-total .val.first-pay-negative,.shot-total .tv.first-pay-negative{color:#2d6a4f}
+.landing-total .val.first-pay-zero,.shot-total .tv.first-pay-zero{color:#2a6a8a}
+.hint.first-pay-surplus{color:#2d6a4f;font-weight:600;margin-top:8px;line-height:1.45}
+.hint.first-pay-zero{color:#2a6a8a;font-weight:600;margin-top:8px;line-height:1.45}
+.first-pay-tag{display:inline-block;margin-top:6px;padding:3px 10px;border-radius:999px;background:rgba(45,106,79,.12);color:#2d6a4f;font-size:12px;font-weight:700}
+.first-pay-zero-tag{display:inline-block;margin-top:6px;padding:3px 10px;border-radius:999px;background:rgba(42,106,138,.12);color:#2a6a8a;font-size:12px;font-weight:700}
+
+.benefits{background:var(--surface);border:none;border-radius:var(--radius);padding:20px 22px;margin-bottom:16px;box-shadow:var(--shadow)}
+.benefits-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
+.benefits-hd h2{font-size:18px;font-weight:800;margin:0;color:var(--navy);display:flex;align-items:center;gap:6px;line-height:1.35;flex:1;min-width:0}
+.benefit-toggle-all{
+  flex-shrink:0;padding:0;border:none;background:none;font-size:11px;font-weight:600;
+  color:var(--navy);cursor:pointer;text-decoration:underline;text-underline-offset:2px;
+  white-space:nowrap;margin-top:2px;touch-action:manipulation;
+}
+.benefit-toggle-all:hover{opacity:.75}
+.benefit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.benefit-item{padding:14px;background:var(--cream);border-radius:10px;text-align:center;font-size:14px;border:1px solid var(--border)}
+.benefit-item .ico{font-size:24px;margin-bottom:4px}
+.benefit-item b{display:block;font-size:15px;margin-bottom:2px}
+
+/* 主内容 + 右侧权益竖列 */
+.page-layout{
+  display:grid;grid-template-columns:1fr;gap:16px;align-items:start;width:100%;
+}
+@media(min-width:900px){
+  .page-layout{grid-template-columns:1fr minmax(220px,280px);gap:clamp(14px,2vw,20px)}
+}
+.page-main{min-width:0}
+.benefits-sidebar{
+  margin-bottom:0;height:fit-content;
+}
+.benefits-sidebar .benefit-grid{
+  display:flex;flex-direction:column;gap:8px;
+}
+.benefits-sidebar .benefit-item{
+  display:flex;flex-direction:column;align-items:stretch;gap:0;
+  padding:12px 14px;border:1px solid var(--border);background:var(--surface);
+  position:relative;z-index:1;
+}
+.benefits-sidebar .benefit-item-main{
+  display:flex;align-items:flex-start;gap:10px;width:100%;flex-wrap:wrap;
+}
+.benefits-sidebar .benefit-item .ico{font-size:22px;margin-bottom:0;flex-shrink:0;line-height:1.2}
+.benefits-sidebar .benefit-item .bi-text{flex:1;min-width:0;line-height:1.45}
+.benefits-sidebar .benefit-item b{display:block;font-size:14px;margin-bottom:2px;color:var(--text)}
+.benefits-sidebar .benefit-item span.sub{display:block;font-size:12px;color:var(--muted);font-weight:500}
+.benefit-detail-toggle{
+  flex-shrink:0;align-self:stretch;width:100%;margin-top:8px;
+  padding:6px 10px;border-radius:8px;border:1px solid var(--border);
+  background:var(--cream);font-size:12px;font-weight:600;color:var(--navy);cursor:pointer;
+  position:relative;z-index:2;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+}
+.benefit-detail-toggle:hover{border-color:var(--navy);background:var(--accent-soft)}
+.benefit-detail{
+  display:none;width:100%;margin-top:8px;padding:10px 12px;
+  font-size:11px;line-height:1.58;color:var(--muted);
+  background:var(--cream);border-radius:8px;border:1px solid var(--border-light);
+}
+.benefit-detail.open{display:block}
+.benefit-detail-src{
+  display:block;margin-top:6px;font-size:10px;color:rgba(22,42,70,.48);line-height:1.45;
+}
+
+/* 右侧 · 交付周期（权益上方独立板块） */
+.sidebar-stack{display:flex;flex-direction:column;gap:12px;min-width:0}
+.delivery-panel{
+  background:var(--surface);border:none;border-radius:var(--radius);
+  padding:16px 18px;box-shadow:var(--shadow);
+}
+.delivery-panel h2{font-size:16px;font-weight:800;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:6px;line-height:1.35}
+.delivery-items{display:flex;flex-direction:column;gap:8px}
+.delivery-item{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:10px 12px;background:var(--ios-fill);border:none;border-radius:12px;font-size:14px;
+}
+.delivery-item.active{background:var(--accent-soft);box-shadow:0 0 0 2px var(--navy)}
+.delivery-item .model{font-weight:700;color:var(--navy)}
+.delivery-item .weeks{font-weight:800;color:var(--navy);font-size:15px;white-space:nowrap}
+.delivery-note{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.45}
+
+.shot-delivery{background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+.shot-delivery h3{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:10px}
+.shot-delivery-row{display:flex;justify-content:space-between;font-size:15px;padding:8px 0;border-bottom:1px dashed var(--border)}
+.shot-delivery-row:last-of-type{border-bottom:none}
+.shot-delivery-row.on{font-weight:800;color:var(--navy)}
+.shot-delivery-note{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.45}
+
+@media(min-width:768px) and (max-width:899px){
+  .benefits-sidebar .benefit-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);flex-direction:unset;
+  }
+}
+@media(min-width:900px){
+  .sidebar-stack{
+    position:sticky;top:58px;align-self:start;
+  }
+  .benefits-sidebar{
+    position:static;top:auto;
+    border-color:var(--border);background:linear-gradient(180deg,var(--surface-muted) 0%,var(--surface) 100%);
+  }
+  .benefits-sidebar h2,.benefits-sidebar .benefits-hd h2{font-size:16px;flex-wrap:wrap}
+  .benefits-sidebar .flow-step-tag{width:24px;height:24px;font-size:11px}
+}
+
+#screenshotArea{background:var(--bg);border-radius:var(--radius);padding:4px 0 8px}
+.shot-footer{text-align:center;font-size:13px;color:var(--muted);padding:12px 0 4px}
+
+/* ===== 专用竖版截图卡片（发微信） ===== */
+#screenshotCard{
+  position:fixed;left:0;top:0;width:720px;max-width:720px;
+  max-height:0;overflow:hidden;opacity:0;visibility:hidden;
+  pointer-events:none;z-index:-9999;contain:strict;
+  background:#FAF9F7;padding:0;font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+}
+.shot-sandbox-inner{background:#FAF9F7!important;padding:16px!important}
+.shot-card{background:#FFFFFF;border-radius:18px;overflow:hidden;box-shadow:0 10px 40px rgba(26,51,72,.08);border:1px solid #E8E4DE}
+.shot-top-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  padding:10px 18px;background:#1A3348;color:#FAF9F7;font-size:12px;font-weight:600;
+}
+.shot-top-bar .shot-top-brand{font-size:13px;font-weight:800;letter-spacing:.02em}
+.shot-top-bar .shot-top-meta{opacity:.88;font-weight:500;text-align:right;line-height:1.35}
+.shot-head{background:linear-gradient(145deg,#1A3348 0%,#1E3A52 52%,#254660 100%);color:#FAF9F7;padding:20px 22px 18px}
+.shot-head .tag{font-size:13px;color:#E4DDD4;font-weight:600;margin-bottom:6px;line-height:1.45}
+.shot-head .tag .shot-scheme-pill{
+  display:inline-block;margin-right:6px;padding:2px 8px;border-radius:999px;
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);font-weight:700;
+}
+.shot-head h2{font-size:24px;font-weight:800;line-height:1.25;margin-bottom:4px}
+.shot-head .price{font-size:14px;opacity:.88;margin-bottom:14px;line-height:1.45}
+.shot-monthly{text-align:center;background:rgba(255,255,255,.1);border-radius:14px;padding:16px 14px;border:1px solid rgba(255,255,255,.16)}
+.shot-monthly .lbl{font-size:14px;opacity:.9}
+.shot-monthly .num{font-size:58px;font-weight:900;color:#FFFFFF;line-height:1;margin:4px 0;letter-spacing:-1px}
+.shot-monthly .unit{font-size:16px;font-weight:600;opacity:.92}
+.shot-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.shot-mini div{text-align:center;background:rgba(255,255,255,.08);border-radius:10px;padding:10px 6px;font-size:12px;border:1px solid rgba(255,255,255,.12)}
+.shot-mini b{display:block;font-size:17px;font-weight:800;margin-bottom:2px;color:#FFFFFF}
+.shot-body{padding:16px 18px 18px;background:#FAF9F7}
+.shot-sec-title{font-size:16px;font-weight:800;margin:0 0 10px;display:flex;align-items:center;gap:8px;color:#1A3348}
+.shot-sec-title .dot{width:4px;height:16px;background:#1A3348;border-radius:2px;flex-shrink:0}
+.shot-schemes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.shot-schemes.single{grid-template-columns:1fr;max-width:240px}
+.shot-scheme{border:2px solid #E8E4DE;border-radius:12px;padding:12px 8px;text-align:center;background:#FFFFFF;position:relative}
+.shot-scheme.on{border-color:#1A3348;background:#F3F6FA;box-shadow:0 0 0 1px rgba(26,51,72,.08)}
+.shot-scheme.on::after{
+  content:'当前';position:absolute;top:-9px;right:8px;font-size:10px;font-weight:800;
+  background:#1A3348;color:#FAF9F7;padding:2px 8px;border-radius:999px;line-height:1.3;
+}
+.shot-scheme .sn{font-size:13px;font-weight:800;margin-bottom:4px;color:#1A3348}
+.shot-scheme .sm{font-size:24px;font-weight:900;color:#1A3348;line-height:1.1}
+.shot-scheme .sm small{font-size:11px;color:rgba(26,51,72,.58);font-weight:600}
+.shot-scheme .ss{font-size:10px;color:rgba(26,51,72,.58);margin-top:5px;line-height:1.4}
+.shot-block{background:#EEF2F7;border:1px solid #E8E4DE;border-radius:12px;padding:14px;margin-bottom:12px}
+.shot-flow{display:flex;align-items:center;justify-content:space-between;gap:5px;margin-bottom:0}
+.shot-flow-step{flex:1;text-align:center;padding:10px 6px;background:#FFFFFF;border-radius:10px;border:1px solid #E8E4DE}
+.shot-flow-step .fa{font-size:20px;font-weight:800;color:#1A3348;margin-top:3px;line-height:1.2}
+.shot-flow-step .fc{font-size:11px;color:rgba(26,51,72,.58);line-height:1.35}
+.shot-flow-arr{color:#C8C0B6;font-size:14px;flex-shrink:0;font-weight:700}
+.shot-flow-note{margin-top:8px;font-size:11px;color:rgba(26,51,72,.62);line-height:1.45}
+.shot-flow-warn{margin-top:8px;font-size:10px;color:#6B4E3D;line-height:1.45;background:#FBF6EE;padding:8px 10px;border-radius:8px;border:1px solid #E8DCC8}
+.shot-landing{background:#EEF6F1;border:1px solid #C8DECF;border-radius:12px;padding:14px;margin-bottom:12px}
+.shot-landing h3{font-size:16px;font-weight:800;color:#1A3348;margin-bottom:8px}
+.shot-row{display:flex;justify-content:space-between;gap:12px;font-size:14px;padding:6px 0;border-bottom:1px dashed #C8DECF;line-height:1.4}
+.shot-row span{color:rgba(26,51,72,.72)}
+.shot-row strong{color:#1A3348;font-weight:700;white-space:nowrap}
+.shot-row.deduction strong{color:#B54A4A;font-weight:800}
+.shot-row.sum{border-top:2px solid #C8DECF;border-bottom:none;margin-top:4px;padding-top:8px;font-weight:800}
+.shot-total{text-align:center;margin-top:10px;padding:12px;background:#FFFFFF;border-radius:10px;border:2px solid #C8DECF}
+.shot-total .tl{font-size:13px;color:rgba(26,51,72,.58)}
+.shot-total .tv{font-size:36px;font-weight:900;color:#1A3348;line-height:1.15;margin-top:3px}
+.shot-note{margin-top:8px;font-size:10px;color:#2d6a4f;font-weight:600;line-height:1.45}
+.shot-benefits{background:#FFFFFF;border:1px solid #E8E4DE;border-radius:12px;padding:14px;margin-bottom:12px}
+.shot-benefits h3{font-size:16px;font-weight:800;color:#1A3348;margin-bottom:10px}
+.shot-ben-list{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.shot-ben-item{display:flex;align-items:flex-start;gap:10px;padding:10px 11px;background:#FAF9F7;border-radius:10px;border:1px solid #E8E4DE;min-height:0}
+.shot-ben-item .ico{font-size:20px;flex-shrink:0;width:24px;text-align:center;line-height:1.2}
+.shot-ben-item .tx{flex:1;min-width:0}
+.shot-ben-item .tx b{display:block;font-size:13px;font-weight:800;color:#1A3348;margin-bottom:2px;line-height:1.3}
+.shot-ben-item .tx span{font-size:11px;color:rgba(26,51,72,.58);line-height:1.35;display:block}
+.shot-foot{
+  text-align:center;font-size:11px;color:rgba(26,51,72,.52);padding:10px 0 2px;line-height:1.5;
+  border-top:1px dashed #E8E4DE;margin-top:4px;
+}
+.shot-expired{
+  margin-bottom:10px;font-size:11px;line-height:1.45;color:#6B4E3D;
+  background:#FBF6EE;padding:9px 11px;border-radius:8px;border:1px solid #E8DCC8;
+}
+
+.script-box{background:var(--green-soft);border-left:4px solid var(--green);padding:14px 16px;border-radius:0 10px 10px 0;font-size:13px;line-height:1.65;margin-bottom:16px}
+.script-box .lbl{font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px}
+
+.footer{text-align:center;font-size:11px;color:var(--muted);padding:16px 0 8px}
+.disclaimer{font-size:11px;color:var(--muted);text-align:center;padding:8px 16px 0;line-height:1.5}
+
+#printSheet{display:none}
+@media print{
+  body{background:#fff}
+  .topbar,.model-picker,.flow-guide,.landing-edit,.action-btn,.footer,.disclaimer,.benefits{display:none!important}
+  .shell{max-width:none;padding:0}
+  #printSheet{display:block}
+  .client-hero,.timeline,.scheme-grid,.landing-card{box-shadow:none;break-inside:avoid}
+  .scheme-card:not(.selected){opacity:.55}
+}
+@page{size:A4 portrait;margin:10mm}
+
+.print-page{padding:0;font-size:9pt;color:#222}
+.print-hdr{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2.5px solid var(--navy);padding-bottom:6px;margin-bottom:10px}
+.print-hdr h1{font-size:13pt;line-height:1.25;color:var(--navy)}
+.print-hdr .meta{font-size:7pt;color:var(--muted);text-align:right}
+.print-banner{display:flex;align-items:center;gap:12px;background:var(--navy);color:var(--cream);border:1.5px solid var(--sand);border-radius:6px;padding:10px 12px;margin-bottom:10px}
+.print-banner .big{font-size:22pt;font-weight:900;color:var(--cream);line-height:1}
+.print-banner .mid{flex:1;font-size:8pt;line-height:1.45}
+.print-cols{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.print-box{border:1px solid var(--border);border-radius:4px;padding:8px;font-size:8pt;background:var(--cream)}
+.print-box h3{font-size:8.5pt;border-left:3px solid var(--navy);padding-left:6px;margin-bottom:6px;color:var(--navy)}
+.print-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed var(--border);font-size:8pt}
+.print-ben-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px}
+.print-ben{font-size:7pt;padding:4px 6px;background:var(--surface);border:1px solid var(--border);border-radius:3px}
+.print-ben b{display:block;font-size:7.5pt}
+.print-warn{font-size:7pt;color:var(--danger-text);margin-top:4px}
+.print-foot{font-size:6.5pt;color:var(--muted);margin-top:8px;line-height:1.4}
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-row topbar-row-main">
+    <div class="brand">⚡ <span>特斯拉</span> 购车金融方案</div>
+    <input type="text" id="customerNote" class="customer-note-input" placeholder="客户备注" maxlength="24" title="截图/文字/打印会带上此备注">
+  </div>
+  <div class="topbar-row topbar-actions">
+    <div class="topbar-compact">
+      <button class="action-btn primary" onclick="copyScreenshot()" id="btnScreenshot">📸 复制截图</button>
+      <div class="topbar-more" id="topbarMore">
+        <button type="button" class="action-btn topbar-more-btn" id="btnTopbarMore" onclick="toggleTopbarMore(event)" aria-expanded="false" aria-controls="topbarMoreMenu">⋯ 更多</button>
+        <div class="topbar-more-menu" id="topbarMoreMenu" hidden>
+          <button type="button" class="action-btn warn" onclick="closeTopbarMore();resetNewCustomer()">👤 新客户</button>
+          <button type="button" class="action-btn" data-fullscreen-btn onclick="closeTopbarMore();toggleFullscreen()">⛶ 全屏</button>
+          <button type="button" class="action-btn" data-copy-text-btn onclick="closeTopbarMore();copyWechat()">📋 复制文字</button>
+          <button type="button" class="action-btn" onclick="closeTopbarMore();window.print()">🖨️ 打印</button>
+          <button type="button" class="action-btn" data-theme-toggle onclick="closeTopbarMore();toggleTheme()">🌙 深色模式</button>
+        </div>
+      </div>
+    </div>
+    <div class="topbar-desktop">
+      <button class="action-btn warn" onclick="resetNewCustomer()" title="清空选配、旧车/补贴等">👤 新客户</button>
+      <button class="action-btn" onclick="toggleFullscreen()" id="btnFullscreen" data-fullscreen-btn>⛶ 全屏</button>
+      <button class="action-btn primary" onclick="copyScreenshot()">📸 复制截图</button>
+      <button type="button" class="action-btn" data-copy-text-btn onclick="copyWechat()">📋 复制文字</button>
+      <button class="action-btn" onclick="window.print()">🖨️ 打印</button>
+      <button class="action-btn" data-theme-toggle onclick="toggleTheme()">🌙 深色模式</button>
+    </div>
+  </div>
+</div>
+
+<div class="shell">
+  <div class="promo-banner" id="promoBanner"></div>
+  <div class="install-hint" id="installHint" hidden>
+    <span>📲 <b>添加到主屏幕</b>：Safari 点分享 →「添加到主屏幕」，面客更方便</span>
+    <button type="button" class="install-hint-btn" id="installHintClose">知道了</button>
+  </div>
+  <div class="flow-guide">
+    <b>面客路径</b><span class="arr">›</span>选车型<span class="arr">→</span>选配置<span class="arr">→</span>看月供<span class="arr">→</span>选方案<span class="arr">→</span>填落地<span class="arr">→</span>怎么付<span class="arr">→</span>前期成本<span class="arr">→</span>享权益
+  </div>
+
+  <div id="screenshotArea">
+  <!-- ① 选车型 -->
+  <section class="model-picker">
+    <div class="model-picker-hd">
+      <span class="flow-step-tag">1</span>
+      <h2>选车型</h2>
+    </div>
+    <div class="model-groups" id="modelStrip"></div>
+  </section>
+
+  <!-- ② 车辆配置明细 -->
+  <div class="config-panel" id="configPanel"></div>
+
+  <div class="page-layout">
+    <div class="page-main">
+      <!-- ③ 核心：月供 -->
+      <div class="client-hero" id="clientHero"></div>
+
+      <!-- ④ 选金融方案 -->
+      <div class="section-hd section-schemes first">
+        <span class="step-title"><span class="flow-step-tag">4</span>选金融方案</span>
+        <span id="schemeSectionHint">点选切换 · 红框为当前方案</span>
+      </div>
+      <div class="scheme-grid section-schemes" id="schemeGrid"></div>
+
+      <div class="down-edit-bar" id="downEditBar">
+        <span class="down-label">金融首付</span>
+        <input type="number" id="inputDown" step="1000" min="0" placeholder="首付">
+        <button type="button" class="down-reset" onclick="resetDownPayment()">恢复默认</button>
+        <span class="down-hint" id="hintDown">选方案后可调整首付，月供会自动重算</span>
+      </div>
+
+      <div class="purchase-bar" id="purchaseBar">
+        <span class="purchase-label">购车主体</span>
+        <div class="purchase-toggle">
+          <button type="button" class="purchase-btn active" data-type="personal" onclick="setPurchaseType('personal')">👤 个人购买</button>
+          <button type="button" class="purchase-btn" data-type="company" onclick="setPurchaseType('company')">🏢 公司购买</button>
+        </div>
+      </div>
+
+      <!-- ⑤ 落地费用调整 + ⑥ 钱怎么付 + ⑦ 前期成本 -->
+      <div class="landing-edit" id="landingEdit">
+        <div class="landing-edit-hd">
+          <h3><span class="flow-step-tag">5</span> ✏️ 落地费用调整</h3>
+          <button type="button" class="landing-toggle" id="btnLandingToggle" onclick="toggleLandingEdit()">收起编辑</button>
+        </div>
+        <div class="landing-edit-summary" id="landingEditSummary"></div>
+        <div class="landing-edit-body" id="landingEditBody">
+          <div class="sub">填写旧车、补贴、保险、上牌等，下方成本会自动更新（车价由上方案配置明细计算）</div>
+          <div class="landing-warn" id="landingWarn"></div>
+          <div class="landing-grid">
+            <div class="landing-field landing-field-wide">
+              <label>配置后车价（元）</label>
+              <input type="text" id="inputPrice" readonly tabindex="-1">
+              <div class="hint" id="hintPrice">由上方车辆配置明细自动计算</div>
+            </div>
+            <div class="landing-field">
+              <label>客户旧车价格（元）</label>
+              <input type="number" id="tradeIn" value="0" step="1000" min="0">
+              <div class="hint">折算计入首次前期付的成本</div>
+            </div>
+            <div class="landing-field" id="subsidyFieldWrap">
+              <label>置换/报废补贴（元）</label>
+              <input type="number" id="subsidy" value="0" step="1000" min="0">
+              <div class="hint">折算计入首次前期付的成本</div>
+              <div class="subsidy-risk" id="subsidyRiskPersonal">⚠️ 先到先得 · 上海需摇号申请，名额有限，能否领取以政府审核批复为准，本页测算不构成承诺</div>
+              <div class="subsidy-company-note" id="subsidyCompanyNote" style="display:none">ℹ️ 置换/报废补贴仅个人购车可享受，公司购车不适用</div>
+            </div>
+            <div class="landing-field">
+              <label>首年保险（元）</label>
+              <input type="number" id="insurance" value="7500" step="100" min="0">
+              <div class="hint" id="hintInsurance">按车型参考默认</div>
+            </div>
+            <div class="landing-field">
+              <label>上牌费（元）</label>
+              <input type="number" id="regFee" value="520" step="10" min="0">
+              <div class="hint">各地略有差异</div>
+            </div>
+          </div>
+          <div class="landing-edit-actions">
+            <button type="button" class="landing-reset" onclick="resetLandingOpts()">恢复落地默认</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="present-row">
+        <div class="timeline" id="timeline"></div>
+        <div class="landing-stack">
+          <div class="landing-card" id="landingCard"></div>
+          <div class="company-tax-card" id="companyTaxCard"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 交付周期 + 限时权益 · 右侧竖列 -->
+    <div class="sidebar-stack">
+      <div class="delivery-panel" id="deliveryPanel"></div>
+      <aside class="benefits benefits-sidebar" id="benefitsSidebar">
+        <div class="benefits-hd">
+          <h2 id="benefitsTitle"><span class="flow-step-tag">8</span> 🎁 限时官方权益</h2>
+          <button type="button" class="benefit-toggle-all" id="benefitDetailToggleAll">展开全部解读</button>
+        </div>
+        <div class="benefit-grid" id="benefitGrid"></div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="shot-footer" id="shotFooter"></div>
+  </div>
+
+  <p class="disclaimer">* 测算仅供参考，不构成报价承诺，以金融机构批复为准。</p>
+  <div class="footer" id="footerMeta">K · 特斯拉金融账本 · 数据自动保存到本机浏览器</div>
+</div>
+
+<div id="printSheet"></div>
+<div id="screenshotCard" aria-hidden="true"></div>
+
+<script>
+const DATA = {"models":[{"id":"m3","name":"Model 3 后驱标续","price":235500,"down0":79900,"m3_insurance_subsidy":8000,"tax":10420,"zero":{"down":79900,"loan":155600,"monthly":2593,"interest":0,"balloon":0,"total_fin":235480},"ultra":{"down":45900,"loan":189600,"monthly":3234,"interest":4440,"balloon":0,"total_fin":239940},"easy":{"down":55900,"loan":134100,"monthly":2292,"interest":3420,"balloon":45500,"balloon_note":"45500(购险补贴8000可抵扣尾款)","total_fin":238920},"landing0":98340},{"id":"m3-lr","name":"Model 3 长续航后驱","price":259500,"down0":79900,"m3_insurance_subsidy":0,"tax":11482,"zero":{"down":79900,"loan":179600,"monthly":2993,"interest":0,"balloon":0,"total_fin":259480},"ultra":{"down":45900,"loan":213600,"monthly":3644,"interest":5040,"balloon":0,"total_fin":264540},"easy":{"down":55900,"loan":151700,"monthly":2592,"interest":3820,"balloon":51900,"balloon_note":"51900","total_fin":263320},"landing0":99402},{"id":"m3p","name":"Model 3 长续航全驱","price":285500,"down0":79900,"m3_insurance_subsidy":0,"tax":12633,"zero":{"down":79900,"loan":205600,"monthly":3427,"interest":0,"balloon":0,"total_fin":285520},"ultra":{"down":45900,"loan":239600,"monthly":4087,"interest":5620,"balloon":0,"total_fin":291120},"easy":{"down":55900,"loan":172500,"monthly":2948,"interest":4380,"balloon":57100,"balloon_note":"57100","total_fin":289880},"landing0":100553},{"id":"m3-perf","name":"Model 3 高性能全驱","price":339500,"down0":50925,"m3_insurance_subsidy":0,"tax":15000,"rate25":{"down":50925,"loan":288575,"monthly":5121,"interest":18685,"balloon":0,"total_fin":358185},"landing0":122920},{"id":"my-std","name":"Model Y 后驱标续","price":263500,"down0":79900,"m3_insurance_subsidy":0,"tax":11659,"zero":{"down":79900,"loan":183600,"monthly":3060,"interest":0,"balloon":0,"total_fin":263500},"ultra":{"down":45900,"loan":217600,"monthly":3712,"interest":5120,"balloon":0,"total_fin":268620},"easy":{"down":55900,"loan":154900,"monthly":2647,"interest":3920,"balloon":52700,"balloon_note":"52700","total_fin":267420},"landing0":99579},{"id":"my-lr","name":"Model Y 长续航后驱","price":288500,"down0":79900,"m3_insurance_subsidy":0,"tax":12765,"zero":{"down":79900,"loan":208600,"monthly":3477,"interest":0,"balloon":0,"total_fin":288520},"ultra":{"down":45900,"loan":242600,"monthly":4139,"interest":5740,"balloon":0,"total_fin":294240},"easy":{"down":55900,"loan":174900,"monthly":2989,"interest":4440,"balloon":57700,"balloon_note":"57700","total_fin":292940},"landing0":100685},{"id":"my-awd","name":"Model Y 长续航全驱","price":313500,"down0":79900,"m3_insurance_subsidy":0,"tax":13872,"zero":{"down":79900,"loan":233600,"monthly":3893,"interest":0,"balloon":0,"total_fin":313480},"ultra":{"down":45900,"loan":267600,"monthly":4565,"interest":6300,"balloon":0,"total_fin":319800},"easy":{"down":55900,"loan":194900,"monthly":3331,"interest":4960,"balloon":62700,"balloon_note":"62700","total_fin":318460},"landing0":101792},{"id":"myl","name":"Model Y L 六座版","price":339000,"down0":99900,"m3_insurance_subsidy":0,"tax":15000,"zero":{"down":99900,"loan":239100,"monthly":3985,"interest":0,"balloon":0,"total_fin":339000},"ultra":{"down":45900,"loan":293100,"monthly":5000,"interest":6900,"balloon":0,"total_fin":345900},"easy":{"down":55900,"loan":215300,"monthly":3679,"interest":5440,"balloon":67800,"balloon_note":"67800","total_fin":344440},"landing0":122920}],"promo_deadline":"2026-08-31","data_version":"2026.8.21","policy_source":"特斯拉中国 · 限时金融特惠方案（2026.7.28更新）","policy_checked":"2026-08-21"};
+
+const SCHEME_ORDER = ['zero', 'ultra', 'easy'];
+const SCHEMES = {
+  zero:  { key:'zero',  name:'5年0息',  apr:0,      desc:'5年利息为0 · 总支出最省', recommend:true,  tag:'适合：月供承受力够、不想付利息' },
+  ultra: { key:'ultra', name:'超低息',  apr:0.0092, desc:'首付可低至4.59万 · 年费率0.5%', recommend:false, tag:'适合：首付预算有限' },
+  easy:  { key:'easy',  name:'轻松贷',  apr:0.0099, desc:'月供最低 · 5年后付尾款', recommend:false, tag:'适合：想减轻月供压力' },
+  rate25:{ key:'rate25',name:'5年期贷款',apr:0.025, desc:'年费率 2.5% · 首付最低15%', recommend:true, tag:'不参与0息 / 超低息 / 轻松贷' },
+};
+const MONTHS = 60;
+const NEV_TAX_CAP = 15000;
+const LS_KEY = 'k_tesla_fin_price_v1';
+const LS_CONFIG_KEY = 'k_tesla_config_v1';
+const LS_DOWN_KEY = 'k_tesla_down_v1';
+const LS_LANDING_KEY = 'k_tesla_landing_v1';
+const LS_COLLAPSE_KEY = 'k_tesla_landing_collapsed';
+const LS_CUSTOMER_KEY = 'k_tesla_customer_v1';
+const LS_THEME_KEY = 'k_tesla_theme_v1';
+const LS_INSTALL_HINT_KEY = 'k_tesla_install_hint_dismissed';
+const LANDING_DEFAULTS = { tradeIn: 0, subsidy: 0, insurance: 7500, regFee: 520, insuranceManual: false, purchaseType: 'personal' };
+
+const SUBSIDY_RISK_NOTE = '置换/报废补贴先到先得，上海需摇号申请，名额有限，能否领取以政府审核批复为准，本页测算不构成领取承诺。';
+const M3_INSURANCE_SUBSIDY = 8000;
+
+const MODEL_GROUPS = [
+  { label: 'Model 3', match: m => m.id.startsWith('m3') },
+  { label: 'Model Y', match: m => m.id.startsWith('my') },
+];
+
+const BENEFIT_ITEMS = [
+  {
+    key:'zero', ico:'💳', title:'5年0息', sub:'首付7.99万起 · Y L 9.99万',
+    detail:'活动条件：2026年5月13日（含）至2026年8月31日（含）期间下单指定版本 Model 3 / Model Y，并按订单条款和条件提车，且符合申请资质的客户可申请金融特惠方案。方案①：首付¥79,900起，可申请1至5年0息方案；Model Y L 为方案④：首付¥99,900起，可申请1至5年0息方案。适用金融机构：招商银行、平安银行、微众银行、建设银行、交通银行、中国银行、中信银行、浦发银行。须通过特斯拉合作金融机构申请并最终获得批准，不同机构最低首付及审核条件有差异，最终以金融机构实际审核结果为准。',
+    source:'特斯拉中国 · 限时金融特惠方案（2026.7.28更新）',
+  },
+  {
+    key:'ultra', ico:'📊', title:'超低息', sub:'首付4.59万起 · 年费率0.5%',
+    detail:'活动条件：2026年5月13日（含）至2026年8月31日（含）期间下单指定版本 Model 3 / Model Y / Model Y L，并按订单条款和条件提车。方案②：首付¥45,900起，可申请1至5年超低息方案，年费率低至0.5%（折合年化利率0.92%起）。适用金融机构：招商银行、平安银行、微众银行、建设银行、交通银行、中国银行、中信银行、浦发银行。购车和贷款为独立交易，建议提前做贷款资质预审，最终以金融机构实际审核结果为准。',
+    source:'特斯拉中国 · 限时金融特惠方案（2026.7.28更新）',
+  },
+  {
+    key:'easy', ico:'📉', title:'轻松贷', sub:'月供更低 · 尾款20%',
+    detail:'活动条件：2026年5月13日（含）至2026年8月31日（含）期间下单指定版本 Model 3 / Model Y / Model Y L，并按订单条款和条件提车。方案③：首付¥55,900起，可申请5年低息弹性贷款方案，尾款比例20%，年化利率低至0.99%。适用金融机构：平安银行、中信银行。购车和贷款为独立交易，最终以金融机构实际审核结果为准。',
+    source:'特斯拉中国 · 限时金融特惠方案（2026.7.28更新）',
+  },
+  {
+    key:'paint', ico:'🎨', title:'车漆减8000', sub:'限时选装',
+    detail:'活动条件：2026年3月6日（含）至2026年8月31日（含）期间下单符合适用车型和车漆配置的 Model 3 或 Model Y，并按订单条款和条件提车，可享受限时车漆选装福利¥8,000。珍珠白/海洋蓝/冰河蓝/星钻黑等¥8,000车漆减至¥0；烈焰红/快银等¥12,000车漆减至¥4,000。减免金额会直接体现并计入订单总价；如交付前不再满足活动条件，减免金额将被移除并更新购车协议。适用全新车、准新车、展车、试驾车。',
+    source:'特斯拉中国 · 限时车漆选装福利（2026.7.28更新）',
+  },
+  {
+    key:'m3ins', ico:'🛡️', title:'M3购险补8000', sub:'提车购险 · 抵尾款', m3Only: true,
+    detail:'活动条件：2026年5月28日（含）至2026年8月31日（含）期间下单指定版本 Model 3（后轮驱动版、长续航后驱/全驱，不含 Performance 高性能版），并按订单条款和条件提车。提车时同意《保险补贴活动告知书》并从合作保险机构购买并维持相应车险（至少含交强险、新能源汽车损失险），可享限时保险补贴¥8,000，限抵扣车辆尾款。如交付前不再满足条件，优惠金额将被移除并更新购车协议。',
+    source:'特斯拉中国 · Model 3 限时保险补贴（2026.7.28更新）',
+  },
+  {
+    key:'charge', ico:'⚡', title:'特享充电权益', sub:'提车后三选一',
+    detail:'2025年1月10日起，下单指定版本 Model 3 / Model Y（含 Performance 及 Model Y L）并按订单条款和条件提车，提车后获得「特享充电权益」。常见可选：①超级充电服务包 ¥1,299（2300度）；②第三代家庭充电服务包单相版 ¥1,499；③三相版 ¥3,299。权益内容及条款条件详见车辆下单页面及订单协议。',
+    source:'特斯拉中国 · 特享充电权益',
+  },
+  {
+    key:'fleet', ico:'🏢', title:'大客户福利', sub:'私发单位名称查询',
+    detail:'特斯拉官网公示的购车福利以「现行福利活动」页面为准。企业/单位客户如有批量采购或专属合作需求，可向当地特斯拉体验店或客服 400-910-0707 咨询，具体政策以特斯拉官方答复及合同约定为准。',
+    source:'特斯拉中国 · 现行福利活动 / 官方客服',
+  },
+  {
+    key:'jingcai', ico:'💎', title:'菁采卡', sub:'持卡专享额外权益',
+    detail:'临港新片区「菁采卡」持卡人或其配偶购买特斯拉指定新车，可按卡级享受政府购车补贴及相关车企、银行优惠权益（如钻石卡最高5万元、翡翠卡3万元、黄金卡2万元、白银卡1万元）。申领及使用规则详见「随申办」临港新片区旗舰店，以管委会最新政策为准。',
+    source:'临港新片区 · 菁采卡购车补贴',
+  },
+];
+
+const DELIVERY_WEEKS = {
+  m3: { label: 'Model 3', weeks: '1-3 周' },
+  my: { label: 'Model Y', weeks: '1-3 周' },
+};
+const DELIVERY_NOTE = '以上为首台交付参考周期，具体以订单及交付中心通知为准。';
+
+const COMPOSITOR_BASE = 'https://static-assets.tesla.cn/configurator/compositor?context=design_studio_2';
+const TESLA_ASSET_BASE = 'https://digitalassets.tesla.cn/co1n/image/upload/f_auto,q_auto/prod/static_assets/';
+function teslaAsset(path) { return TESLA_ASSET_BASE + path; }
+const MODEL_VIS = {
+  'm3':        { trim:'$MT373', compositorModel:'m3', fallback:'https://digitalassets.tesla.cn/tesla-contents/image/upload/f_auto,q_auto,w_1400/Model-3-Social-LHD.jpg' },
+  'm3-lr':     { trim:'$MT374', compositorModel:'m3', fallback:'https://digitalassets.tesla.cn/tesla-contents/image/upload/f_auto,q_auto,w_1400/Model-3-Social-LHD.jpg' },
+  'm3p':       { trim:'$MT375', compositorModel:'m3', fallback:'https://digitalassets.tesla.cn/tesla-contents/image/upload/f_auto,q_auto,w_1400/Model-3-Social-LHD.jpg' },
+  'm3-perf':   { trim:'$MT376', compositorModel:'m3', fallback:'https://digitalassets.tesla.cn/tesla-contents/image/upload/f_auto,q_auto,w_1400/Model-3-Social-LHD.jpg' },
+  'my-std':    { trim:'$MTY79', compositorModel:'my', fallback:'https://digitalassets.tesla.cn/tesla-contents/image/upload/f_auto,q_auto,w_1400/Model-Y-2-Social-CN.jpg' },
+  'my-lr':     { trim:'$MTY81', compositorModel:'my', fallback:'https://digitalassets.tesla.cn/tesla-contents/image/upload/f_auto,q_auto,w_1400/Model-Y-2-Social-CN.jpg' },
+  'my-awd':    { trim:'$MTY80', compositorModel:'my', fallback:'https://digitalassets.tesla.cn/tesla-contents/image/upload/f_auto,q_auto,w_1400/Model-Y-2-Social-CN.jpg' },
+  'myl':       { trim:'$MTY69', compositorModel:'my', fallback:'https://digitalassets.tesla.cn/tesla-contents/image/upload/f_auto,q_auto,w_1400/Model-Y-2-Social-CN.jpg' },
+};
+const MODEL_COMPOSITOR_EXTRAS = {
+  'm3':        ['$CPF0', '$SC04'],
+  'm3-lr':     ['$CPF0', '$SC04'],
+  'm3p':       ['$CPF0', '$SC04', '$FM3U'],
+  'm3-perf':   ['$CPF0', '$SC04'],
+  'my-std':    ['$STY5S', '$CPF0', '$SC04'],
+  'my-lr':     ['$STY5S', '$CPF0', '$SC04'],
+  'my-awd':    ['$STY5S', '$CPF0', '$SC04', '$FM3U'],
+  'myl':       ['$STY6S', '$CPF0', '$SC04', '$FM3U'],
+};
+const PAINT_SWATCH = {
+  gray:'#5c6268', pearl:'#ececec', ocean:'#1e4d72', ice:'#7eb6d7', black:'#1a1a1a',
+  red:'#8b1a1a', quicksilver:'#9aa0a8', stargold:'#b8a068',
+};
+const PAINT_OPTIONS = [
+  { id:'gray', name:'星空灰', list:0, code:'$PN01' },
+  { id:'pearl', name:'珍珠白', list:8000, promo:true, promoPrice:0, code:'$PPSW' },
+  { id:'ocean', name:'海洋蓝', list:8000, promo:true, promoPrice:0, m3Only:true, code:'$PB02' },
+  { id:'ice', name:'冰河蓝', list:8000, promo:true, promoPrice:0, myOnly:true, code:'$PB01' },
+  { id:'black', name:'星钻黑', list:8000, promo:true, promoPrice:0, code:'$PX02' },
+  { id:'red', name:'烈焰红', list:12000, promo:true, promoPrice:4000, code:'$PR01' },
+  { id:'quicksilver', name:'快银', list:12000, promo:true, promoPrice:4000, exclude:['myl'], code:'$PN00' },
+  { id:'stargold', name:'星光金', list:12000, promo:true, promoPrice:4000, mylOnly:true, code:'$PN03' },
+];
+const WHEEL_OPTIONS = {
+  m3: [
+    { id:'18-photon', name:'18英寸光子轮毂', price:0, code:'$W38A', img:'MODEL3_/UI/Wheel-Swatch_18-in.png' },
+    { id:'19-nova', name:'19英寸新星轮毂', price:6000, code:'$W39S', img:'MODEL3_/UI/Wheel-Swatch_19-in.png' },
+  ],
+  'm3-perf': [
+    { id:'19-velocity', name:'19英寸曲速轮毂', price:0, code:'$W39C', img:'MODEL3_/19Warp' },
+  ],
+  my: [
+    { id:'19-storm', name:'19英寸交互风暴轮毂', price:0, code:'$WY19P', img:'MODELY_/19_Crossflow_wheels.png' },
+    { id:'20-storm', name:'20英寸螺旋风暴轮毂', price:8000, code:'$WY20B', img:'MODELY_/20in-Helix-2.0-Dark-Silver.png' },
+  ],
+  myl: [
+    { id:'19-mech', name:'19英寸旋动机甲轮毂', price:0, code:'$WY19L', img:'MODELY_/19Machina_wheel.png' },
+  ],
+};
+const INTERIOR_CODES = {
+  'm3':        { dark:'$IPB2', light:'$IPW2', bw:'$IPW2' },
+  'm3-lr':     { dark:'$IPB2', light:'$IPW2', bw:'$IPW2' },
+  'm3p':       { dark:'$IPB3', light:'$IPW3', bw:'$IPW3' },
+  'm3-perf':   { dark:'$IPB4', light:'$IPW4', bw:'$IPW4' },
+  'my-std':    { dark:'$IPB15', light:'$IPW15', bw:'$IPW15' },
+  'my-lr':     { dark:'$IPB15', light:'$IPW15', bw:'$IPW15' },
+  'my-awd':    { dark:'$IPB16', light:'$IPW16', bw:'$IPW16' },
+  'myl':       { dark:'$IPB9', light:'$IPW9', bw:'$IPW9' },
+};
+
+const fmt = n => '¥' + Math.round(n).toLocaleString('zh-CN');
+const fmtN = n => Math.round(n).toLocaleString('zh-CN');
+function fmtSigned(n) {
+  const rounded = Math.round(n);
+  const abs = Math.abs(rounded).toLocaleString('zh-CN');
+  return rounded < 0 ? `-¥${abs}` : `¥${abs}`;
+}
+function isNegativeFirstPay(landing) {
+  return landing.firstPay < 0;
+}
+function isZeroFirstPay(landing) {
+  return Math.round(landing.firstPay) === 0 && !isNegativeFirstPay(landing);
+}
+function firstPaySurplus(landing) {
+  return Math.abs(landing.firstPay);
+}
+function firstPayNegativeNoteHtml(landing, compact) {
+  if (!isNegativeFirstPay(landing)) return '';
+  const text = `负值表示旧车+补贴已覆盖全部前期费用，结余约 ${fmt(firstPaySurplus(landing))}，实际无需再付（以门店结算为准）`;
+  if (compact) return `<div class="shot-note">💡 ${text}</div>`;
+  return `<div class="hint first-pay-surplus">💡 ${text}</div><div class="first-pay-tag">抵扣结余 · 无需再付前期</div>`;
+}
+function firstPayZeroNoteHtml(landing, compact) {
+  if (!isZeroFirstPay(landing)) return '';
+  const text = '旧车与补贴已抵扣全部前期费用，本次无需额外现金（以门店结算为准）';
+  if (compact) return `<div class="shot-note">💡 ${text}</div>`;
+  return `<div class="hint first-pay-zero">💡 ${text}</div><div class="first-pay-zero-tag">前期成本 ¥0 · 无需额外现金</div>`;
+}
+function firstPayStatusClass(landing) {
+  if (isNegativeFirstPay(landing)) return ' first-pay-negative';
+  if (isZeroFirstPay(landing)) return ' first-pay-zero';
+  return '';
+}
+function firstPayBoxClass(landing) {
+  if (isNegativeFirstPay(landing)) return ' first-pay-negative-box';
+  if (isZeroFirstPay(landing)) return ' first-pay-zero-box';
+  return '';
+}
+let curModel = DATA.models.find(m => m.id === 'my-std') || DATA.models[0];
+let curScheme = 'zero';
+let configState = {};
+let downOverrides = {};
+let landingOpts = { ...LANDING_DEFAULTS, insurance: defaultInsurance(curModel) };
+let landingEditCollapsed = false;
+let customerNote = '';
+
+function promoDeadlineShort() {
+  const [y, m, d] = DATA.promo_deadline.split('-');
+  return `${+m}月${+d}日`;
+}
+function promoDeadlineFull() {
+  const [y, m, d] = DATA.promo_deadline.split('-');
+  return `${y}.${m}.${d}`;
+}
+function isPromoExpired() {
+  return new Date() > new Date(DATA.promo_deadline + 'T23:59:59');
+}
+function getPromoDaysLeft() {
+  const end = new Date(DATA.promo_deadline + 'T23:59:59');
+  const ms = end - Date.now();
+  return ms <= 0 ? 0 : Math.ceil(ms / 86400000);
+}
+function promoCountdownText() {
+  const days = getPromoDaysLeft();
+  if (days <= 0) return '';
+  if (days === 1) return '还剩最后 1 天';
+  return `还剩 ${days} 天`;
+}
+function getDataVersion() {
+  return DATA.data_version || '2026.8.21';
+}
+function getPolicySource() {
+  return DATA.policy_source || '特斯拉中国 · 限时金融特惠方案';
+}
+function getPolicyChecked() {
+  return DATA.policy_checked || '';
+}
+function promoExpiredNoteText() {
+  return isPromoExpired() ? '⚠️ 限时活动已截止，以下仅供参考，请以门店最新政策为准。' : '';
+}
+function getCustomerNote() {
+  return (customerNote || document.getElementById('customerNote')?.value || '').trim();
+}
+function getAdvisorLabel() {
+  const note = getCustomerNote();
+  return note ? `K · 特斯拉顾问 · ${note}` : 'K · 特斯拉顾问';
+}
+function loadCustomerNote() {
+  try { customerNote = localStorage.getItem(LS_CUSTOMER_KEY) || ''; } catch { customerNote = ''; }
+  const el = document.getElementById('customerNote');
+  if (el) el.value = customerNote;
+}
+function saveCustomerNote() {
+  customerNote = (document.getElementById('customerNote')?.value || '').trim();
+  localStorage.setItem(LS_CUSTOMER_KEY, customerNote);
+}
+function renderFooterMeta() {
+  const el = document.getElementById('footerMeta');
+  if (!el) return;
+  const checked = getPolicyChecked();
+  const policyNote = checked ? ` · 政策核对 ${checked.replace(/-/g, '.')}` : '';
+  if (isPromoExpired()) {
+    el.textContent = `K · 特斯拉金融账本 · 数据版 ${getDataVersion()}${policyNote} · 活动已截止 · 本机自动保存`;
+  } else {
+    el.textContent = `K · 特斯拉金融账本 · 数据版 ${getDataVersion()}${policyNote} · ${promoCountdownText()} · 活动至 ${promoDeadlineFull()} · 本机自动保存`;
+  }
+}
+function landingDeductionFootnoteHtml(landing, compact) {
+  if (!landing.tradeIn && !(landing.subsidy > 0 && !isCompanyPurchase())) return '';
+  const text = '* 客户旧车价格、置换补贴已折算计入上方合计';
+  if (compact) {
+    return `<div class="shot-flow-note">${text}</div>`;
+  }
+  return `<div class="hint" style="margin-top:8px">${text}</div>`;
+}
+function isM3Model(m) {
+  return m.id.startsWith('m3');
+}
+function isPerfModel(m) {
+  return m.id === 'm3-perf';
+}
+function getM3InsuranceSubsidy(m) {
+  if (!isM3Model(m) || isPerfModel(m) || isPromoExpired()) return 0;
+  return M3_INSURANCE_SUBSIDY;
+}
+function getPerfDown(price) {
+  return Math.round(price * 0.15);
+}
+function getSchemeOrder(m) {
+  return isPerfModel(m) ? ['rate25'] : SCHEME_ORDER;
+}
+function ensureValidScheme(m) {
+  const order = getSchemeOrder(m);
+  if (!order.includes(curScheme)) curScheme = order[0];
+}
+function isCompanyPurchase() {
+  return (landingOpts.purchaseType || 'personal') === 'company';
+}
+function calcCompanyTax(price) {
+  const taxed = Math.round(price);
+  const exTax = Math.round(taxed / 1.13);
+  const vatInput = taxed - exTax;
+  return { taxed, exTax, vatInput, netCost: exTax };
+}
+function setPurchaseType(type) {
+  landingOpts.purchaseType = type;
+  if (type === 'company') {
+    landingOpts.subsidy = 0;
+    document.getElementById('subsidy').value = 0;
+  }
+  saveLandingOpts();
+  syncPurchaseUI();
+  renderDisplay();
+}
+function syncPurchaseUI() {
+  const isCo = isCompanyPurchase();
+  document.querySelectorAll('.purchase-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.type === landingOpts.purchaseType);
+  });
+  const subsidyInput = document.getElementById('subsidy');
+  const wrap = document.getElementById('subsidyFieldWrap');
+  subsidyInput.disabled = isCo;
+  wrap.classList.toggle('subsidy-disabled', isCo);
+  document.getElementById('subsidyRiskPersonal').style.display = isCo ? 'none' : 'block';
+  document.getElementById('subsidyCompanyNote').style.display = isCo ? 'block' : 'none';
+}
+function buildLandingRows(fin, landing) {
+  const rows = [];
+  const hasSubsidy = landing.subsidy > 0 && !isCompanyPurchase();
+  const downLabel = fin.downManual ? '金融首付（已调整）' : '金融首付';
+  rows.push([downLabel, fmt(fin.down)]);
+  if (landing.tradeIn) rows.push(['客户旧车价格', '- ' + fmt(landing.tradeIn)]);
+  if (hasSubsidy) rows.push(['置换/报废补贴', '- ' + fmt(landing.subsidy)]);
+  rows.push(['购置税（2026·5%）', fmt(landing.tax)]);
+  rows.push(['首年保险', fmt(landing.insurance)]);
+  rows.push(['上牌费', fmt(landing.regFee)]);
+  return rows;
+}
+function isLandingDeductionRow(label) {
+  return label === '客户旧车价格' || label === '置换/报废补贴';
+}
+function landingRowHtml([k, v], rowClass) {
+  const cls = rowClass + (isLandingDeductionRow(k) ? ' deduction' : '');
+  return `<div class="${cls}"><span>${k}</span><strong>${v}</strong></div>`;
+}
+function buildCompanyTaxHtml(m, fin, compact) {
+  const price = fin.price ?? getPrice(m);
+  const t = calcCompanyTax(price);
+  if (compact) {
+    return `<div class="shot-sec-title"><span class="dot"></span>公司购车 · 13%专票抵税</div>
+      <div class="shot-block" style="font-size:13px;line-height:1.55">
+        <div class="shot-row"><span>含税车价</span><strong>${fmt(t.taxed)}</strong></div>
+        <div class="shot-row"><span>不含税金额</span><strong>${fmt(t.exTax)}</strong></div>
+        <div class="shot-row"><span>专票税额（13%可抵扣进项）</span><strong>${fmt(t.vatInput)}</strong></div>
+        <div style="text-align:center;margin-top:10px;padding:10px;background:rgba(216,208,193,.32);border-radius:8px;border:1px solid #D8D0C1">
+          <div style="font-size:12px;color:rgba(22,42,70,.62)">抵扣后实际车价成本</div>
+          <div style="font-size:28px;font-weight:900;color:#162A46">${fmt(t.netCost)}</div>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:rgba(22,42,70,.62)">* 需一般纳税人，以财务确认及税务规定为准</div>
+      </div>`;
+  }
+  return `<h2>🏢 公司购车 · 13%专票抵税明细</h2>
+    <div class="landing-rows">
+      <div class="landing-row"><span>含税车价（专票价税合计）</span><strong>${fmt(t.taxed)}</strong></div>
+      <div class="landing-row"><span>不含税金额</span><strong>${fmt(t.exTax)}</strong></div>
+      <div class="landing-row"><span>专票税额（13% · 可抵扣进项税）</span><strong>${fmt(t.vatInput)}</strong></div>
+    </div>
+    <div class="company-tax-total">
+      <div class="lbl">抵扣进项税后实际车价成本</div>
+      <div class="val">${fmt(t.netCost)}</div>
+      <div class="sub">专票由特斯拉开具，一般纳税人可抵扣</div>
+    </div>
+    <div class="company-tax-note">* 以上为车价专票增值税进项抵扣测算，不含购置税/保险/上牌；实际以财务及税务规定为准。</div>`;
+}
+function getDeliveryFamily(m) {
+  return isM3Model(m) ? 'm3' : 'my';
+}
+function getDeliveryWeeks(m) {
+  return DELIVERY_WEEKS[getDeliveryFamily(m)].weeks;
+}
+function buildDeliveryHtml(m, compact) {
+  const active = getDeliveryFamily(m);
+  const entries = Object.entries(DELIVERY_WEEKS);
+  const allSame = entries.every(([, info]) => info.weeks === entries[0][1].weeks);
+  const itemCls = compact ? 'shot-delivery-row' : 'delivery-item';
+  const rows = allSame
+    ? `<div class="${itemCls} active"><span class="model">Model 3 / Model Y</span><span class="weeks">${entries[0][1].weeks}</span></div>`
+    : entries.map(([key, info]) =>
+        `<div class="${itemCls}${key === active ? compact ? ' on' : ' active' : ''}"><span class="model">${info.label}</span><span class="weeks">${info.weeks}</span></div>`
+      ).join('');
+  if (compact) {
+    return `<div class="shot-delivery">
+      <h3>🚚 交付周期</h3>
+      ${rows}
+      <div class="shot-delivery-note">* ${DELIVERY_NOTE}</div>
+    </div>`;
+  }
+  return `<h2>🚚 交付周期</h2>
+    <div class="delivery-items">${rows}</div>
+    <div class="delivery-note">* ${DELIVERY_NOTE}</div>`;
+}
+function defaultInsurance(m) {
+  if (m.id.includes('perf') || m.id === 'myl') return 9000;
+  if (m.id.includes('-lr') || m.id.includes('-awd') || m.id === 'm3p') return 8000;
+  return 7500;
+}
+const SHOT_EXCLUDED_BENEFITS = new Set(['repurchase', 'tradein']);
+function getBenefitItems(m) {
+  return BENEFIT_ITEMS.filter(b => {
+    if (b.m3Only && (!isM3Model(m) || isPerfModel(m))) return false;
+    if (isPerfModel(m) && (b.key === 'zero' || b.key === 'easy' || b.key === 'ultra')) return false;
+    return true;
+  });
+}
+function getScreenshotBenefitItems(m) {
+  return getBenefitItems(m).filter(b => !SHOT_EXCLUDED_BENEFITS.has(b.key));
+}
+function buildBenefitCardHtml(b, opts = {}) {
+  const { interactive = false, shot = false } = opts;
+  if (shot) {
+    return `<div class="shot-ben-item">
+      <div class="ico">${b.ico}</div>
+      <div class="tx"><b>${b.title}</b><span>${b.sub}</span></div>
+    </div>`;
+  }
+  const toggle = interactive && b.detail
+    ? `<button type="button" class="benefit-detail-toggle" aria-expanded="false" aria-controls="benefit-detail-${b.key}">权益解读 ▾</button>`
+    : '';
+  const detail = b.detail
+    ? `<div class="benefit-detail" id="benefit-detail-${b.key}" role="region" aria-hidden="true">${b.detail}${b.source ? `<span class="benefit-detail-src">来源：${b.source}</span>` : ''}</div>`
+    : '';
+  return `<div class="benefit-item" data-benefit="${b.key}">
+    <div class="benefit-item-main">
+      <div class="ico">${b.ico}</div>
+      <div class="bi-text"><b>${b.title}</b><span class="sub">${b.sub}</span></div>
+    </div>
+    ${toggle}
+    ${detail}
+  </div>`;
+}
+function toggleBenefitDetail(btn) {
+  if (!btn) return;
+  const item = btn.closest('.benefit-item');
+  const detail = item && item.querySelector('.benefit-detail');
+  if (!detail) return;
+  const open = !detail.classList.contains('open');
+  detail.classList.toggle('open', open);
+  detail.setAttribute('aria-hidden', open ? 'false' : 'true');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  btn.textContent = open ? '收起解读 ▴' : '权益解读 ▾';
+  syncBenefitDetailToggleAll();
+}
+function toggleAllBenefitDetails(force) {
+  const details = document.querySelectorAll('#benefitGrid .benefit-detail');
+  const expand = typeof force === 'boolean'
+    ? force
+    : !Array.from(details).some(el => el.classList.contains('open'));
+  document.querySelectorAll('#benefitGrid .benefit-item').forEach(item => {
+    const detail = item.querySelector('.benefit-detail');
+    const btn = item.querySelector('.benefit-detail-toggle');
+    if (!detail || !btn) return;
+    detail.classList.toggle('open', expand);
+    detail.setAttribute('aria-hidden', expand ? 'false' : 'true');
+    btn.setAttribute('aria-expanded', expand ? 'true' : 'false');
+    btn.textContent = expand ? '收起解读 ▴' : '权益解读 ▾';
+  });
+  syncBenefitDetailToggleAll(expand);
+}
+function initBenefitDetailHandlers() {
+  if (document.body.dataset.benefitHandlersBound) return;
+  document.body.dataset.benefitHandlersBound = '1';
+  document.body.addEventListener('click', e => {
+    if (e.target.closest('#benefitDetailToggleAll')) {
+      e.preventDefault();
+      toggleAllBenefitDetails();
+      return;
+    }
+    const btn = e.target.closest('.benefit-detail-toggle');
+    if (btn) {
+      e.preventDefault();
+      toggleBenefitDetail(btn);
+    }
+  });
+}
+function syncBenefitDetailToggleAll(forceExpand) {
+  const btn = document.getElementById('benefitDetailToggleAll');
+  if (!btn) return;
+  const expand = typeof forceExpand === 'boolean'
+    ? forceExpand
+    : Array.from(document.querySelectorAll('#benefitGrid .benefit-detail')).some(el => el.classList.contains('open'));
+  btn.textContent = expand ? '收起全部解读' : '展开全部解读';
+}
+
+function getPaintOptions(m) {
+  return PAINT_OPTIONS.filter(p => {
+    if (p.m3Only && !isM3Model(m)) return false;
+    if (p.myOnly && !m.id.startsWith('my')) return false;
+    if (p.mylOnly && m.id !== 'myl') return false;
+    if (p.exclude?.includes(m.id)) return false;
+    return true;
+  });
+}
+function getInteriorOptions(m) {
+  if (isM3Model(m)) {
+    return [
+      { id:'dark', name:'深色高级内饰', price:0 },
+      { id:'light', name:'浅色高级内饰', price:8000 },
+    ];
+  }
+  if (m.id === 'myl') {
+    return [
+      { id:'dark', name:'深色高级内饰', price:0 },
+      { id:'light', name:'浅灰高级内饰', price:8000 },
+    ];
+  }
+  return [
+    { id:'dark', name:'深色高级内饰', price:0 },
+    { id:'bw', name:'浅灰/黑白高级内饰', price:8000 },
+  ];
+}
+function getWheelOptions(m) {
+  if (isPerfModel(m)) return WHEEL_OPTIONS['m3-perf'];
+  if (m.id === 'myl') return WHEEL_OPTIONS.myl;
+  if (m.id.startsWith('my')) return WHEEL_OPTIONS.my;
+  return WHEEL_OPTIONS.m3;
+}
+function getInteriorCode(m, interiorId) {
+  return INTERIOR_CODES[m.id]?.[interiorId] || INTERIOR_CODES['m3'].dark;
+}
+function getWheelCode(m, wheelId) {
+  return getWheelOptions(m).find(w => w.id === wheelId)?.code
+    || getWheelOptions(m)[0]?.code;
+}
+function getWheelThumbUrl(m, wheelId) {
+  const w = getWheelOptions(m).find(x => x.id === wheelId);
+  return w?.img ? teslaAsset(w.img) : null;
+}
+function getModelFallbackImage(m) {
+  return MODEL_VIS[m.id]?.fallback || MODEL_VIS['my-std'].fallback;
+}
+function buildCompositorUrl(m, selOverride, view, size, bkbaOpt) {
+  const vis = MODEL_VIS[m.id];
+  if (!vis) return getModelFallbackImage(m);
+  const sel = selOverride || getModelConfig(m);
+  const paint = getPaintOptions(m).find(p => p.id === sel.paint);
+  const extras = MODEL_COMPOSITOR_EXTRAS[m.id] || [];
+  const options = [
+    vis.trim,
+    '$APBS',
+    isM3Model(m) ? '$MDL3' : '$MDLY',
+    ...extras,
+    getInteriorCode(m, sel.interior),
+    paint?.code || '$PN01',
+    getWheelCode(m, sel.wheels),
+  ].filter(Boolean).join(',');
+  const bkba = bkbaOpt != null ? bkbaOpt : 1;
+  return `${COMPOSITOR_BASE}&options=${encodeURIComponent(options)}&view=${view || 'STUD_FRONT34'}&model=${vis.compositorModel}&size=${size || 1400}&bkba_opt=${bkba}&overlay=0`;
+}
+function getModelHeroImage(m, selOverride, forShot) {
+  return buildCompositorUrl(m, selOverride, 'STUD_FRONT34', 1400, forShot ? 0 : 1);
+}
+function getOptionPreviewUrl(m, type, value) {
+  if (type === 'wheels') {
+    const thumb = getWheelThumbUrl(m, value);
+    if (thumb) return thumb;
+  }
+  const sel = { ...getModelConfig(m) };
+  if (type === 'paint') sel.paint = value;
+  else if (type === 'interior') sel.interior = value;
+  else sel.wheels = value;
+  const view = type === 'interior' ? 'STUD_SEAT' : 'STUD_SIDE';
+  return buildCompositorUrl(m, sel, view, 520);
+}
+function imgOnErrorFallback(el) {
+  const fb = el.dataset.fallback;
+  if (fb && el.src !== fb) { el.src = fb; return; }
+  el.style.display = 'none';
+  el.parentElement?.classList.add('img-failed');
+}
+function getConfigTags(m) {
+  const c = calcConfigPrice(m);
+  return [c.paint.name, c.interior.name, c.wheels.name].filter(Boolean);
+}
+function getDefaultWheelId(m) {
+  return getWheelOptions(m)[0]?.id || '18-photon';
+}
+function getDefaultConfig(m) {
+  return { paint: 'gray', interior: 'dark', wheels: getDefaultWheelId(m) };
+}
+function ensureValidConfig(m) {
+  const cfg = getModelConfig(m);
+  const paints = getPaintOptions(m);
+  const interiors = getInteriorOptions(m);
+  const wheels = getWheelOptions(m);
+  if (!paints.some(p => p.id === cfg.paint)) cfg.paint = paints[0]?.id || 'gray';
+  if (!interiors.some(o => o.id === cfg.interior)) cfg.interior = interiors[0]?.id || 'dark';
+  if (!wheels.some(w => w.id === cfg.wheels)) cfg.wheels = wheels[0]?.id || getDefaultWheelId(m);
+  if (cfg.wheels === '19-gemini') cfg.wheels = '19-storm';
+  configState[m.id] = cfg;
+}
+function getModelConfig(m) {
+  if (!configState[m.id]) configState[m.id] = getDefaultConfig(m);
+  return configState[m.id];
+}
+function getPaintPay(paint) {
+  if (!paint || paint.list === 0) return 0;
+  if (isPromoExpired() || !paint.promo) return paint.list;
+  return paint.promoPrice ?? paint.list;
+}
+function calcConfigPrice(m) {
+  ensureValidConfig(m);
+  const sel = getModelConfig(m);
+  const paint = getPaintOptions(m).find(p => p.id === sel.paint) || getPaintOptions(m)[0];
+  const interior = getInteriorOptions(m).find(o => o.id === sel.interior) || getInteriorOptions(m)[0];
+  const wheels = getWheelOptions(m).find(w => w.id === sel.wheels) || getWheelOptions(m)[0];
+  const paintPay = getPaintPay(paint);
+  const paintDiscount = (paint?.list || 0) - paintPay;
+  const interiorPay = interior?.price || 0;
+  const wheelsPay = wheels?.price || 0;
+  const optionsTotal = paintPay + interiorPay + wheelsPay;
+  const insuranceSubsidy = getM3InsuranceSubsidy(m);
+  const total = m.price + optionsTotal - insuranceSubsidy;
+  return {
+    base: m.price,
+    paint: { name: paint?.name || '星空灰', list: paint?.list || 0, pay: paintPay, discount: paintDiscount },
+    interior: { name: interior?.name || '深色高级内饰', pay: interiorPay },
+    wheels: { name: wheels?.name || '', pay: wheelsPay },
+    optionsTotal,
+    insuranceSubsidy,
+    total,
+    hasOptions: optionsTotal > 0 || insuranceSubsidy > 0,
+    paintPromoActive: !isPromoExpired() && paintDiscount > 0,
+    insuranceSubsidyActive: insuranceSubsidy > 0,
+  };
+}
+function hasCustomPrice(m) {
+  return calcConfigPrice(m).total !== m.price;
+}
+function buildConfigSummaryRows(m) {
+  const c = calcConfigPrice(m);
+  const rows = [
+    ['全国统一售价', fmt(c.base)],
+  ];
+  if (c.paint.list > 0 || c.paint.pay > 0) {
+    rows.push([c.paint.name, c.paint.list > 0 ? fmt(c.paint.list) : '标配']);
+  }
+  if (c.interior.pay > 0) rows.push([c.interior.name, fmt(c.interior.pay)]);
+  else rows.push([c.interior.name, '标配']);
+  if (c.wheels.pay > 0) rows.push([c.wheels.name, fmt(c.wheels.pay)]);
+  else if (c.wheels.name) rows.push([c.wheels.name, '标配']);
+  if (c.paint.discount > 0) {
+    rows.push(['车漆限时优惠', '- ' + fmt(c.paint.discount)]);
+  }
+  if (c.insuranceSubsidy > 0) {
+    rows.push(['M3购险补贴（车价）', '- ' + fmt(c.insuranceSubsidy)]);
+  }
+  rows.push(['配置后车价', fmt(c.total)]);
+  return { rows, cfg: c };
+}
+function buildConfigHtml(m, compact) {
+  const { rows, cfg } = buildConfigSummaryRows(m);
+  if (compact) {
+    return buildScreenshotConfigHero(m, rows, cfg);
+  }
+  return rows.map(([k, v]) =>
+    `<div class="config-summary-row${k === '车漆限时优惠' || k === 'M3购险补贴（车价）' ? ' discount' : ''}"><span class="lbl">${k}</span><strong${k === '配置后车价' ? ' style="color:var(--navy);font-size:18px"' : ''}>${v}</strong></div>`
+  ).join('');
+}
+function buildScreenshotConfigLabels(cfg) {
+  const paintExtra = cfg.paint.discount > 0 ? ' · 限时优惠' : '';
+  return [
+    ['车漆', cfg.paint.name + paintExtra],
+    ['内饰', cfg.interior.name],
+    ['轮毂', cfg.wheels.name],
+  ];
+}
+function buildScreenshotConfigHero(m, rows, cfg) {
+  const hero = getModelHeroImage(m, null, true);
+  const fallback = getModelFallbackImage(m);
+  const labelItems = buildScreenshotConfigLabels(cfg);
+  const detailRows = rows.slice(0, -1);
+  return `<div class="shot-config-hero">
+    <div class="shot-config-strip">
+      <div class="strip-badge">🎨 车辆配置标注</div>
+      <div class="strip-labels">
+        ${labelItems.map(([k, v]) => `<span class="strip-item"><em>${k}</em>${v}</span>`).join('')}
+      </div>
+    </div>
+    <div class="shot-config-img-wrap">
+      <img class="shot-config-img" src="${hero}" alt="${m.name}" crossorigin="anonymous" referrerpolicy="strict-origin-when-cross-origin" loading="eager" decoding="async"
+        data-fallback="${fallback}" onerror="imgOnErrorFallback(this)">
+    </div>
+    <div class="shot-config-meta">
+      <h3>${m.name} · 配置明细</h3>
+      <div class="shot-config-pills">${labelItems.map(([k, v]) => `<span class="shot-config-pill">${k} · ${v}</span>`).join('')}</div>
+      <div class="shot-config-rows">
+        ${detailRows.map(([k, v]) => `<div class="shot-row"><span>${k}</span><strong${k === '车漆限时优惠' || k === 'M3购险补贴（车价）' ? ' style="color:#162A46"' : ''}>${v}</strong></div>`).join('')}
+        <div class="shot-config-total"><span>配置后车价</span><span class="val">${fmt(cfg.total)}</span></div>
+        ${cfg.paintPromoActive ? `<div style="margin-top:8px;font-size:11px;color:rgba(22,42,70,.62)">* 车漆限时减8000，${promoDeadlineShort()} 前有效</div>` : ''}
+        ${cfg.insuranceSubsidyActive ? `<div style="margin-top:6px;font-size:11px;color:rgba(22,42,70,.62)">* M3购险补贴8000（提车购险后抵尾款，不含高性能版），${promoDeadlineShort()} 前有效</div>` : ''}
+      </div>
+    </div>
+  </div>`;
+}
+function formatPaintPrice(paint) {
+  if (!paint || paint.list === 0) return '<span class="promo">标配</span>';
+  const pay = getPaintPay(paint);
+  if (pay === paint.list) return fmt(paint.list);
+  return `<span class="strike">${fmt(paint.list)}</span><span class="promo">${fmt(pay)}</span>`;
+}
+function formatOptionPrice(price) {
+  return price ? fmt(price) : '<span class="promo">标配</span>';
+}
+function setConfigOption(type, value) {
+  const cfg = getModelConfig(curModel);
+  cfg[type] = value;
+  configState[curModel.id] = cfg;
+  saveConfigState();
+  renderDisplay();
+}
+function loadConfigState() {
+  try {
+    configState = JSON.parse(localStorage.getItem(LS_CONFIG_KEY) || '{}');
+  } catch { configState = {}; }
+  DATA.models.forEach(m => ensureValidConfig(m));
+}
+function saveConfigState() {
+  localStorage.setItem(LS_CONFIG_KEY, JSON.stringify(configState));
+}
+function resetConfigForModel(m) {
+  configState[m.id] = getDefaultConfig(m);
+  saveConfigState();
+}
+
+function loadPriceOverrides() {
+  loadConfigState();
+  try {
+    const old = JSON.parse(localStorage.getItem(LS_KEY) || '{}');
+    if (Object.keys(old).length) {
+      localStorage.removeItem(LS_KEY);
+    }
+  } catch { /* ignore legacy */ }
+}
+function savePriceOverrides() {
+  saveConfigState();
+}
+
+function loadLandingOpts() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(LS_LANDING_KEY) || 'null');
+    if (saved) landingOpts = { ...LANDING_DEFAULTS, insurance: defaultInsurance(curModel), ...saved };
+  } catch { landingOpts = { ...LANDING_DEFAULTS, insurance: defaultInsurance(curModel) }; }
+  landingEditCollapsed = localStorage.getItem(LS_COLLAPSE_KEY) === '1';
+  syncLandingInputs();
+  syncLandingEditCollapse();
+}
+function saveLandingOpts() {
+  landingOpts = getLandingOpts();
+  localStorage.setItem(LS_LANDING_KEY, JSON.stringify(landingOpts));
+}
+function syncLandingInputs() {
+  const c = calcConfigPrice(curModel);
+  document.getElementById('inputPrice').value = fmtN(c.total);
+  document.getElementById('inputPrice').classList.toggle('customized', hasCustomPrice(curModel));
+  document.getElementById('hintPrice').textContent = hasCustomPrice(curModel)
+    ? `${c.paint.name} · ${c.interior.name} · ${c.wheels.name}${c.paint.discount ? '（含车漆优惠）' : ''}${c.insuranceSubsidy ? ' · 含购险补贴' : ''}`
+    : isM3Model(curModel) && !isPerfModel(curModel) && !isPromoExpired()
+      ? `全国统一售价 ${fmt(curModel.price)} · 含购险补贴后 ${fmt(c.total)}`
+      : `全国统一售价 ${fmt(curModel.price)} · 可在上方选配`;
+  document.getElementById('tradeIn').value = landingOpts.tradeIn;
+  document.getElementById('subsidy').value = landingOpts.subsidy;
+  document.getElementById('insurance').value = landingOpts.insurance;
+  document.getElementById('regFee').value = landingOpts.regFee;
+  document.getElementById('hintInsurance').textContent =
+    landingOpts.insuranceManual ? '已手动修改' : `参考默认 ${fmtN(defaultInsurance(curModel))}`;
+  syncPurchaseUI();
+}
+function resetLandingOpts() {
+  landingOpts = { ...LANDING_DEFAULTS, insurance: defaultInsurance(curModel), insuranceManual: false, purchaseType: landingOpts.purchaseType || 'personal' };
+  localStorage.removeItem(LS_LANDING_KEY);
+  syncLandingInputs();
+  renderDisplay();
+}
+function resetNewCustomer() {
+  if (!confirm('清空当前客户的选配、旧车、补贴、保险、备注等数据？\n（车型和方案保留）')) return;
+  DATA.models.forEach(m => resetConfigForModel(m));
+  landingOpts = { ...LANDING_DEFAULTS, insurance: defaultInsurance(curModel), insuranceManual: false, purchaseType: 'personal' };
+  localStorage.removeItem(LS_LANDING_KEY);
+  localStorage.removeItem(LS_CUSTOMER_KEY);
+  downOverrides = {};
+  saveDownOverrides();
+  customerNote = '';
+  const noteEl = document.getElementById('customerNote');
+  if (noteEl) noteEl.value = '';
+  syncLandingInputs();
+  renderDisplay();
+}
+function onLandingInput() {
+  landingOpts.insuranceManual = document.activeElement?.id === 'insurance';
+  saveLandingOpts();
+  renderDisplay();
+}
+function toggleLandingEdit() {
+  landingEditCollapsed = !landingEditCollapsed;
+  localStorage.setItem(LS_COLLAPSE_KEY, landingEditCollapsed ? '1' : '0');
+  syncLandingEditCollapse();
+}
+function syncLandingEditCollapse() {
+  const panel = document.getElementById('landingEdit');
+  const btn = document.getElementById('btnLandingToggle');
+  panel.classList.toggle('collapsed', landingEditCollapsed);
+  if (btn) btn.textContent = landingEditCollapsed ? '展开编辑' : '收起编辑';
+}
+function updateLandingSummary(landing, fin) {
+  const parts = [];
+  parts.push(isCompanyPurchase() ? '🏢 公司购买' : '👤 个人购买');
+  if (hasCustomPrice(curModel)) {
+    const c = calcConfigPrice(curModel);
+    parts.push(`${c.paint.name}等 · ${fmt(c.total)}`);
+  }
+  if (landing.tradeIn) parts.push(`客户旧车 ${fmt(landing.tradeIn)}`);
+  if (landing.subsidy && !isCompanyPurchase()) parts.push(`补贴 ${fmt(landing.subsidy)}`);
+  if (fin.downManual) parts.push(`首付 ${fmt(fin.down)}（已调整）`);
+  parts.push(`保险 ${fmt(landing.insurance)}`);
+  document.getElementById('landingEditSummary').textContent =
+    parts.length ? '已设置：' + parts.join(' · ') : '未填写额外信息，点击展开编辑';
+  const warn = document.getElementById('landingWarn');
+  if (landing.firstPayNegative) {
+    warn.textContent = `💡 首次前期付为负：旧车+补贴已覆盖全部前期费用，结余约 ${fmt(firstPaySurplus(landing))}，实际无需再付（以门店为准）`;
+    warn.classList.add('show');
+  } else if (isZeroFirstPay(landing)) {
+    warn.textContent = '💡 首次前期付为 ¥0：旧车与补贴已抵扣全部前期费用，本次无需额外现金（以门店为准）';
+    warn.classList.add('show');
+  } else if (landing.overDeduction) {
+    warn.textContent = `⚠️ 旧车+补贴合计 ${fmt(landing.deductionTotal)} 已超过金融首付 ${fmt(fin.down)}，请核对数据`;
+    warn.classList.add('show');
+  } else if (landing.overSubsidy) {
+    warn.textContent = `⚠️ 置换/报废补贴 ${fmt(landing.subsidy)} 已超过金融首付 ${fmt(fin.down)}，请核对数据`;
+    warn.classList.add('show');
+  } else {
+    warn.classList.remove('show');
+  }
+}
+function renderPromoBanner() {
+  const el = document.getElementById('promoBanner');
+  if (!el) return;
+  if (isPromoExpired()) {
+    el.innerHTML = `⚠️ 限时权益已于 <b>${promoDeadlineFull()}</b> 截止，以下数据仅供参考，请以门店最新政策为准`;
+    el.className = 'promo-banner show expired';
+  } else {
+    const days = getPromoDaysLeft();
+    const urgent = days <= 3;
+    el.innerHTML = urgent
+      ? `⏰ 限时权益 <b>${promoCountdownText()}</b> · ${promoDeadlineFull()} 截止 · 数据版 ${getDataVersion()}`
+      : `⏰ 限时权益 <b>${promoCountdownText()}</b> · 活动至 ${promoDeadlineFull()} · 数据版 ${getDataVersion()}`;
+    el.className = `promo-banner show active${urgent ? ' urgent' : ''}`;
+  }
+}
+function isStandaloneApp() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+function isIosSafari() {
+  const ua = navigator.userAgent || '';
+  const ios = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  return ios && !/CriOS|FxiOS|EdgiOS/.test(ua);
+}
+function initPwa() {
+  const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180"><rect width="180" height="180" rx="40" fill="#1A3348"/><text x="90" y="118" font-size="88" text-anchor="middle" fill="#FFFFFF" font-family="-apple-system,sans-serif">⚡</text></svg>`;
+  const iconUrl = `data:image/svg+xml,${encodeURIComponent(iconSvg)}`;
+  const touch = document.getElementById('appleTouchIcon');
+  if (touch && !touch.getAttribute('href')) touch.setAttribute('href', iconUrl);
+  if (!document.querySelector('link[rel="manifest"]')) {
+    const manifest = {
+      name: '特斯拉购车金融方案',
+      short_name: '特斯拉金融',
+      description: 'K · 特斯拉顾问面客金融测算工具',
+      start_url: './',
+      scope: './',
+      display: 'standalone',
+      background_color: '#F2F2F7',
+      theme_color: '#F2F2F7',
+      lang: 'zh-CN',
+      icons: [{ src: iconUrl, sizes: '512x512', type: 'image/svg+xml', purpose: 'any' }],
+    };
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = URL.createObjectURL(new Blob([JSON.stringify(manifest)], { type: 'application/json' }));
+    document.head.appendChild(link);
+  }
+}
+function initInstallHint() {
+  const hint = document.getElementById('installHint');
+  const btn = document.getElementById('installHintClose');
+  if (!hint || !btn) return;
+  let dismissed = false;
+  try { dismissed = localStorage.getItem(LS_INSTALL_HINT_KEY) === '1'; } catch (_) { /* ignore */ }
+  if (!dismissed && isIosSafari() && !isStandaloneApp()) {
+    hint.hidden = false;
+    hint.classList.add('show');
+  }
+  btn.addEventListener('click', () => {
+    hint.classList.remove('show');
+    hint.hidden = true;
+    try { localStorage.setItem(LS_INSTALL_HINT_KEY, '1'); } catch (_) { /* ignore */ }
+  });
+}
+
+function downStorageKey(m, scheme) {
+  return `${m.id}_${scheme}`;
+}
+function getSchemeDefaultDown(m, scheme, price) {
+  if (isPerfModel(m) && scheme === 'rate25') return getPerfDown(price);
+  return m[scheme]?.down ?? 0;
+}
+function isDownManual(m, scheme) {
+  return !!downOverrides[downStorageKey(m, scheme)]?.manual;
+}
+function getEffectiveDown(m, scheme, price) {
+  const ovr = downOverrides[downStorageKey(m, scheme)];
+  if (ovr?.manual) return Math.max(0, Math.min(Math.round(ovr.down), Math.round(price)));
+  return getSchemeDefaultDown(m, scheme, price);
+}
+function loadDownOverrides() {
+  try {
+    downOverrides = JSON.parse(localStorage.getItem(LS_DOWN_KEY) || '{}');
+  } catch { downOverrides = {}; }
+}
+function saveDownOverrides() {
+  localStorage.setItem(LS_DOWN_KEY, JSON.stringify(downOverrides));
+}
+function syncDownInput() {
+  const m = curModel;
+  const price = getPrice(m);
+  const defDown = getSchemeDefaultDown(m, curScheme, price);
+  const effective = getEffectiveDown(m, curScheme, price);
+  const input = document.getElementById('inputDown');
+  if (input && document.activeElement !== input) input.value = effective;
+  if (input) input.classList.toggle('customized', isDownManual(m, curScheme));
+  const minHint = isPerfModel(m) ? ` · 性能版建议≥15%（${fmt(getPerfDown(price))}）` : '';
+  const hint = document.getElementById('hintDown');
+  if (hint) {
+    hint.textContent = isDownManual(m, curScheme)
+      ? `已手动调整 · 官方建议 ${fmt(defDown)}${minHint}`
+      : `官方建议 ${fmt(defDown)} · 可自行调整，改后重算月供${minHint}`;
+  }
+}
+function onDownInput() {
+  const price = getPrice(curModel);
+  const down = Math.max(0, +document.getElementById('inputDown').value || 0);
+  const key = downStorageKey(curModel, curScheme);
+  const defDown = getSchemeDefaultDown(curModel, curScheme, price);
+  if (down === defDown) {
+    delete downOverrides[key];
+  } else {
+    downOverrides[key] = { down: Math.min(down, price), manual: true };
+  }
+  saveDownOverrides();
+  renderDisplay();
+}
+function resetDownPayment() {
+  delete downOverrides[downStorageKey(curModel, curScheme)];
+  saveDownOverrides();
+  renderDisplay();
+}
+
+function calcTax(price) {
+  return Math.min(Math.round(price / 1.13 * 0.05), NEV_TAX_CAP);
+}
+
+function calcMonthly(loan, apr, months) {
+  if (loan <= 0) return 0;
+  if (!apr) return Math.round(loan / months);
+  const r = apr / 12;
+  return Math.round(loan * r * Math.pow(1 + r, months) / (Math.pow(1 + r, months) - 1));
+}
+
+function getPrice(m) {
+  return calcConfigPrice(m).total;
+}
+
+function renderConfigPanel(m) {
+  ensureValidConfig(m);
+  const sel = getModelConfig(m);
+  const paints = getPaintOptions(m);
+  const interiors = getInteriorOptions(m);
+  const wheels = getWheelOptions(m);
+  const cfg = calcConfigPrice(m);
+  const hero = getModelHeroImage(m);
+  const fallback = getModelFallbackImage(m);
+  const tags = getConfigTags(m);
+
+  const paintHtml = paints.map(p => {
+    const thumb = getOptionPreviewUrl(m, 'paint', p.id);
+    const swatch = PAINT_SWATCH[p.id] || '#cbd5e1';
+    return `<button type="button" class="config-opt paint-chip has-thumb${sel.paint === p.id ? ' active' : ''}" data-type="paint" data-val="${p.id}">
+      <span class="opt-thumb-wrap" style="background:${swatch}">
+        <img class="opt-thumb" src="${thumb}" alt="" loading="lazy" crossorigin="anonymous" referrerpolicy="strict-origin-when-cross-origin" data-fallback="${fallback}" onerror="imgOnErrorFallback(this)">
+      </span>
+      <span class="opt-text">
+        <span class="opt-name">${p.name}</span>
+        <span class="opt-price">${formatPaintPrice(p)}</span>
+      </span>
+    </button>`;
+  }).join('');
+
+  const interiorHtml = interiors.map(o =>
+    `<button type="button" class="config-opt has-thumb${sel.interior === o.id ? ' active' : ''}" data-type="interior" data-val="${o.id}">
+      <span class="opt-thumb-wrap">
+        <img class="opt-thumb" src="${getOptionPreviewUrl(m, 'interior', o.id)}" alt="" loading="lazy" crossorigin="anonymous" referrerpolicy="strict-origin-when-cross-origin" data-fallback="${fallback}" onerror="imgOnErrorFallback(this)">
+      </span>
+      <span class="opt-text">
+        <span class="opt-name">${o.name}</span>
+        <span class="opt-price">${formatOptionPrice(o.price)}</span>
+      </span>
+    </button>`).join('');
+
+  const wheelHtml = wheels.map(w =>
+    `<button type="button" class="config-opt has-thumb wheel-opt${sel.wheels === w.id ? ' active' : ''}" data-type="wheels" data-val="${w.id}">
+      <span class="opt-thumb-wrap">
+        <img class="opt-thumb" src="${getWheelThumbUrl(m, w.id)}" alt="${w.name}" loading="lazy" crossorigin="anonymous" referrerpolicy="strict-origin-when-cross-origin">
+      </span>
+      <span class="opt-text">
+        <span class="opt-name">${w.name}</span>
+        <span class="opt-price">${formatOptionPrice(w.price)}</span>
+      </span>
+    </button>`).join('');
+
+  const promoNote = isPromoExpired()
+    ? '<span class="promo-deadline" style="color:#5c3030">限时优惠已截止，按原价计</span>'
+    : `<span class="promo-deadline">车漆减8000${isM3Model(m) && !isPerfModel(m) ? ' · M3购险补8000（抵尾款）' : ''} · ${promoCountdownText()} · ${promoDeadlineShort()} 前 · 图片同步官网</span>`;
+
+  const detailRows = buildConfigSummaryRows(m).rows.slice(0, -1);
+
+  document.getElementById('configPanel').innerHTML = `
+    <div class="config-panel-hd">
+      <h3><span class="flow-step-tag">2</span> 🎨 车辆配置明细</h3>
+      ${promoNote}
+    </div>
+    <div class="config-layout">
+      <div class="config-visual">
+        <div class="config-visual-stage">
+          <img class="config-hero-img" id="configHeroImg" src="${hero}" alt="${m.name}"
+            crossorigin="anonymous" referrerpolicy="strict-origin-when-cross-origin" data-fallback="${fallback}"
+            onerror="imgOnErrorFallback(this)">
+        </div>
+        <div class="config-visual-tags">${tags.map(t => `<span class="config-tag">${t}</span>`).join('')}</div>
+      </div>
+      <div class="config-main">
+        <div class="config-groups">
+          <div class="config-group">
+            <div class="config-label">车漆 ${!isPromoExpired() ? '<span class="promo-tag">限时减8000</span>' : ''}</div>
+            <div class="config-options config-options--paint">${paintHtml}</div>
+          </div>
+          <div class="config-group">
+            <div class="config-label">内饰</div>
+            <div class="config-options config-options--pick">${interiorHtml}</div>
+          </div>
+          <div class="config-group">
+            <div class="config-label">轮毂</div>
+            <div class="config-options config-options--pick">${wheelHtml}</div>
+          </div>
+        </div>
+        <div class="config-summary">
+          <div class="config-summary-title">${m.name} · 价格明细</div>
+          <div class="config-summary-rows">${detailRows.map(([k, v]) =>
+    `<div class="config-summary-row${k === '车漆限时优惠' || k === 'M3购险补贴（车价）' ? ' discount' : ''}"><span class="lbl">${k}</span><strong>${v}</strong></div>`
+  ).join('')}</div>
+          <div class="config-summary-total"><span>配置后车价</span><span class="val">${fmt(cfg.total)}</span></div>
+        </div>
+      </div>
+    </div>`;
+
+  document.querySelectorAll('#configPanel .config-opt').forEach(btn => {
+    btn.onclick = () => setConfigOption(btn.dataset.type, btn.dataset.val);
+  });
+}
+
+function easyBalloon(m, price) {
+  if (m.id === 'm3') return 45500;
+  return Math.round(price * 0.2);
+}
+
+function buildFinance(m, scheme, down, price, balloon) {
+  const sc = SCHEMES[scheme];
+  const bal = scheme === 'easy' ? balloon : 0;
+  const loan = Math.max(0, price - down - bal);
+  const monthly = calcMonthly(loan, sc.apr, MONTHS);
+  const interest = sc.apr ? Math.max(0, monthly * MONTHS - loan) : 0;
+  return {
+    down: Math.round(down),
+    loan,
+    monthly,
+    interest,
+    balloon: bal,
+    total_fin: Math.round(down) + monthly * MONTHS + bal,
+  };
+}
+
+function getFinance(m, scheme) {
+  const available = getSchemeOrder(m);
+  const key = available.includes(scheme) ? scheme : available[0];
+  const def = m[key];
+  if (!def) {
+    return { down: 0, loan: 0, monthly: 0, interest: 0, balloon: 0, isCustom: false, price: getPrice(m), downManual: false };
+  }
+  const price = getPrice(m);
+  const down = getEffectiveDown(m, key, price);
+  const defDown = getSchemeDefaultDown(m, key, price);
+  const downManual = isDownManual(m, key);
+  const priceCustom = hasCustomPrice(m);
+
+  if (isPerfModel(m) && key === 'rate25') {
+    if (!priceCustom && !downManual && down === def.down) {
+      return { ...def, isCustom: false, price, downManual: false };
+    }
+    return { ...buildFinance(m, key, down, price, 0), isCustom: true, price, downManual };
+  }
+
+  if (!priceCustom && !downManual && down === def.down) {
+    return { ...def, isCustom: false, price, downManual: false };
+  }
+  const balloon = key === 'easy' ? easyBalloon(m, price) : 0;
+  return { ...buildFinance(m, key, down, price, balloon), isCustom: true, price, downManual };
+}
+
+function getLandingOpts() {
+  const insVal = document.getElementById('insurance').value;
+  let subsidy = +document.getElementById('subsidy').value || 0;
+  if (isCompanyPurchase()) subsidy = 0;
+  return {
+    tradeIn: +document.getElementById('tradeIn').value || 0,
+    subsidy,
+    insurance: insVal === '' ? defaultInsurance(curModel) : (+insVal || 0),
+    regFee: +document.getElementById('regFee').value || 520,
+    insuranceManual: landingOpts.insuranceManual,
+    purchaseType: landingOpts.purchaseType || 'personal',
+  };
+}
+
+function calcLanding(m, fin) {
+  const opts = getLandingOpts();
+  const tax = calcTax(fin.price ?? getPrice(m));
+  const tradeApplied = opts.tradeIn > 0 ? opts.tradeIn : 0;
+  const subsidyApplied = opts.subsidy > 0 && !isCompanyPurchase() ? opts.subsidy : 0;
+  const deductionTotal = tradeApplied + subsidyApplied;
+  const overDeduction = deductionTotal > fin.down;
+  const firstPay = fin.down + opts.insurance + opts.regFee + tax - tradeApplied - subsidyApplied;
+  return {
+    ...fin,
+    downNet: Math.max(0, fin.down - deductionTotal),
+    firstPay,
+    firstPayNegative: firstPay < 0,
+    tax,
+    tradeApplied,
+    subsidyApplied,
+    deductionTotal,
+    overDeduction,
+    overSubsidy: subsidyApplied > fin.down,
+    ...opts,
+  };
+}
+
+function parseModelChip(m) {
+  if (m.name.startsWith('Model Y L')) return { badge: 'Y L', trim: m.name.replace('Model Y L ', '') };
+  if (m.name.startsWith('Model 3')) return { badge: 'M3', trim: m.name.replace('Model 3 ', '') };
+  if (m.name.startsWith('Model Y')) return { badge: 'MY', trim: m.name.replace('Model Y ', '') };
+  return { badge: '', trim: m.name };
+}
+function getModelChipPriceMeta(m) {
+  const custom = hasCustomPrice(m);
+  const price = custom ? getPrice(m) : m.price;
+  let note = '';
+  if (custom) note = '含选配';
+  else if (getM3InsuranceSubsidy(m) && calcConfigPrice(m).total !== m.price) note = '含购险补';
+  else if (!custom) note = '起';
+  return { price, note };
+}
+function renderModelStrip() {
+  document.getElementById('modelStrip').innerHTML = MODEL_GROUPS.map(g => {
+    const models = DATA.models.filter(g.match);
+    return `<div class="model-group">
+      <div class="model-group-label">${g.label}</div>
+      <div class="model-strip-inner">${models.map(m => {
+        const { badge, trim } = parseModelChip(m);
+        const { price, note } = getModelChipPriceMeta(m);
+        return `<button type="button" class="model-chip${m.id === curModel.id ? ' active' : ''}" data-id="${m.id}">
+          <span class="chip-badge">${badge}</span>
+          <span class="chip-trim">${trim}</span>
+          <span class="chip-price">${fmt(price)}</span>
+          ${note ? `<span class="chip-note">${note}</span>` : ''}
+        </button>`;
+      }).join('')}</div>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('.model-chip').forEach(btn => {
+    btn.onclick = () => {
+      curModel = DATA.models.find(x => x.id === btn.dataset.id);
+      if (!landingOpts.insuranceManual) {
+        landingOpts.insurance = defaultInsurance(curModel);
+        saveLandingOpts();
+      }
+      syncLandingInputs();
+      ensureValidScheme(curModel);
+      ensureValidConfig(curModel);
+      renderDisplay();
+    };
+  });
+}
+
+function renderDelivery(m) {
+  document.getElementById('deliveryPanel').innerHTML = buildDeliveryHtml(m, false);
+}
+
+function renderBenefits(m) {
+  document.getElementById('benefitsTitle').innerHTML =
+    `<span class="flow-step-tag">8</span> 🎁 限时官方权益<br><small style="font-size:12px;font-weight:600;color:var(--muted)">${promoDeadlineShort()} 前</small>`;
+  document.getElementById('benefitGrid').innerHTML =
+    getBenefitItems(m).map(b => buildBenefitCardHtml(b, { interactive: true })).join('');
+  syncBenefitDetailToggleAll(false);
+}
+
+function renderHero(m, fin, landing) {
+  const sc = SCHEMES[curScheme] || SCHEMES[getSchemeOrder(m)[0]];
+  const customTag = fin.isCustom ? ' · 含选配/权益' : '';
+  const downTag = fin.downManual ? ' · 首付已调整' : '';
+  const expiredNote = isPromoExpired() ? ' · 政策已截止' : '';
+  const purchaseTag = isCompanyPurchase() ? ' · 公司购买' : ' · 个人购买';
+  let subText;
+  if (isPerfModel(m)) {
+    subText = `首付最低15% · 年费率2.5% · 5年总利息约 ${fmt(fin.interest)} · 不参与0息/超低息/轻松贷`;
+  } else {
+    const finZero = getFinance(m, 'zero');
+    const saveVsZero = finZero.monthly - fin.monthly;
+    subText = curScheme === 'easy' && saveVsZero > 0
+      ? `比5年0息月供低 ${fmtN(saveVsZero)} 元/月`
+      : curScheme === 'zero' ? '5年贷款利息：0 元' : `5年总利息约 ${fmt(fin.interest)}`;
+  }
+
+  document.getElementById('clientHero').innerHTML = `
+    <div class="eyebrow"><span class="flow-step-tag" style="width:20px;height:20px;font-size:10px;margin-right:6px">3</span>${sc.name}${purchaseTag}${customTag}${downTag}${expiredNote} · 限时至 ${promoDeadlineShort()}</div>
+    <h1>${m.name}</h1>
+    <div class="msrp">全国统一售价 ${fmt(fin.price ?? getPrice(m))}${fin.isCustom || getM3InsuranceSubsidy(m) ? ' <small>(含选配/权益)</small>' : ''}</div>
+    <div class="monthly-mega">
+      <div class="label">您每月只需还</div>
+      <div class="num">${fmtN(fin.monthly)}</div>
+      <div class="unit">元 / 月 × 60期（5年）</div>
+      <div class="sub">${subText}</div>
+    </div>
+    <div class="hero-mini">
+      <div class="item"><div class="v">${fmt(fin.down)}</div><div class="l">首付</div></div>
+      <div class="item"><div class="v">${fin.interest ? fmt(fin.interest) : '0'}</div><div class="l">5年贷款利息</div></div>
+      <div class="item"><div class="v">${fin.balloon ? fmt(fin.balloon) : '无'}</div><div class="l">${fin.balloon ? '5年后尾款' : '到期无尾款'}</div></div>
+    </div>`;
+}
+
+function buildTimelineFlow(fin, landing) {
+  let steps;
+  if (fin.balloon) {
+    steps = `
+      <div class="flow-step highlight"><div class="icon">📅</div><div class="amt">${fmt(fin.down)}</div><div class="cap"><b>首付</b><br>金融方案</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight"><div class="icon">💳</div><div class="amt green">${fmtN(fin.monthly)}</div><div class="cap"><b>每月</b><br>连续还60期</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight"><div class="icon">🎯</div><div class="amt gold">${fmt(fin.balloon)}</div><div class="cap"><b>第5年末</b><br>一次性付尾款</div></div>`;
+  } else {
+    steps = `
+      <div class="flow-step highlight"><div class="icon">📅</div><div class="amt">${fmt(fin.down)}</div><div class="cap"><b>首付</b><br>金融方案</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step highlight"><div class="icon">💳</div><div class="amt green">${fmtN(fin.monthly)}</div><div class="cap"><b>每月</b><br>还60期结清</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="icon">✅</div><div class="amt">0</div><div class="cap"><b>第5年末</b><br>无尾款</div></div>`;
+  }
+
+  const supplement = [];
+  if (landing.tradeIn) {
+    supplement.push(`<div class="flow-supplement-item"><span class="ico">🚗</span><div><b class="deduction-amt">客户旧车 ${fmt(landing.tradeIn)}</b><span> · 已折算计入前期成本</span></div></div>`);
+  }
+  if (landing.subsidy && !isCompanyPurchase()) {
+    supplement.push(`<div class="flow-supplement-item"><span class="ico">🎁</span><div><b class="deduction-amt">补贴 ${fmt(landing.subsidy)}</b><span> · 已折算计入前期成本 · ${SUBSIDY_RISK_NOTE}</span></div></div>`);
+  }
+  const supplementHtml = supplement.length
+    ? `<div class="flow-supplement">${supplement.join('')}</div>` : '';
+
+  return { steps, supplementHtml };
+}
+
+function renderTimeline(m, fin, landing) {
+  const { steps, supplementHtml } = buildTimelineFlow(fin, landing);
+  let note;
+  if (fin.balloon) {
+    note = `💡 金融路径：首付 ${fmt(fin.down)} → 5年每月 ${fmtN(fin.monthly)} 元 → 尾款 ${fmt(fin.balloon)}。${isM3Model(m) && !isPerfModel(m) ? ' M3购险补贴8000需提车购险后抵尾款。' : ''}`;
+  } else if (isPerfModel(m) || curScheme === 'rate25') {
+    note = `💡 金融路径：首付 ${fmt(fin.down)} → 年费率2.5%，5年月供 ${fmtN(fin.monthly)} 元（总利息约 ${fmt(fin.interest)}）→ 结清。性能版不参与0息/超低息/轻松贷。`;
+  } else if (curScheme === 'zero') {
+    note = `💡 金融路径：首付 ${fmt(fin.down)} → 5年0息月供 ${fmtN(fin.monthly)} 元 → 结清。`;
+  } else {
+    note = `💡 金融路径：首付 ${fmt(fin.down)} → 5年月供 ${fmtN(fin.monthly)} 元（总利息约 ${fmt(fin.interest)}）→ 结清。`;
+  }
+  if (landing.tradeIn || (landing.subsidy && !isCompanyPurchase())) {
+    note += ` 客户旧车价格、置换补贴已折算计入「首次前期付的成本」合计。`;
+    if (landing.firstPayNegative) {
+      note += ` 合计为负，表示已覆盖全部前期费用，实际无需再付（以门店为准）。`;
+    } else if (isZeroFirstPay(landing)) {
+      note += ` 合计为 ¥0，表示本次无需额外现金（以门店为准）。`;
+    }
+  }
+  document.getElementById('timeline').innerHTML = `<h2><span class="flow-step-tag">6</span>钱怎么付？一张图看懂</h2><div class="flow">${steps}</div>${supplementHtml}<div class="flow-note">${note}</div>`;
+}
+
+function renderSchemeGrid(m) {
+  const order = getSchemeOrder(m);
+  const hint = document.getElementById('schemeSectionHint');
+  if (hint) hint.textContent = isPerfModel(m) ? '性能版 · 首付最低15% · 年费率2.5%' : '点选切换 · 红框为当前方案';
+  const grid = document.getElementById('schemeGrid');
+  grid.classList.toggle('single', order.length === 1);
+  const fins = order.map(k => getFinance(m, k));
+  const bestMonthly = Math.min(...fins.map(f => f.monthly));
+  grid.innerHTML = order.map(key => {
+    const sc = SCHEMES[key];
+    const s = getFinance(m, sc.key);
+    const selected = sc.key === curScheme;
+    return `<div class="scheme-card${selected?' selected':''}${sc.recommend?' recommended':''}" data-scheme="${sc.key}">
+      <div class="name">${sc.name}${order.length > 1 && s.monthly===bestMonthly?' · 月供最低':''}</div>
+      <div class="desc">${sc.desc}<br>${sc.tag}</div>
+      <div class="monthly">${fmtN(s.monthly)}<small> 元/月</small></div>
+      <div class="meta">
+        <div><span>首付</span><b>${fmt(s.down)}</b></div>
+        <div><span>5年利息</span><b>${s.interest ? fmt(s.interest) : '0 元'}</b></div>
+        <div><span>尾款</span><b>${s.balloon ? fmt(s.balloon) : '无'}</b></div>
+      </div>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('.scheme-card').forEach(card => {
+    card.onclick = () => {
+      curScheme = card.dataset.scheme;
+      renderDisplay();
+    };
+  });
+}
+
+function renderLanding(m, fin, landing) {
+  const rows = buildLandingRows(fin, landing);
+  const warnHint = landing.firstPayNegative
+    ? firstPayNegativeNoteHtml(landing, false)
+    : isZeroFirstPay(landing)
+    ? firstPayZeroNoteHtml(landing, false)
+    : landing.overDeduction
+    ? `<div class="hint warn">⚠️ 旧车+补贴合计超过金融首付，请核对金额</div>`
+    : landing.overSubsidy
+      ? `<div class="hint warn">⚠️ 置换/报废补贴超过金融首付，请核对金额</div>`
+      : '';
+  const subsidyRisk = landing.subsidy && !isCompanyPurchase()
+    ? `<div class="subsidy-risk-note">⚠️ ${SUBSIDY_RISK_NOTE}</div>`
+    : '';
+  const deductNote = landingDeductionFootnoteHtml(landing, false);
+
+  document.getElementById('landingCard').innerHTML = `
+    <h2><span class="flow-step-tag">7</span> 🧾 首次前期付的成本</h2>
+    <div class="landing-rows">${rows.map(r => landingRowHtml(r, 'landing-row')).join('')}</div>
+    <div class="landing-total${firstPayBoxClass(landing)}">
+      <div class="lbl">首次前期付的成本</div>
+      <div class="val${firstPayStatusClass(landing)}">${fmtSigned(landing.firstPay)}</div>
+      <div class="hint">${fin.balloon ? `不含5年后尾款 ${fmt(fin.balloon)}` : '5年还完即结清'}</div>
+      ${deductNote}
+      ${warnHint}
+      ${subsidyRisk}
+    </div>`;
+}
+
+function renderCompanyTaxCard(m, fin) {
+  const el = document.getElementById('companyTaxCard');
+  if (!isCompanyPurchase()) {
+    el.classList.remove('show');
+    el.innerHTML = '';
+    return;
+  }
+  el.classList.add('show');
+  el.innerHTML = buildCompanyTaxHtml(m, fin, false);
+}
+
+function renderPrint(m, fin, landing) {
+  const sc = SCHEMES[curScheme] || SCHEMES[getSchemeOrder(m)[0]];
+  const order = getSchemeOrder(m);
+  let schemePrintHtml;
+  if (isPerfModel(m)) {
+    const r = getFinance(m, 'rate25');
+    schemePrintHtml = `<div class="print-row"><span>5年期贷款 2.5%</span><b>${fmtN(r.monthly)}</b></div>
+      <div class="print-row"><span>5年利息</span><b>${fmt(r.interest)}</b></div>`;
+  } else {
+    const z = getFinance(m, 'zero'), e = getFinance(m, 'easy'), u = getFinance(m, 'ultra');
+    schemePrintHtml = `<div class="print-row"><span>5年0息</span><b>${fmtN(z.monthly)}</b></div>
+          <div class="print-row"><span>超低息</span><b>${fmtN(u.monthly)}</b></div>
+          <div class="print-row"><span>轻松贷</span><b>${fmtN(e.monthly)}</b></div>`;
+  }
+  const landingRows = buildLandingRows(fin, landing).map(([k, v]) => {
+    if (k === '购置税（2026·5%）') return ['购置税', v];
+    return [k, v];
+  });
+  landingRows.push(['合计', fmtSigned(landing.firstPay)]);
+
+  const companyTaxPrint = isCompanyPurchase() ? (() => {
+    const t = calcCompanyTax(fin.price ?? getPrice(m));
+    return `<div class="print-box"><h3>公司购车 · 13%专票抵税</h3>
+      <div class="print-row"><span>含税车价</span><b>${fmt(t.taxed)}</b></div>
+      <div class="print-row"><span>不含税金额</span><b>${fmt(t.exTax)}</b></div>
+      <div class="print-row"><span>专票税额（13%）</span><b>${fmt(t.vatInput)}</b></div>
+      <div class="print-row"><span>抵扣后车价成本</span><b style="color:#162A46">${fmt(t.netCost)}</b></div>
+      <div class="print-warn">* 需一般纳税人，以财务及税务规定为准</div></div>`;
+  })() : '';
+
+  const benHtml = getBenefitItems(m).map(b =>
+    `<div class="print-ben"><b>${b.ico} ${b.title}</b>${b.sub}</div>`).join('');
+
+  const configPrint = (() => {
+    const { rows, cfg } = buildConfigSummaryRows(m);
+    const hero = getModelHeroImage(m, null, true);
+    const tags = getConfigTags(m).join(' · ');
+    return `<div class="print-box"><h3>车辆配置明细</h3>
+      <div style="text-align:center;margin-bottom:10px;background:#FAF8F5;padding:8px;border-radius:6px"><img src="${hero}" alt="${m.name}" style="max-width:100%;max-height:180px;object-fit:contain" crossorigin="anonymous" onerror="this.style.display='none'"></div>
+      <div style="font-size:8pt;color:rgba(22,42,70,.62);margin-bottom:8px">${tags}</div>
+      ${rows.map(([k,v]) => `<div class="print-row"><span>${k}</span><b${k==='配置后车价'?' style="color:#162A46"':''}>${v}</b></div>`).join('')}
+      ${cfg.paintPromoActive ? `<div class="print-warn" style="margin-top:6px">* 车漆限时减8000，${promoDeadlineShort()} 前有效</div>` : ''}
+      ${cfg.insuranceSubsidyActive ? `<div class="print-warn" style="margin-top:6px">* M3购险补贴8000（提车购险后抵尾款，不含高性能版），${promoDeadlineShort()} 前有效</div>` : ''}
+      </div>`;
+  })();
+
+  const expiredPrint = promoExpiredNoteText();
+  const customerLine = getCustomerNote() ? `<br>${getCustomerNote()}` : '';
+
+  document.getElementById('printSheet').innerHTML = `
+    <div class="print-page">
+      <div class="print-hdr">
+        <h1>${m.name}<br>购车金融方案</h1>
+        <div class="meta">${getAdvisorLabel()} · ${isCompanyPurchase() ? '公司购买' : '个人购买'}<br>${isPromoExpired() ? '活动已截止' : '限时至 ' + promoDeadlineFull()}<br>${new Date().toLocaleDateString('zh-CN')} · 数据版 ${getDataVersion()}${customerLine}${fin.isCustom ? '<br>※ 含选配' : ''}</div>
+      </div>
+      ${expiredPrint ? `<div class="print-warn" style="margin-bottom:8px">${expiredPrint}</div>` : ''}
+      ${configPrint}
+      <div class="print-banner">
+        <div><div style="font-size:7pt;color:#D8D0C1">${sc.name}</div><div class="big">${fmtN(fin.monthly)}<span style="font-size:10pt"> 元/月</span></div></div>
+        <div class="mid">车价 ${fmt(fin.price ?? getPrice(m))}<br>首付 ${fmt(fin.down)} · 首次前期付的成本 ${fmtSigned(landing.firstPay)}${landing.firstPayNegative ? '（抵扣结余）' : isZeroFirstPay(landing) ? '（无需额外现金）' : ''}${fin.balloon ? `<br>尾款 ${fmt(fin.balloon)}` : ''}</div>
+      </div>
+      <div class="print-cols">
+        <div class="print-box"><h3>${isPerfModel(m) ? '金融方案' : '三方案月供'}</h3>
+          ${schemePrintHtml}
+        </div>
+        <div class="print-box"><h3>首次前期付的成本</h3>
+          ${landingRows.map(([k,v]) => {
+            let style = '';
+            if (k === '合计' && landing.firstPayNegative) style = ' style="color:#2d6a4f"';
+            else if (k === '合计' && isZeroFirstPay(landing)) style = ' style="color:#2a6a8a"';
+            else if (k === '合计') style = ' style="color:#162A46"';
+            else if (isLandingDeductionRow(k)) style = ' style="color:#c62828"';
+            return `<div class="print-row"><span>${k}</span><b${style}>${v}</b></div>`;
+          }).join('')}
+          ${landingDeductionFootnoteHtml(landing, true)}
+          ${landing.firstPayNegative ? '<div class="print-warn" style="color:#2d6a4f">💡 首次前期付为负，表示旧车+补贴已覆盖全部前期费用，实际无需再付（以门店为准）</div>' : ''}
+          ${isZeroFirstPay(landing) ? '<div class="print-warn" style="color:#2a6a8a">💡 首次前期付为 ¥0，旧车与补贴已抵扣全部前期费用，本次无需额外现金（以门店为准）</div>' : ''}
+          ${!landing.firstPayNegative && !isZeroFirstPay(landing) && landing.overDeduction ? '<div class="print-warn">⚠ 旧车+补贴合计超过金融首付，请核对</div>' : ''}
+          ${!landing.firstPayNegative && !isZeroFirstPay(landing) && landing.overSubsidy && !landing.overDeduction ? '<div class="print-warn">⚠ 置换/报废补贴超过金融首付，请核对</div>' : ''}
+          ${landing.subsidy && !isCompanyPurchase() ? `<div class="print-warn">⚠ ${SUBSIDY_RISK_NOTE}</div>` : ''}
+        </div>
+      </div>
+      ${companyTaxPrint}
+      <div class="print-box"><h3>限时官方权益（${promoDeadlineShort()} 前）</h3>
+        <div class="print-ben-grid">${benHtml}</div>
+      </div>
+      <div class="print-foot">* 仅供参考，以金融机构批复为准 · ${getAdvisorLabel()} · 数据版 ${getDataVersion()}</div>
+    </div>`;
+}
+
+function renderScreenshotCard(m, fin, landing) {
+  const sc = SCHEMES[curScheme];
+  const price = fin.price ?? getPrice(m);
+  const cfg = calcConfigPrice(m);
+  const note = getCustomerNote();
+  const rows = buildLandingRows(fin, landing).map(([k,v]) => {
+    if (k === '购置税（2026·5%）') return ['购置税', v];
+    return [k, v];
+  });
+  const expiredShot = promoExpiredNoteText();
+  const promoTag = isPromoExpired() ? '活动已截止' : `活动至 ${promoDeadlineShort()}`;
+  const schemeOrder = getSchemeOrder(m);
+  const priceLine = cfg.total !== m.price
+    ? `配置后车价 ${fmt(cfg.total)}${cfg.insuranceSubsidy ? '（含购险补）' : ''}`
+    : `全国统一售价 ${fmt(price)}`;
+
+  let flowSteps;
+  if (fin.balloon) {
+    flowSteps = `
+      <div class="shot-flow-step"><div class="fc">首付</div><div class="fa">${fmt(fin.down)}</div></div>
+      <div class="shot-flow-arr">→</div>
+      <div class="shot-flow-step"><div class="fc">月供×60</div><div class="fa">${fmtN(fin.monthly)}</div></div>
+      <div class="shot-flow-arr">→</div>
+      <div class="shot-flow-step"><div class="fc">5年后尾款</div><div class="fa">${fmt(fin.balloon)}</div></div>`;
+  } else {
+    flowSteps = `
+      <div class="shot-flow-step"><div class="fc">首付</div><div class="fa">${fmt(fin.down)}</div></div>
+      <div class="shot-flow-arr">→</div>
+      <div class="shot-flow-step"><div class="fc">月供×60</div><div class="fa">${fmtN(fin.monthly)}</div></div>
+      <div class="shot-flow-arr">→</div>
+      <div class="shot-flow-step"><div class="fc">结清</div><div class="fa">0 尾款</div></div>`;
+  }
+  let flowExtra = '';
+  if (landing.tradeIn || (landing.subsidy && !isCompanyPurchase())) {
+    const parts = [];
+    if (landing.tradeIn) parts.push(`旧车 ${fmt(landing.tradeIn)}`);
+    if (landing.subsidy && !isCompanyPurchase()) parts.push(`补贴 ${fmt(landing.subsidy)}`);
+    flowExtra += `<div class="shot-flow-note">${parts.join(' · ')} 已折算计入首次前期付的成本</div>`;
+  }
+  if (landing.subsidy && !isCompanyPurchase()) {
+    flowExtra += `<div class="shot-flow-warn">⚠️ ${SUBSIDY_RISK_NOTE}</div>`;
+  }
+
+  const companyTaxShot = isCompanyPurchase() ? buildCompanyTaxHtml(m, fin, true) : '';
+  const configShot = buildConfigHtml(m, true);
+
+  const schemesHtml = schemeOrder.map(key => {
+    const s = getFinance(m, key);
+    const sc2 = SCHEMES[key];
+    return `<div class="shot-scheme${key === curScheme ? ' on' : ''}">
+      <div class="sn">${sc2.name}</div>
+      <div class="sm">${fmtN(s.monthly)}<small> 元/月</small></div>
+      <div class="ss">首付 ${fmtN(s.down)}${s.balloon ? '<br>尾款 ' + fmtN(s.balloon) : ''}</div>
+    </div>`;
+  }).join('');
+
+  const benHtml = getScreenshotBenefitItems(m).map(b => buildBenefitCardHtml(b, { shot: true })).join('');
+  const today = new Date().toLocaleDateString('zh-CN');
+
+  document.getElementById('screenshotCard').innerHTML = `
+    <div class="shot-card">
+      <div class="shot-top-bar">
+        <span class="shot-top-brand">⚡ 特斯拉购车方案</span>
+        <span class="shot-top-meta">${getAdvisorLabel()}${note ? ' · ' + note : ''}<br>${today}</span>
+      </div>
+      ${configShot}
+      <div class="shot-head">
+        <div class="tag">
+          <span class="shot-scheme-pill">${sc.name}</span>
+          ${isCompanyPurchase() ? '公司购买' : '个人购买'} · ${promoTag}
+        </div>
+        <h2>${m.name}</h2>
+        <div class="price">${priceLine}</div>
+        <div class="shot-monthly">
+          <div class="lbl">每月只需还</div>
+          <div class="num">${fmtN(fin.monthly)}</div>
+          <div class="unit">元 / 月 × 60 期（5 年）</div>
+        </div>
+        <div class="shot-mini">
+          <div><b>${fmt(fin.down)}</b>首付</div>
+          <div><b>${fin.interest ? fmt(fin.interest) : '0'}</b>5年利息</div>
+          <div><b>${fin.balloon ? fmt(fin.balloon) : '无'}</b>尾款</div>
+        </div>
+      </div>
+      <div class="shot-body">
+        ${expiredShot ? `<div class="shot-expired">${expiredShot}</div>` : ''}
+        <div class="shot-sec-title"><span class="dot"></span>金融方案对比</div>
+        <div class="shot-schemes${schemeOrder.length === 1 ? ' single' : ''}">${schemesHtml}</div>
+
+        <div class="shot-sec-title"><span class="dot"></span>钱怎么付</div>
+        <div class="shot-block"><div class="shot-flow">${flowSteps}</div>${flowExtra}</div>
+
+        <div class="shot-landing">
+          <h3>🧾 首次前期付的成本</h3>
+          ${rows.map(r => landingRowHtml(r, 'shot-row')).join('')}
+          <div class="shot-total${firstPayBoxClass(landing)}">
+            <div class="tl">首次前期付的成本</div>
+            <div class="tv${firstPayStatusClass(landing)}">${fmtSigned(landing.firstPay)}</div>
+          </div>
+          ${firstPayNegativeNoteHtml(landing, true)}
+          ${firstPayZeroNoteHtml(landing, true)}
+          ${landingDeductionFootnoteHtml(landing, true)}
+        </div>
+
+        ${companyTaxShot}
+
+        ${buildDeliveryHtml(m, true)}
+
+        <div class="shot-benefits">
+          <h3>🎁 限时官方权益（${promoDeadlineShort()} 前）</h3>
+          <div class="shot-ben-list">${benHtml}</div>
+        </div>
+
+        <div class="shot-foot">${getAdvisorLabel()} · 限时至 ${promoDeadlineFull()} · 以金融批复为准 · 数据 ${getDataVersion()}</div>
+      </div>
+    </div>`;
+  prefetchShotHero(m);
+}
+function prefetchShotHero(m) {
+  [getModelHeroImage(m, null, true), getModelFallbackImage(m)].forEach(url => { void fetchImageDataUrl(url); });
+}
+
+function copyWechat() {
+  const fin = getFinance(curModel, curScheme);
+  const landing = calcLanding(curModel, fin);
+  const sc = SCHEMES[curScheme];
+  const { rows } = buildConfigSummaryRows(curModel);
+  const landingRows = buildLandingRows(fin, landing);
+  let text = `【特斯拉 ${curModel.name} · ${sc.name} · ${isCompanyPurchase() ? '公司购买' : '个人购买'}】\n`;
+  if (getCustomerNote()) text += `客户：${getCustomerNote()}\n`;
+  text += `【车辆配置明细】\n`;
+  rows.forEach(([k, v]) => { text += `${k}：${v}\n`; });
+  text += `\n全国统一售价：${fmt(fin.price ?? getPrice(curModel))}${fin.isCustom ? '（含选配）' : ''}\n`;
+  if (isCompanyPurchase()) {
+    const t = calcCompanyTax(fin.price ?? getPrice(curModel));
+    text += `\n【公司购车 · 13%专票抵税】\n`;
+    text += `含税车价：${fmt(t.taxed)}\n`;
+    text += `不含税金额：${fmt(t.exTax)}\n`;
+    text += `专票税额（可抵扣进项）：${fmt(t.vatInput)}\n`;
+    text += `抵扣后车价成本：${fmt(t.netCost)}\n`;
+    text += `* 需一般纳税人，以财务及税务规定为准\n\n`;
+  }
+  text += `月供：${fmtN(fin.monthly)} 元 × 60期\n`;
+  text += `金融首付：${fmt(fin.down)}${fin.downManual ? '（已手动调整）' : ''}\n`;
+  if (fin.balloon) text += `5年后尾款：${fmt(fin.balloon)}\n`;
+  text += `\n【首次前期付的成本】\n`;
+  landingRows.forEach(([k, v]) => { text += `${k}：${v}\n`; });
+  text += `合计：${fmtSigned(landing.firstPay)}\n`;
+  if (landing.firstPayNegative) {
+    text += `💡 负值表示旧车+补贴已覆盖全部前期费用，结余约 ${fmt(firstPaySurplus(landing))}，实际无需再付（以门店为准）\n`;
+  } else if (isZeroFirstPay(landing)) {
+    text += `💡 首次前期付为 ¥0：旧车与补贴已抵扣全部前期费用，本次无需额外现金（以门店为准）\n`;
+  }
+  if (landing.tradeIn || (landing.subsidy && !isCompanyPurchase())) {
+    text += `* 客户旧车价格、置换补贴已折算计入上方合计\n`;
+  }
+  if (landing.subsidy && !isCompanyPurchase()) text += `⚠️ ${SUBSIDY_RISK_NOTE}\n`;
+  if (isCompanyPurchase()) text += `ℹ️ 公司购车不可享受置换/报废补贴\n`;
+  if (!landing.firstPayNegative && !isZeroFirstPay(landing) && landing.overDeduction) text += `⚠️ 旧车+补贴合计超过金融首付，请核对\n`;
+  else if (!landing.firstPayNegative && !isZeroFirstPay(landing) && landing.overSubsidy) text += `⚠️ 置换/报废补贴超过金融首付，请核对\n`;
+  text += `交付周期：${getDeliveryWeeks(curModel)}\n`;
+  const expired = promoExpiredNoteText();
+  if (expired) text += `${expired}\n`;
+  text += `${isPromoExpired() ? '仅供参考' : `${promoCountdownText()} · 限时至 ${promoDeadlineShort()}`} · 以金融批复为准\n—— ${getAdvisorLabel()}`;
+  const btns = document.querySelectorAll('[data-copy-text-btn]');
+  const oldTexts = [...btns].map(b => b.textContent);
+  navigator.clipboard.writeText(text).then(() => {
+    btns.forEach(b => { b.textContent = '✓ 已复制'; });
+    setTimeout(() => btns.forEach((b, i) => { b.textContent = oldTexts[i]; }), 1500);
+  }).catch(() => prompt('请手动复制：', text));
+}
+
+function renderDisplay() {
+  ensureValidScheme(curModel);
+  const fin = getFinance(curModel, curScheme);
+  const landing = calcLanding(curModel, fin);
+  renderPromoBanner();
+  renderModelStrip();
+  renderConfigPanel(curModel);
+  renderHero(curModel, fin, landing);
+  renderTimeline(curModel, fin, landing);
+  renderSchemeGrid(curModel);
+  syncDownInput();
+  renderLanding(curModel, fin, landing);
+  renderCompanyTaxCard(curModel, fin);
+  renderDelivery(curModel);
+  renderBenefits(curModel);
+  updateLandingSummary(landing, fin);
+  document.getElementById('shotFooter').textContent =
+    `${getAdvisorLabel()} · ${isPromoExpired() ? '活动已截止 · 仅供参考' : `${promoCountdownText()} · 限时至 ${promoDeadlineFull()}`} · 以金融批复为准`;
+  renderFooterMeta();
+  renderPrint(curModel, fin, landing);
+  renderScreenshotCard(curModel, fin, landing);
+}
+
+['tradeIn','subsidy','insurance','regFee'].forEach(id => {
+  document.getElementById(id).addEventListener('input', onLandingInput);
+});
+document.getElementById('inputDown').addEventListener('input', onDownInput);
+
+loadPriceOverrides();
+loadDownOverrides();
+loadLandingOpts();
+loadCustomerNote();
+initBenefitDetailHandlers();
+initTheme();
+initPwa();
+initInstallHint();
+document.getElementById('customerNote')?.addEventListener('input', () => {
+  saveCustomerNote();
+  const fin = getFinance(curModel, curScheme);
+  const landing = calcLanding(curModel, fin);
+  renderPrint(curModel, fin, landing);
+  renderScreenshotCard(curModel, fin, landing);
+  document.getElementById('shotFooter').textContent =
+    `${getAdvisorLabel()} · ${isPromoExpired() ? '活动已截止 · 仅供参考' : `${promoCountdownText()} · 限时至 ${promoDeadlineFull()}`} · 以金融批复为准`;
+});
+renderDisplay();
+
+function toggleFullscreen() {
+  const el = document.documentElement;
+  const btn = document.getElementById('btnFullscreen');
+  if (!document.fullscreenElement) {
+    (el.requestFullscreen || el.webkitRequestFullscreen)?.call(el)?.catch?.(() => {});
+  } else {
+    (document.exitFullscreen || document.webkitExitFullscreen)?.call(document);
+  }
+}
+function onFullscreenChange() {
+  const on = !!document.fullscreenElement;
+  document.body.classList.toggle('is-fullscreen', on);
+  document.querySelectorAll('[data-fullscreen-btn]').forEach(btn => {
+    btn.textContent = on ? '⛶ 退出全屏' : '⛶ 全屏';
+  });
+  if (on && !landingEditCollapsed) {
+    landingEditCollapsed = true;
+    localStorage.setItem(LS_COLLAPSE_KEY, '1');
+    syncLandingEditCollapse();
+  }
+}
+document.addEventListener('fullscreenchange', onFullscreenChange);
+document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+
+function applyTheme(theme) {
+  const dark = theme === 'dark';
+  if (dark) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#000000');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#F2F2F7');
+  }
+  document.querySelectorAll('[data-theme-toggle]').forEach(btn => {
+    btn.textContent = dark ? '☀️ 浅色模式' : '🌙 深色模式';
+  });
+}
+function initTheme() {
+  try {
+    applyTheme(localStorage.getItem(LS_THEME_KEY) === 'dark' ? 'dark' : 'light');
+  } catch {
+    applyTheme('light');
+  }
+}
+function toggleTheme() {
+  const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+  try { localStorage.setItem(LS_THEME_KEY, next); } catch (_) { /* ignore */ }
+}
+function toggleTopbarMore(e) {
+  e?.stopPropagation();
+  const menu = document.getElementById('topbarMoreMenu');
+  const btn = document.getElementById('btnTopbarMore');
+  if (!menu || !btn) return;
+  const open = menu.hidden;
+  menu.hidden = !open;
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function closeTopbarMore() {
+  const menu = document.getElementById('topbarMoreMenu');
+  const btn = document.getElementById('btnTopbarMore');
+  if (menu) menu.hidden = true;
+  if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('#topbarMore')) closeTopbarMore();
+});
+
+async function ensureHtml2Canvas() {
+  if (window.html2canvas) return;
+  await new Promise((resolve, reject) => {
+    let n = 0;
+    const timer = setInterval(() => {
+      if (window.html2canvas) { clearInterval(timer); resolve(); return; }
+      if (++n > 60) { clearInterval(timer); reject(new Error('截图库加载中，请刷新后再试')); }
+    }, 50);
+  });
+}
+
+async function canvasToPngBlob(canvas) {
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+  if (blob) return blob;
+  const dataUrl = canvas.toDataURL('image/png');
+  const res = await fetch(dataUrl);
+  return res.blob();
+}
+
+const shotImageCache = new Map();
+
+function imageToDataUrl(img) {
+  const c = document.createElement('canvas');
+  const w = img.naturalWidth || img.width;
+  const h = img.naturalHeight || img.height;
+  if (!w || !h) throw new Error('empty image');
+  c.width = w;
+  c.height = h;
+  c.getContext('2d').drawImage(img, 0, 0);
+  return c.toDataURL('image/jpeg', 0.92);
+}
+
+function loadCorsImage(url, timeoutMs = 8000) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.referrerPolicy = 'strict-origin-when-cross-origin';
+    const timer = setTimeout(() => reject(new Error('timeout')), timeoutMs);
+    img.onload = () => { clearTimeout(timer); resolve(img); };
+    img.onerror = () => { clearTimeout(timer); reject(new Error('load error')); };
+    img.src = url;
+  });
+}
+
+async function fetchImageDataUrl(url) {
+  if (!url) return null;
+  if (shotImageCache.has(url)) return shotImageCache.get(url);
+  try {
+    const img = await loadCorsImage(url);
+    const dataUrl = imageToDataUrl(img);
+    shotImageCache.set(url, dataUrl);
+    return dataUrl;
+  } catch (_) {
+    try {
+      const res = await fetch(url, { mode: 'cors', cache: 'force-cache' });
+      if (!res.ok) return null;
+      const blob = await res.blob();
+      const dataUrl = await new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr.result);
+        fr.onerror = reject;
+        fr.readAsDataURL(blob);
+      });
+      shotImageCache.set(url, dataUrl);
+      return dataUrl;
+    } catch (_) {
+      return null;
+    }
+  }
+}
+
+async function inlineShotImages(root, timeoutMs = 6000) {
+  const imgs = [...root.querySelectorAll('img')];
+  await Promise.all(imgs.map(async img => {
+    const candidates = [img.getAttribute('src'), img.dataset.fallback].filter(Boolean);
+    for (const url of candidates) {
+      if (url.startsWith('data:')) { img.src = url; return; }
+      const dataUrl = await Promise.race([
+        fetchImageDataUrl(url),
+        new Promise(r => setTimeout(() => r(null), timeoutMs)),
+      ]);
+      if (dataUrl) {
+        img.src = dataUrl;
+        img.removeAttribute('crossorigin');
+        return;
+      }
+    }
+  }));
+}
+
+async function copyScreenshot() {
+  const btn = document.getElementById('btnScreenshot');
+  const card = document.getElementById('screenshotCard');
+  if (!card || !btn || btn.disabled) return;
+  const fin = getFinance(curModel, curScheme);
+  const landing = calcLanding(curModel, fin);
+  const oldText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '生成中…';
+  const scrollX = window.scrollX;
+  const scrollY = window.scrollY;
+  const sandbox = document.createElement('div');
+  sandbox.setAttribute('aria-hidden', 'true');
+  sandbox.style.cssText = 'position:fixed;left:-99999px;top:0;width:720px;height:0;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none';
+  document.body.appendChild(sandbox);
+  try {
+    renderScreenshotCard(curModel, fin, landing);
+    sandbox.innerHTML = `<div class="shot-sandbox-inner">${card.innerHTML}</div>`;
+    const target = sandbox.querySelector('.shot-sandbox-inner');
+    await Promise.all([ensureHtml2Canvas(), inlineShotImages(target)]);
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+    const canvas = await html2canvas(target, {
+      scale: Math.min(2.5, window.devicePixelRatio > 1 ? 2.5 : 2),
+      backgroundColor: '#F2F2F7',
+      logging: false,
+      useCORS: true,
+      allowTaint: false,
+      imageTimeout: 12000,
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: 720,
+      onclone(_doc, el) {
+        el.className = 'shot-sandbox-inner';
+        el.style.cssText = 'position:relative;left:0;top:0;width:720px;background:#F2F2F7;padding:16px;opacity:1;visibility:visible;height:auto;overflow:visible';
+      },
+    });
+    if (!canvas || canvas.width < 10 || canvas.height < 10) throw new Error('截图内容为空，请刷新后重试');
+    const blob = await canvasToPngBlob(canvas);
+    if (!blob) throw new Error('图片生成失败');
+    if (!navigator.clipboard || !window.ClipboardItem) {
+      throw new Error('当前浏览器不支持复制图片，请用 Chrome / Edge 打开');
+    }
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    btn.textContent = '✓ 已复制';
+  } catch (e) {
+    console.error(e);
+    btn.textContent = '截图失败';
+  } finally {
+    sandbox.remove();
+    window.scrollTo(scrollX, scrollY);
+    btn.disabled = false;
+    setTimeout(() => { btn.textContent = oldText; }, 1500);
+  }
+}
+</script>
+</body>
+</html>
